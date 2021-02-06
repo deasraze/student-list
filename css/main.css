@@ -1,0 +1,30 @@
+.hero {
+    position: relative;
+    color: #fff;
+    margin-top: 56px;
+    padding: 100px 0;
+    background: url("../img/hero.jpeg") fixed center;
+    background-size: cover;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .6);
+}
+
+.hero__title {
+    font-size: 4.1rem;
+    font-weight: 700;
+}
+
+.hero__description {
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, .8);
+}
