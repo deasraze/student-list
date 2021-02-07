@@ -28,3 +28,14 @@
     line-height: 1.5;
     color: rgba(255, 255, 255, .8);
 }
+
+.thead__link {
+    font-size: 1.1rem;
+    color: #ced4da;
+    text-decoration: none;
+    transition: color .1s linear;
+}
+
+.thead__link:hover {
+    color: #fff;
+}
