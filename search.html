@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Search results</title>
+</head>
+<body>
+<header class="fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a href="/" class="navbar-brand">Student List</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navContent"
+                    aria-controls="navContent" aria-expanded="false" aria-label="Toggle Navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Add yourself</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Edit information</a>
+                    </li>
+                </ul>
+                <form class="d-flex" action="">
+                    <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-light px-3" type="submit">Go!</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="hero text-center">
+    <div class="container">
+        <div class="hero__inner row justify-content-center position-relative">
+            <div class="col-lg-8">
+                <h1 class="hero__title mb-3">Website for registration of abiturients</h1>
+                <h2 class="hero__description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad cupiditate
+                    deleniti doloremque excepturi odit saepe sapiente, sint totam velit voluptatem. Accusamus, animi,
+                    distinctio! Delectus neque perferendis rem, unde voluptas voluptates!</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="students my-5">
+    <div class="container">
+        <h3 class="students__title">Search results for the query: Ivanov</h3>
+        <table class="students__table table table-bordered my-4 text-center">
+            <thead class="table-dark">
+            <tr>
+                <td>#</td>
+                <td><a href="" class="thead__link">First name</a></td>
+                <td><a href="" class="thead__link">Last name</a></td>
+                <td><a href="" class="thead__link">Group number</a></td>
+                <td><a href="" class="thead__link">Score</a></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Ivan</td>
+                <td>Ivanov</td>
+                <td>0012</td>
+                <td>250</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Sidr</td>
+                <td>Sidorov</td>
+                <td>1010Э</td>
+                <td>180</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Petr</td>
+                <td>Petrov</td>
+                <td>132М</td>
+                <td>220</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Vasya</td>
+                <td>Pupkin</td>
+                <td>150ЗМ</td>
+                <td>292</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div class="pagination">
+    <div class="container">
+        <nav aria-label="Pagination">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a href="" class="page-link" aria-label="First" aria-disabled="true">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item active"><a href="" class="page-link">1</a></li>
+                <li class="page-item"><a href="" class="page-link">2</a></li>
+                <li class="page-item"><a href="" class="page-link">3</a></li>
+                <li class="page-item"><a href="" class="page-link">4</a></li>
+                <li class="page-item"><a href="" class="page-link">5</a></li>
+                <li class="page-item">
+                    <a href="" class="page-link" aria-label="Last">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
