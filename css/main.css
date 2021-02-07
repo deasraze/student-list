@@ -39,3 +39,12 @@
 .thead__link:hover {
     color: #fff;
 }
+
+.page-item .page-link {
+    color: var(--bs-dark);
+}
+
+.page-item.active .page-link {
+    background-color: var(--bs-dark);
+    border-color: unset;
+}
