@@ -2,13 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Components\ReflectionClassHelper;
+use App\Components\Router;
 use App\Components\Request;
+use App\Components\ReflectionClassHelper;
 
 class FrontController
 {
+    public Request $request;
+    private Router $router;
     private static FrontController $instance;
-    private Request $request;
     private string $body;
 
     /**
@@ -28,8 +30,8 @@ class FrontController
      */
     public function route(): void
     {
-        $controller = $this->getCurrentNamespace($this->request->getController());
-        $action = $this->request->getAction();
+        $controller = $this->getCurrentNamespace($this->router->getController());
+        $action = $this->router->getAction();
         $rc = new ReflectionClassHelper($controller);
         $rc->invoke($action);
 
@@ -54,6 +56,7 @@ class FrontController
     private function __construct()
     {
         $this->request = new Request();
+        $this->router = new Router($this->request);
     }
 
     private function __clone()

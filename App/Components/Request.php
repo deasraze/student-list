@@ -4,42 +4,25 @@ namespace App\Components;
 
 class Request
 {
-    private array $routes;
-    private string $controller;
-    private string $action;
     private array $queryString;
     private array $requestParams;
 
-
     public function __construct()
     {
-        $this->routes = require ROOT . '/../App/config/routes.php';
+    }
 
-        list('controller' => $controller, 'action' => $action) = $this->requestParsing();
-        $this->controller = $controller;
-        $this->action = $action;
-
+    /**
+     * Save all the parameters that were passed in the request
+     * @param array $splitRealPath
+     */
+    public function setRequestParams(array $splitRealPath)
+    {
         $this->queryString = $this->parsingQueryString();
-        $this->requestParams = $this->parsingRequestParams();
+        $this->requestParams = $this->parsingRequestParams($splitRealPath);
     }
 
     /**
-     * @return mixed|string
-     */
-    public function getController(): string
-    {
-        return $this->controller;
-    }
-
-    /**
-     * @return mixed|string
-     */
-    public function getAction(): string
-    {
-        return $this->action;
-    }
-
-    /**
+     * Getting only the parameters that were specified in the routes
      * @param string|null $key
      * @return array|string
      */
@@ -50,6 +33,7 @@ class Request
 
 
     /**
+     * Getting GET parameters in a request
      * @param string|null $key
      * @return array|string
      */
@@ -58,43 +42,9 @@ class Request
         return (is_null($key)) ? $this->queryString : $this->queryString[$key];
     }
 
-    /**
-     * Checking the URI matches the routes
-     * @return array
-     * @throws \Exception
-     */
-    private function checkRequest(): array
-    {
-        foreach ($this->routes as $uriPattern => $path) {
-            if (preg_match("~^$uriPattern$~", $this->getRequestUri())) {
-                return [
-                    'uriPattern' => $uriPattern,
-                    'path' => $path
-                ];
-            }
-        }
-        throw new \Exception('Invalid URL');
-    }
 
     /**
-     * Parse the URI and get the controller and action
-     * @return array
-     * @throws \Exception
-     */
-    private function requestParsing(): array
-    {
-        $result = [];
-        $request = $this->checkRequest();
-
-        $split = $this->getSplitRealPath($request['uriPattern'], $request['path']);
-        $result['controller'] = ucfirst(array_shift($split)) . 'Controller';
-        $result['action'] = array_shift($split);
-
-
-        return $result;
-    }
-
-    /**
+     * Parsing GET parameters in a request
      * @return array
      */
     private function parsingQueryString(): array
@@ -108,13 +58,12 @@ class Request
 
     /**
      * The parsing of the parameters specified in the routes
+     * @param array $split
      * @return array
-     * @throws \Exception
      */
-    private function parsingRequestParams(): array
+    private function parsingRequestParams(array $split): array
     {
-        $request = $this->checkRequest();
-        $split = $this->getSplitRealPath($request['uriPattern'], $request['path']);
+
         $params = array_splice($split, 2);
         if (!empty($params)) {
             $key = $value = [];
@@ -126,27 +75,5 @@ class Request
             return array_combine($key, $value);
         }
         return [];
-    }
-
-    /**
-     * Changing the URI according to the route, where uriPattern => $path
-     * And we break this string into parts by "/"
-     * @param string $uriPattern
-     * @param string $path
-     * @return array
-     */
-    private function getSplitRealPath(string $uriPattern, string $path): array
-    {
-        $realPath = preg_replace("~^$uriPattern$~", $path, $this->getRequestUri());
-        return explode('/', $realPath);
-    }
-
-    /**
-     * Get current URI
-     * @return string
-     */
-    private function getRequestUri(): string
-    {
-        return trim($_SERVER['REQUEST_URI'], '/');
     }
 }
