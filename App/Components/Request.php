@@ -24,6 +24,22 @@ class Request
     }
 
     /**
+     * @return mixed|string
+     */
+    public function getController(): string
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getAction(): string
+    {
+        return $this->action;
+    }
+
+    /**
      * @param string|null $key
      * @return array|string
      */
@@ -40,6 +56,24 @@ class Request
     public function getQueryString(string $key = null)
     {
         return (is_null($key)) ? $this->queryString : $this->queryString[$key];
+    }
+
+    /**
+     * Checking the URI matches the routes
+     * @return array
+     * @throws \Exception
+     */
+    private function checkRequest(): array
+    {
+        foreach ($this->routes as $uriPattern => $path) {
+            if (preg_match("~^$uriPattern$~", $this->getRequestUri())) {
+                return [
+                    'uriPattern' => $uriPattern,
+                    'path' => $path
+                ];
+            }
+        }
+        throw new \Exception('Invalid URL');
     }
 
     /**
@@ -92,24 +126,6 @@ class Request
             return array_combine($key, $value);
         }
         return [];
-    }
-
-    /**
-     * Checking the URI matches the routes
-     * @return array
-     * @throws \Exception
-     */
-    private function checkRequest(): array
-    {
-        foreach ($this->routes as $uriPattern => $path) {
-            if (preg_match("~^$uriPattern$~", $this->getRequestUri())) {
-                return [
-                    'uriPattern' => $uriPattern,
-                    'path' => $path
-                ];
-            }
-        }
-        throw new \Exception('Invalid URL');
     }
 
     /**
