@@ -25,6 +25,10 @@
                 <input type="text" id="inputLastName" class="form-control" required>
             </div>
             <div class="col-md-6">
+                <label for="inputEmail" class="form-label">Email</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="example@gmail.com" required>
+            </div>
+            <div class="col-md-6">
                 <label for="inputGroupNumber" class="form-label">Group number</label>
                 <input type="text" id="inputGroupNumber" class="form-control" required>
             </div>
@@ -32,9 +36,13 @@
                 <label for="inputScore" class="form-label">Score</label>
                 <input type="number" min="0" max="1100" id="inputScore" class="form-control" placeholder="Total points for the Unified State Exam" required>
             </div>
-            <div class="col-md-12">
-                <label for="inputEmail" class="form-label">Email</label>
-                <input type="email" id="inputEmail" class="form-control" placeholder="example@gmail.com" required>
+            <div class="col-md-6">
+                <label for="inputGender" class="form-label">Gender</label>
+                <select id="inputGender" class="form-select" required>
+                    <option selected disabled value="">Choose...</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
             </div>
             <div class="col-md-12">
                 <button type="submit" class="registration-btn btn btn-dark px-4 mt-2">Save</button>
