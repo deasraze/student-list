@@ -8,3 +8,4 @@ require ROOT . '/../vendor/autoload.php';
 
 $fc = FrontController::getInstance();
 $fc->route();
+echo $fc->getBody();
