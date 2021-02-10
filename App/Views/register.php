@@ -42,8 +42,4 @@
         </form>
     </div>
 </div>
-
-<script src="js/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="js/main.js"></script>
-</body>
-</html>
+<?php require_once ROOT . '/../App/Views/static/footer.php' ?>

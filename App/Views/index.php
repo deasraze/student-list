@@ -1,4 +1,4 @@
-<?php require_once ROOT . '/../App/Views/static/header.php'?>
+<?php require_once ROOT . '/../App/Views/static/header.php' ?>
 <section class="hero text-center">
     <div class="container">
         <div class="hero__inner row justify-content-center position-relative">
@@ -16,7 +16,7 @@
     <div class="container">
         <h3 class="students__title">List of abiturients</h3>
         <table class="students__table table table-bordered my-4">
-            <thead class="table-dark">
+            <thead class="table-dark align-middle">
             <tr>
                 <td>#</td>
                 <td><a href="" class="thead__link">First name</a></td>
@@ -59,7 +59,7 @@
     </div>
 </section>
 
-<div class="pagination">
+<div class="pagination mb-5">
     <div class="container">
         <nav aria-label="Pagination">
             <ul class="pagination justify-content-center">
@@ -82,8 +82,4 @@
         </nav>
     </div>
 </div>
-
-<script src="js/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="js/main.js"></script>
-</body>
-</html>
+<?php require_once ROOT . '/../App/Views/static/footer.php' ?>

@@ -16,7 +16,7 @@
     <div class="container">
         <h3 class="students__title">Search results for the query: Ivanov</h3>
         <table class="students__table table table-bordered my-4 text-center">
-            <thead class="table-dark">
+            <thead class="table-dark align-middle">
             <tr>
                 <td>#</td>
                 <td><a href="" class="thead__link">First name</a></td>
@@ -82,8 +82,4 @@
         </nav>
     </div>
 </div>
-
-<script src="js/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="js/main.js"></script>
-</body>
-</html>
+<?php require_once ROOT . '/../App/Views/static/footer.php' ?>

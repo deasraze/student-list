@@ -68,3 +68,66 @@
     background-color: #495057;
     border-color: #495057;
 }
+
+.footer {
+    padding: 30px 0;
+    background: var(--bs-dark);
+    color: rgba(255,255,255,.55);
+}
+
+.footer__description {
+    display: inline-block;
+    margin: 0;
+    transition: color .1s linear;
+}
+
+.footer__description:hover {
+    color: #fff;
+}
+
+.footer__heart {
+    font-size: 1.5rem;
+    transition: color .1s ease-in-out;
+}
+
+.footer__description:hover .footer__heart {
+    color: #bb2d3b;
+}
+
+.footer__author {
+    font-weight: 700;
+}
+
+@media screen and (max-width: 1199px) {
+
+    .hero {
+        padding: 80px 0;
+    }
+
+    .thead__link {
+        font-size: unset;
+    }
+}
+
+@media screen and (max-width: 991px) {
+
+    .hero {
+        padding: 60px 0;
+    }
+
+    .hero__title {
+        font-size: 3.5rem;
+    }
+
+}
+
+@media screen and (max-width: 467px) {
+
+    .hero__title {
+        font-size: 2.7rem;
+    }
+
+    .hero__description {
+        font-size: 1rem;
+    }
+}
