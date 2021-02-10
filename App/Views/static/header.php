@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
-    <title>Student list</title>
+    <title><?=$this->title?></title>
 </head>
 <body>
 <header class="fixed-top">

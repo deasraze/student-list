@@ -17,13 +17,12 @@ class RenderHelper
     /**
      * Upload the required file
      * @param string $fileName
-     * @return mixed
+     * @return string
      * @throws \Exception
      */
-    public function getFile(string $fileName)
+    public function getFile(string $fileName): string
     {
-        $file = $this->checkFileExist($fileName);
-        return require_once "$file";
+        return $this->checkFileExist($fileName);
     }
 
     /**

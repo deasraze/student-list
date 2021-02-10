@@ -7,17 +7,24 @@ use App\Components\RenderHelper;
 class SiteController implements Controller
 {
     private FrontController $fc;
+    private string $title;
+
+    public function __construct()
+    {
+        $this->fc = FrontController::getInstance();
+    }
 
     public function actionIndex()
     {
-        $this->fc = FrontController::getInstance();
+        $this->title = 'Student list';
         $this->render('index');
     }
 
     public function render(string $fileName)
     {
+        $file = (new RenderHelper())->getFile($fileName);
         ob_start();
-        (new RenderHelper())->getFile($fileName);
+        require_once "$file";
         $this->fc->setBody(ob_get_clean());
     }
 }
