@@ -32,9 +32,7 @@ class FrontController
     {
         $controller = $this->getCurrentNamespace($this->router->getController());
         $action = $this->router->getAction();
-        $rc = new ReflectionClassHelper($controller);
-        $rc->invoke($action);
-
+        ReflectionClassHelper::setReflectionClass($controller)->invoke($action);
     }
 
     /**

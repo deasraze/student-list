@@ -1,27 +1,26 @@
 <?php
 
-
 namespace App\Components;
-
 
 class ReflectionClassHelper
 {
-    private \ReflectionClass $rc;
+    protected static \ReflectionClass $rc;
 
-    public function __construct(string $className)
+
+    public function __construct()
     {
-        $this->rc = $this->getReflectionClass($className);
     }
 
     /**
      * @param string $className
-     * @return \ReflectionClass
+     * @return ReflectionClassHelper
      * @throws \ReflectionException
      */
-    private function getReflectionClass(string $className): \ReflectionClass
+    public static function setReflectionClass(string $className): ReflectionClassHelper
     {
         if (class_exists($className)) {
-            return new \ReflectionClass($className);
+            static::$rc = new \ReflectionClass($className);
+            return new static();
         }
 
         throw new \Exception("Undefined class: $className");
@@ -46,10 +45,11 @@ class ReflectionClassHelper
      * Calling the required action
      * @param string $action
      * @throws \ReflectionException
+     * @throws \Exception
      */
-    public function invoke(string $action)
+    public function invoke(string $action): void
     {
-        $rc= $this->rc;
+        $rc = static::$rc;
         if ($this->checkActionExist($rc, $action)) {
             $instance = $rc->newInstance();
             $rm = $rc->getMethod($action);
