@@ -21,14 +21,19 @@ class Request
         $this->requestParams = $this->parsingRequestParams($splitRealPath);
     }
 
+
     /**
      * Getting only the parameters that were specified in the routes
      * @param string|null $key
-     * @return array|string
+     * @return array|false|string
      */
     public function getRequestParams(string $key = null)
     {
-        return (is_null($key)) ? $this->requestParams : $this->requestParams[$key];
+        if (is_null($key)) {
+            return $this->requestParams;
+        }
+
+        return $this->requestParams[$key] ?? false;
     }
 
 
@@ -39,7 +44,11 @@ class Request
      */
     public function getQueryString(string $key = null)
     {
-        return (is_null($key)) ? $this->queryString : $this->queryString[$key];
+        if (is_null($key)) {
+            return $this->queryString;
+        }
+
+        return $this->queryString[$key] ?? false;
     }
 
 
@@ -63,7 +72,6 @@ class Request
      */
     private function parsingRequestParams(array $split): array
     {
-
         $params = array_splice($split, 2);
         if (!empty($params)) {
             $key = $value = [];
