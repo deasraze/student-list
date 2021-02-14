@@ -2,13 +2,13 @@
 
 namespace App\Controllers;
 
-use App\Components\Router;
-use App\Components\Request;
-use App\Components\ReflectionClassHelper;
+use App\Components\Interfaces\RequestInterface;
+use App\Components\Interfaces\RouterInterface;
+use App\Components\Helpers\ReflectionClassHelper;
 
 class FrontController
 {
-    public Request $request;
+    public RequestInterface $request;
     private static FrontController $instance;
     private string $body;
 
@@ -26,11 +26,11 @@ class FrontController
 
     /**
      * The initialization of the controller and call the desired action
-     * @param Router $router
-     * @param Request $request
+     * @param RouterInterface $router
+     * @param RequestInterface $request
      * @throws \ReflectionException
      */
-    public function route(Router $router, Request $request): void
+    public function route(RouterInterface $router, RequestInterface $request): void
     {
         $this->request = $request;
         $controller = $this->getCurrentNamespace($router->getController());
@@ -61,7 +61,6 @@ class FrontController
     private function __clone()
     {
     }
-
 
     /**
      * @param string|null $string

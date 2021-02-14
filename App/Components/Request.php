@@ -2,10 +2,13 @@
 
 namespace App\Components;
 
-class Request
+use App\Components\Interfaces\RequestInterface;
+
+class Request implements RequestInterface
 {
     private array $queryParams;
     private array $requestParams;
+
 
     public function __construct()
     {
@@ -15,12 +18,11 @@ class Request
      * Save all the parameters that were passed in the request
      * @param array $splitRealPath
      */
-    public function setRequestParams(array $splitRealPath)
+    public function setRequestParams(array $splitRealPath): void
     {
         $this->queryParams = $this->parsingQueryParams();
         $this->requestParams = $this->parsingRequestParams($splitRealPath);
     }
-
 
     /**
      * Getting only the parameters that were specified in the routes
@@ -36,7 +38,6 @@ class Request
         return $this->requestParams[$key] ?? false;
     }
 
-
     /**
      * Getting GET parameters in a request
      * @param string|null $key
@@ -51,15 +52,14 @@ class Request
         return $this->queryParams[$key] ?? false;
     }
 
-
     /**
      * Parsing GET parameters in a request
      * @return array
      */
-    private function parsingQueryParams(): array
+    public function parsingQueryParams(): array
     {
         if (!empty($_SERVER['QUERY_STRING'])) {
-            return array_combine(array_keys($_GET), array_values($_GET));
+            return $_GET;
         }
 
         return [];
@@ -67,12 +67,12 @@ class Request
 
     /**
      * The parsing of the parameters specified in the routes
-     * @param array $split
+     * @param array $splitRealPath
      * @return array
      */
-    private function parsingRequestParams(array $split): array
+    public function parsingRequestParams(array $splitRealPath): array
     {
-        $params = array_splice($split, 2);
+        $params = array_splice($splitRealPath, 2);
         if (!empty($params)) {
             $key = $value = [];
             foreach (array_chunk($params, 2) as $chunk) {

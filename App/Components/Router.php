@@ -2,16 +2,19 @@
 
 namespace App\Components;
 
-class Router
+use App\Components\Interfaces\RequestInterface;
+use App\Components\Interfaces\RouterInterface;
+
+class Router implements RouterInterface
 {
     private array $routes;
     private string $controller;
     private string $action;
 
 
-    public function __construct(Request $request)
+    public function __construct(RequestInterface $request)
     {
-        $this->routes = require ROOT . '/../App/config/routes.php';
+        $this->routes = $this->getRoutes();
 
         list('controller' => $controller, 'action' => $action) = $this->uriParsing($request);
         $this->controller = $controller;
@@ -37,21 +40,19 @@ class Router
 
     /**
      * Parse the URI and get the controller, action and URI params
-     * @param Request $request
+     * @param RequestInterface $request
      * @return array
      * @throws \Exception
      */
-    private function uriParsing(Request $request): array
+    public function uriParsing(RequestInterface $request): array
     {
         $result = [];
-        $requestUri = $this->checkRequestUri();
-        $split = $this->getSplitRealPath($requestUri['uriPattern'], $requestUri['path']);
+        $split = $this->getSplitRealPath();
 
         $request->setRequestParams($split);
 
         $result['controller'] = ucfirst(array_shift($split)) . 'Controller';
         $result['action'] = array_shift($split);
-
 
         return $result;
     }
@@ -65,24 +66,21 @@ class Router
     {
         foreach ($this->routes as $uriPattern => $path) {
             if (preg_match("~^$uriPattern$~", $this->getRequestUri())) {
-                return [
-                    'uriPattern' => $uriPattern,
-                    'path' => $path
-                ];
+                return [$uriPattern, $path];
             }
         }
         throw new \Exception('Invalid URL');
     }
 
     /**
-     * Changing the URI according to the route, where uriPattern => $path
-     * And we break this string into parts by "/"
-     * @param string $uriPattern
-     * @param string $path
+     * Changing the URI according to the route
+     * and we break this string into parts by "/"
      * @return array
+     * @throws \Exception
      */
-    private function getSplitRealPath(string $uriPattern, string $path): array
+    public function getSplitRealPath(): array
     {
+        [$uriPattern, $path] = $this->checkRequestUri();
         $realPath = preg_replace("~^$uriPattern$~", $path, $this->getRequestUri());
         return explode('/', $realPath);
     }
@@ -94,5 +92,14 @@ class Router
     private function getRequestUri(): string
     {
         return trim($_SERVER['REQUEST_URI'], '/');
+    }
+
+    /**
+     * Get routes
+     * @return mixed
+     */
+    private function getRoutes()
+    {
+        return require_once ROOT . '/../App/config/routes.php';
     }
 }

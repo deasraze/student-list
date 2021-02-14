@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Components\Render;
-use App\Components\RenderHelper;
+use App\Components\Helpers\RenderHelper;
+use App\Components\Interfaces\RendererInterface;
 
-class Controller implements Render
+class Controller implements RendererInterface
 {
     protected FrontController $fc;
 
