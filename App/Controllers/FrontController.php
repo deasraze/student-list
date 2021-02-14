@@ -9,7 +9,6 @@ use App\Components\ReflectionClassHelper;
 class FrontController
 {
     public Request $request;
-    private Router $router;
     private static FrontController $instance;
     private string $body;
 
@@ -27,11 +26,15 @@ class FrontController
 
     /**
      * The initialization of the controller and call the desired action
+     * @param Router $router
+     * @param Request $request
+     * @throws \ReflectionException
      */
-    public function route(): void
+    public function route(Router $router, Request $request): void
     {
-        $controller = $this->getCurrentNamespace($this->router->getController());
-        $action = $this->router->getAction();
+        $this->request = $request;
+        $controller = $this->getCurrentNamespace($router->getController());
+        $action = $router->getAction();
         ReflectionClassHelper::setReflectionClass($controller)->invoke($action);
     }
 
@@ -53,8 +56,6 @@ class FrontController
 
     private function __construct()
     {
-        $this->request = new Request();
-        $this->router = new Router($this->request);
     }
 
     private function __clone()

@@ -4,7 +4,7 @@ namespace App\Components;
 
 class Request
 {
-    private array $queryString;
+    private array $queryParams;
     private array $requestParams;
 
     public function __construct()
@@ -17,7 +17,7 @@ class Request
      */
     public function setRequestParams(array $splitRealPath)
     {
-        $this->queryString = $this->parsingQueryString();
+        $this->queryParams = $this->parsingQueryParams();
         $this->requestParams = $this->parsingRequestParams($splitRealPath);
     }
 
@@ -42,13 +42,13 @@ class Request
      * @param string|null $key
      * @return array|string
      */
-    public function getQueryString(string $key = null)
+    public function getQueryParams(string $key = null)
     {
         if (is_null($key)) {
-            return $this->queryString;
+            return $this->queryParams;
         }
 
-        return $this->queryString[$key] ?? false;
+        return $this->queryParams[$key] ?? false;
     }
 
 
@@ -56,7 +56,7 @@ class Request
      * Parsing GET parameters in a request
      * @return array
      */
-    private function parsingQueryString(): array
+    private function parsingQueryParams(): array
     {
         if (!empty($_SERVER['QUERY_STRING'])) {
             return array_combine(array_keys($_GET), array_values($_GET));
