@@ -9,7 +9,6 @@ class Controller implements RendererInterface
 {
     protected FrontController $fc;
 
-
     public function __construct()
     {
         $this->fc = FrontController::getInstance();

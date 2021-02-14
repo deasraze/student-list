@@ -1,12 +1,11 @@
 <?php
 
-
 namespace App\Components;
-
 
 class Navbar
 {
     private static string $url;
+
     private static array $menuItem;
 
 

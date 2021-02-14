@@ -2,10 +2,11 @@
 
 namespace App\Components\Helpers;
 
+use App\Components\Interfaces\TableDataGateway;
+
 class ReflectionClassHelper
 {
     protected static \ReflectionClass $rc;
-
 
     public function __construct()
     {
@@ -43,15 +44,15 @@ class ReflectionClassHelper
 
     /**
      * Calling the required action
+     * @param TableDataGateway $dataGateway
      * @param string $action
      * @throws \ReflectionException
-     * @throws \Exception
      */
-    public function invoke(string $action): void
+    public function invoke(TableDataGateway $dataGateway, string $action): void
     {
         $rc = static::$rc;
         if ($this->checkActionExist($rc, $action)) {
-            $instance = $rc->newInstance();
+            $instance = $rc->newInstance($dataGateway);
             $rm = $rc->getMethod($action);
             $rm->invoke($instance, $action);
         }

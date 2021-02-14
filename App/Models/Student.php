@@ -1,19 +1,25 @@
 <?php
 
-
 namespace App\Models;
 
-
-class Abiturient
+class Student
 {
 
     public int $id;
-    public string $firstName;
-    public string $lastName;
+
+    public string $name;
+
+    public string $surname;
+
     public string $gender;
-    public int $groupNumber;
+
+    public string $sgroup;
+
     public string $email;
+
     public int $score;
-    public int $birthYear;
+
+    public int $byear;
+
     public string $status;
 }

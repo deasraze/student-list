@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Components\Interfaces\TableDataGateway;
 use App\Components\Interfaces\RequestInterface;
 use App\Components\Interfaces\RouterInterface;
 use App\Components\Helpers\ReflectionClassHelper;
@@ -9,7 +10,9 @@ use App\Components\Helpers\ReflectionClassHelper;
 class FrontController
 {
     public RequestInterface $request;
+
     private static FrontController $instance;
+
     private string $body;
 
     /**
@@ -28,14 +31,18 @@ class FrontController
      * The initialization of the controller and call the desired action
      * @param RouterInterface $router
      * @param RequestInterface $request
+     * @param TableDataGateway $dataGateway
      * @throws \ReflectionException
      */
-    public function route(RouterInterface $router, RequestInterface $request): void
-    {
+    public function route(
+        RouterInterface $router,
+        RequestInterface $request,
+        TableDataGateway $dataGateway
+    ): void {
         $this->request = $request;
         $controller = $this->getCurrentNamespace($router->getController());
         $action = $router->getAction();
-        ReflectionClassHelper::setReflectionClass($controller)->invoke($action);
+        ReflectionClassHelper::setReflectionClass($controller)->invoke($dataGateway, $action);
     }
 
     /**

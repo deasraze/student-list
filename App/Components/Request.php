@@ -7,8 +7,8 @@ use App\Components\Interfaces\RequestInterface;
 class Request implements RequestInterface
 {
     private array $queryParams;
-    private array $requestParams;
 
+    private array $requestParams;
 
     public function __construct()
     {

@@ -8,9 +8,10 @@ use App\Components\Interfaces\RouterInterface;
 class Router implements RouterInterface
 {
     private array $routes;
-    private string $controller;
-    private string $action;
 
+    private string $controller;
+
+    private string $action;
 
     public function __construct(RequestInterface $request)
     {
