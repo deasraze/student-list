@@ -15,5 +15,5 @@ class Abiturient
     public string $email;
     public int $score;
     public int $birthYear;
-    public string $city;
+    public string $status;
 }
