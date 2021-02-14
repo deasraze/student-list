@@ -2,12 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Components\Helpers\RenderHelper;
 use App\Components\Interfaces\TableDataGateway;
 
 class SiteController extends Controller
 {
-    protected string $title;
-
     private TableDataGateway $studentGateway;
 
     public function __construct(TableDataGateway $studentGateway)
@@ -18,8 +17,11 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $this->title = 'Student list';
-        $this->render('index');
+        $students = $this->studentGateway->getAll();
+        $this->render('index', [
+            'title' => 'Student list',
+            'students' => $students
+        ]);
     }
 
 }

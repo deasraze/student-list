@@ -26,34 +26,15 @@
             </tr>
             </thead>
             <tbody>
+            <?php foreach ($students as $student): ?>
             <tr>
-                <td>1</td>
-                <td>Ivan</td>
-                <td>Ivanov</td>
-                <td>0012</td>
-                <td>250</td>
+                <td><?= $student->id ?></td>
+                <td><?= $student->name ?></td>
+                <td><?= $student->surname ?></td>
+                <td><?= $student->sgroup ?></td>
+                <td><?= $student->score ?></td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Sidr</td>
-                <td>Sidorov</td>
-                <td>1010Э</td>
-                <td>180</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Petr</td>
-                <td>Petrov</td>
-                <td>132М</td>
-                <td>220</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Vasya</td>
-                <td>Pupkin</td>
-                <td>150ЗМ</td>
-                <td>292</td>
-            </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>

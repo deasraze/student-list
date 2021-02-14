@@ -3,7 +3,7 @@
         by <span class="footer__author">theifel</span>
     </p>
 </footer>
-<script src="js/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="js/main.js"></script>
+<script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="/js/main.js"></script>
 </body>
 </html>

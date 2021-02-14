@@ -17,11 +17,13 @@ class Controller implements RendererInterface
     /**
      * Filling in the view and returning the result to the FrontController
      * @param string $template
+     * @param array $args
      * @throws \Exception
      */
-    public function render(string $template)
+    public function render(string $template, array $args): void
     {
         $file = (new RenderHelper())->getFile($template);
+        extract($args, EXTR_SKIP);
         ob_start();
         require_once "$file";
         $this->fc->setBody(ob_get_clean());
