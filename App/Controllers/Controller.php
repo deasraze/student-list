@@ -2,10 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Components\Helpers\RenderHelper;
-use App\Components\Interfaces\RendererInterface;
+use App\Components\View;
 
-class Controller implements RendererInterface
+abstract class Controller
 {
     protected FrontController $fc;
 
@@ -22,11 +21,8 @@ class Controller implements RendererInterface
      */
     public function render(string $template, array $args): void
     {
-        $file = (new RenderHelper())->getFile($template);
-        extract($args, EXTR_SKIP);
-        ob_start();
-        require_once "$file";
-        $this->fc->setBody(ob_get_clean());
+        $body = (new View())->render($template, $args);
+        $this->fc->setBody($body);
     }
 
 }

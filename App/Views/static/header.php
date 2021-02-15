@@ -27,12 +27,12 @@ use App\Components\Navbar;
             </button>
             <div class="collapse navbar-collapse" id="navContent">
                 <?php
-                Navbar::setNavBar([
+                $menuItem = [
                     ['label' => 'Home', 'url' => '/'],
                     ['label' => 'Add yourself', 'url' => '/register'],
                     ['label' => 'Edit information', 'url' => '/edit']
-                ]);
-                echo Navbar::getNav();
+                ];
+                echo (new Navbar($menuItem))->getNav();
                 ?>
                 <form action="" class="d-flex needs-validation" novalidate>
                     <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search" required>

@@ -4,37 +4,33 @@ namespace App\Components;
 
 class Navbar
 {
-    private static string $url;
+    private string $url;
 
-    private static array $menuItem;
+    private array $menuItem;
 
-
-    public function __construct()
+    /**
+     * Navbar constructor.
+     * Example: ['label' => 'Home', 'url' => '/'], ...
+     * @param array of items that should be in the menu
+     */
+    public function __construct(array $menuItem)
     {
+        $this->menuItem = $menuItem;
+        $this->url = $this->parseUrl();
     }
 
     /**
      * Get the menu for the site
      * @return string html navbar menu
      */
-    public static function getNav(): string
+    public function getNav(): string
     {
-        $menuItem = '';
-        foreach (self::$menuItem as $value) {
-            $active = self::checkActiveItem($value['url']);
-            $menuItem .= "<li class='nav-item'><a href='{$value['url']}' class='nav-link $active'>{$value['label']}</a></li>";
+        $menu= '';
+        foreach ($this->menuItem as $item) {
+            $active = self::checkActiveItem($item['url']);
+            $menu .= "<li class='nav-item'><a href='{$item['url']}' class='nav-link $active'>{$item['label']}</a></li>";
         }
-        return "<ul class='navbar-nav me-auto mb-2 mb-lg-0'>$menuItem</ul>";
-    }
-
-    /**
-     * Example: ['label' => 'Home', 'url' => '/'], ...
-     * @param array of items that should be in the menu
-     */
-    public static function setNavBar(array $menuItem): void
-    {
-        self::$url = self::parseUrl();
-        self::$menuItem = $menuItem;
+        return "<ul class='navbar-nav me-auto mb-2 mb-lg-0'>$menu</ul>";
     }
 
     /**
@@ -42,15 +38,15 @@ class Navbar
      * @param string $url
      * @return string class
      */
-    private static function checkActiveItem(string $url)
+    private function checkActiveItem(string $url): string
     {
-        return (self::$url === trim($url, '/')) ? 'active' : '';
+        return ($this->url === trim($url, '/')) ? 'active' : '';
     }
 
     /**
      * @return string current url_path
      */
-    private static function parseUrl(): string
+    private function parseUrl(): string
     {
         return parse_url(trim($_SERVER['REQUEST_URI'], '/'), PHP_URL_PATH);
 

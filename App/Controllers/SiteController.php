@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Components\Helpers\RenderHelper;
 use App\Components\Interfaces\TableDataGateway;
 
 class SiteController extends Controller
