@@ -2,22 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Components\Interfaces\TableDataGateway;
+use App\Components\DIContainer;
 
 class SiteController extends Controller
 {
-    private TableDataGateway $studentGateway;
-
-    public function __construct(TableDataGateway $studentGateway)
-    {
-        parent::__construct();
-        $this->studentGateway = $studentGateway;
-    }
 
     public function actionIndex()
     {
-        $students = $this->studentGateway->getAll();
-        $this->render('index', [
+        $students = $this->container->get('StudentTableGateway')->getAll();
+        $this->show('index', [
             'title' => 'Student list',
             'students' => $students
         ]);

@@ -2,15 +2,18 @@
 
 namespace App\Controllers;
 
-use App\Components\View;
+use App\Components\DIContainer;
 
 abstract class Controller
 {
-    protected FrontController $fc;
+    public FrontController $fc;
 
-    public function __construct()
+    public DIContainer $container;
+
+    public function __construct(DIContainer $container)
     {
         $this->fc = FrontController::getInstance();
+        $this->container = $container;
     }
 
     /**
@@ -19,9 +22,9 @@ abstract class Controller
      * @param array $args
      * @throws \Exception
      */
-    public function render(string $template, array $args): void
+    public function show(string $template, array $args): void
     {
-        $body = (new View())->render($template, $args);
+        $body = $this->container->get('view')->render($template, $args);
         $this->fc->setBody($body);
     }
 

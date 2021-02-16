@@ -6,9 +6,18 @@ use PDO;
 
 class Db
 {
+    /**
+     * Object json_decode that contains the database connection settings
+     */
+    private object $config;
 
-    public function __construct()
+    /**
+     * Db constructor.
+     * @param object the result of the function json_decode
+     */
+    public function __construct(object $json)
     {
+        $this->config = $json;
     }
 
     /**
@@ -16,17 +25,12 @@ class Db
      */
     public function getConnection(): PDO
     {
-        $json = $this->getJsonParams();
+        $json = $this->config;
         $dsn = "mysql:host={$json->db->host};dbname={$json->db->dbname};charset={$json->db->charset}";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ];
 
         return new PDO($dsn, $json->db->user, $json->db->password, $options);
-    }
-
-    private function getJsonParams()
-    {
-        return json_decode(file_get_contents(ROOT . '/../App/config/db_params.json'));
     }
 }

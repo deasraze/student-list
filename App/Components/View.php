@@ -6,9 +6,9 @@ use App\Components\Interfaces\RendererInterface;
 
 class View implements RendererInterface
 {
-    protected string $defaultPath = ROOT . '/../App/Views/';
+    private string $defaultPath = ROOT . '/../App/Views/';
 
-    protected string $defaultExtension = 'php';
+    private string $defaultExtension = 'php';
 
     public function __construct()
     {
@@ -21,17 +21,6 @@ class View implements RendererInterface
         ob_start();
         require_once "$file";
         return ob_get_clean();
-    }
-
-    /**
-     * Upload the required file
-     * @param string $fileName
-     * @return string
-     * @throws \Exception
-     */
-    public function getFile(string $fileName): string
-    {
-        return $this->checkFileExist($fileName);
     }
 
     /**
@@ -51,18 +40,29 @@ class View implements RendererInterface
     }
 
     /**
+     * Upload the required file
+     * @param string $fileName
+     * @return string
+     * @throws \Exception
+     */
+    private function getFile(string $fileName): string
+    {
+        return $this->checkFileExist($fileName);
+    }
+
+    /**
      * Checking the requested file for the presence in the directory
      * @param string $fileName
      * @return string
      * @throws \Exception
      */
-    protected function checkFileExist(string $fileName): string
+    private function checkFileExist(string $fileName): string
     {
         $file = $this->defaultPath . "$fileName." . $this->defaultExtension;
-        if (is_file($file)) {
-            return $file;
+        if (!is_file($file)) {
+            throw new \Exception("Template file $file not exist");
         }
 
-        throw new \Exception("File $file not exist");
+        return $file;
     }
 }

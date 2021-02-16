@@ -2,9 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Components\Interfaces\TableDataGateway;
+use App\Components\DIContainer;
 use App\Components\Interfaces\RequestInterface;
-use App\Components\Interfaces\RouterInterface;
 
 class FrontController
 {
@@ -28,19 +27,18 @@ class FrontController
 
     /**
      * The initialization of the controller and call the desired action
-     * @param RouterInterface $router
-     * @param RequestInterface $request
-     * @param TableDataGateway $dataGateway
+     * @param DIContainer $container
+     * @throws \ReflectionException
      */
-    public function route(
-        RouterInterface $router,
-        RequestInterface $request,
-        TableDataGateway $dataGateway
-    ): void {
-        $this->request = $request;
+    public function route(DIContainer $container): void
+    {
+        $this->request = $container->get('request');
+        $router = $container->get('router');
+
         $controller = $this->getCurrentNamespace($router->getController());
         $action = $router->getAction();
-        $this->invoke($dataGateway, $controller, $action);
+
+        $this->invoke($container, $controller, $action);
     }
 
     /**
@@ -90,16 +88,16 @@ class FrontController
 
     /**
      * Calling the required action
-     * @param TableDataGateway $dataGateway
+     * @param DIContainer $container
      * @param string $controllerName
      * @param string $action
      * @throws \ReflectionException
      */
-    private function invoke(TableDataGateway $dataGateway, string $controllerName, string $action): void
+    private function invoke(DIContainer $container, string $controllerName, string $action): void
     {
         $rc = $this->getReflectionClass($controllerName);
         if ($this->checkActionExist($rc, $action)) {
-            $instance = $rc->newInstance($dataGateway);
+            $instance = $rc->newInstance($container);
             $rm = $rc->getMethod($action);
             $rm->invoke($instance, $action);
         }

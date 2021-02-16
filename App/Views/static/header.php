@@ -3,7 +3,6 @@
 use App\Components\Navbar;
 
 ?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,12 +26,12 @@ use App\Components\Navbar;
             </button>
             <div class="collapse navbar-collapse" id="navContent">
                 <?php
-                $menuItem = [
+                $menuItems = [
                     ['label' => 'Home', 'url' => '/'],
                     ['label' => 'Add yourself', 'url' => '/register'],
                     ['label' => 'Edit information', 'url' => '/edit']
                 ];
-                echo (new Navbar($menuItem))->getNav();
+                echo (new Navbar($menuItems))->getNav();
                 ?>
                 <form action="" class="d-flex needs-validation" novalidate>
                     <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search" required>

@@ -6,19 +6,19 @@ class Navbar
 {
     private string $url;
 
-    private array $menuItem;
-
+    private array $menuItems;
+    
     /**
      * Navbar constructor.
-     * Example: ['label' => 'Home', 'url' => '/'], ...
-     * @param array of items that should be in the menu
+     * Set a list of items that should be in the menu
+     * @param array example: ['label' => 'Home', 'url' => '/'], ...
      */
-    public function __construct(array $menuItem)
+    public function __construct(array $menuItems)
     {
-        $this->menuItem = $menuItem;
+        $this->menuItems = $menuItems;
         $this->url = $this->parseUrl();
     }
-
+    
     /**
      * Get the menu for the site
      * @return string html navbar menu
@@ -26,7 +26,7 @@ class Navbar
     public function getNav(): string
     {
         $menu= '';
-        foreach ($this->menuItem as $item) {
+        foreach ($this->menuItems as $item) {
             $active = self::checkActiveItem($item['url']);
             $menu .= "<li class='nav-item'><a href='{$item['url']}' class='nav-link $active'>{$item['label']}</a></li>";
         }
