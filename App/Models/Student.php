@@ -5,11 +5,9 @@ namespace App\Models;
 class Student
 {
     const GENDER_MALE = 'male';
-
     const GENDER_FEMALE = 'female';
 
     const STATUS_RESIDENT = 'resident';
-
     const STATUS_NONRESIDENT = 'nonresident';
 
     public int $id;

@@ -2,7 +2,6 @@
 
 use App\Components\Db;
 use App\Components\DIContainer;
-use App\Components\Navbar;
 use App\Components\Request;
 use App\Components\Router;
 use App\Components\View;
