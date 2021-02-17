@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Components\DIContainer;
-
 class SiteController extends Controller
 {
 
@@ -13,6 +11,13 @@ class SiteController extends Controller
         $this->show('index', [
             'title' => 'Student list',
             'students' => $students
+        ]);
+    }
+
+    public function actionRegister()
+    {
+        $this->show('register', [
+            'title' => 'Add yourself'
         ]);
     }
 
