@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use App\Models\Student;
+use App\Models\StudentData;
+
 class SiteController extends Controller
 {
 
@@ -16,8 +19,14 @@ class SiteController extends Controller
 
     public function actionRegister()
     {
+        $student = new Student();
+        $studentData = new StudentData($student);
+        $errors = [];
+
         $this->show('register', [
-            'title' => 'Add yourself'
+            'title' => 'Add yourself',
+            'student' => $student,
+            'errors' => $errors
         ]);
     }
 

@@ -1,4 +1,5 @@
 <?php
 return [
-    '' => 'site/actionIndex'
+    '' => 'site/actionIndex',
+    'register' => 'site/actionRegister'
 ];

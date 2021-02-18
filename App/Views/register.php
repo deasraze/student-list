@@ -23,7 +23,7 @@
                        value="<?= htmlspecialchars($student->name ?? '') ?>"
                        aria-describedby="inputFirstName" required>
                 <div id="inputFirstNamee" class="invalid-feedback">
-                    The name must be between 1 and 40 characters long and can contain letters, a space, an apostrophe and a hyphen
+                    The first name must be between 1 and 40 characters long and can contain letters, a space, an apostrophe and a hyphen
                 </div>
             </div>
             <div class="col-md-6">
@@ -33,7 +33,7 @@
                        value="<?= htmlspecialchars($student->surname ?? '') ?>"
                        aria-describedby="inputLastName" required>
                 <div id="inputLastName" class="invalid-feedback">
-                    The name must be between 1 and 40 characters long and can contain letters, a space, an apostrophe and a hyphen
+                    The last name must be between 1 and 40 characters long and can contain letters, a space, an apostrophe and a hyphen
                 </div>
             </div>
             <div class="col-md-6">
