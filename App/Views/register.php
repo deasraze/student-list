@@ -16,13 +16,20 @@
     <div class="container">
         <h3 class="registration__title text-center">Add yourself to our list</h3>
         <form action="/register" method="post" class="row needs-validation g-3 my-3 mx-lg-5 px-lg-5" novalidate>
+            <?php if (isset($errors['type_error'])): ?>
+            <div class="row justify-content-center">
+                <div class="col-6 alert alert-danger text-center" role="alert">
+                    Fill in all the fields of the form
+                </div>
+            </div>
+            <?php endif; ?>
             <div class="col-md-6">
                 <label for="inputFirstName" class="form-label">First name</label>
                 <input type="text" id="inputFirstName"
                        class="form-control <?= (isset($errors['name'])) ? 'is-invalid' : '' ?>" name="name"
                        value="<?= htmlspecialchars($student->name ?? '') ?>"
                        aria-describedby="inputFirstName" required>
-                <div id="inputFirstNamee" class="invalid-feedback">
+                <div id="inputFirstName" class="invalid-feedback">
                     The first name must be between 1 and 40 characters long and can contain letters, a space, an apostrophe and a hyphen
                 </div>
             </div>
