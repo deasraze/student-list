@@ -7,6 +7,7 @@ use App\Components\Router;
 use App\Components\View;
 use App\Controllers\FrontController;
 use App\Models\StudentTableGateway;
+use App\Models\StudentValidator;
 
 const ROOT = __DIR__;
 
@@ -37,6 +38,10 @@ $container->register('StudentTableGateway', function (DIContainer $container) {
 
 $container->register('view', function (DIContainer $container) {
     return new View();
+});
+
+$container->register('StudentValidator', function (DIContainer $container) {
+    return new StudentValidator($container->get('StudentTableGateway'));
 });
 
 $fc = FrontController::getInstance();
