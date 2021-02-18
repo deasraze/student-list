@@ -31,7 +31,7 @@ class StudentValidator
         $errors['byear'] = $this->validateByear($student->byear);
         $errors['status'] = $this->validateStatus($student->status);
 
-        return $errors;
+        return array_filter($errors, [$this, 'errorsFilter']);
     }
 
     /**
@@ -107,5 +107,10 @@ class StudentValidator
         }
 
         return true;
+    }
+
+    private function errorsFilter(bool $error)
+    {
+        return $error !== true;
     }
 }
