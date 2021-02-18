@@ -17,11 +17,13 @@
         <h3 class="registration__title text-center">Add yourself to our list</h3>
         <form action="/register" method="post" class="row needs-validation g-3 my-3 mx-lg-5 px-lg-5" novalidate>
             <?php if (isset($errors['type_error'])): ?>
-            <div class="row justify-content-center">
-                <div class="col-6 alert alert-danger text-center" role="alert">
-                    Fill in all the fields of the form
+                <div class="container text-center">
+                    <div class="row mx-2 justify-content-center">
+                        <div class="col-md-6 alert alert-danger" role="alert">
+                            Fill in all the fields of the form
+                        </div>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
             <div class="col-md-6">
                 <label for="inputFirstName" class="form-label">First name</label>
