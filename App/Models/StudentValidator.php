@@ -40,7 +40,7 @@ class StudentValidator
      */
     private function validateName(string $name): bool
     {
-        return (bool) preg_match("/^[а-яёА-ЯЁa-zA-Z '-]{1,40}$/u", $name);
+        return (bool)preg_match("/^[а-яёА-ЯЁa-zA-Z '-]{1,40}$/u", $name);
     }
 
     /**
@@ -62,7 +62,7 @@ class StudentValidator
      */
     private function validateSgroup(string $sgroup): bool
     {
-        return (bool) preg_match('/^[0-9А-ЯЁA-Z]{2,5}$/u', $sgroup);
+        return (bool)preg_match('/^[0-9А-ЯЁA-Z]{2,5}$/u', $sgroup);
     }
 
     /**
@@ -71,7 +71,12 @@ class StudentValidator
      */
     private function validateEmail(string $email): bool
     {
-        return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
+        $emailExist = $this->studentGateway->checkEmailExist($email);
+        if ($emailExist !== false) {
+            return false;
+        }
+
+        return (bool)filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
     /**
@@ -80,7 +85,7 @@ class StudentValidator
      */
     private function validateScore(int $score): bool
     {
-       return $score <= 1110;
+        return $score <= 1110;
     }
 
     /**

@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Components\Interfaces\TableDataGateway;
+use PDO;
 
-class StudentTableGateway implements TableDataGateway
+class StudentTableGateway
 {
+    private PDO $dbh;
 
-    private \PDO $dbh;
-
-    public function __construct(\PDO $dbh)
+    public function __construct(PDO $dbh)
     {
         $this->dbh = $dbh;
     }
@@ -22,8 +21,7 @@ class StudentTableGateway implements TableDataGateway
     {
         $sql = 'SELECT id, name, surname, sgroup, score FROM students';
         $stmt = $this->dbh->query($sql);
-        return $stmt->fetchAll(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,Student::class);
-
+        return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
     }
 
     public function getById(int $id): object
@@ -31,8 +29,16 @@ class StudentTableGateway implements TableDataGateway
         // TODO: Implement getById() method.
     }
 
-    public function add(object $object)
+    /**
+     * Check if there is a user with such mail
+     * @param string $email
+     * @return bool
+     */
+    public function checkEmailExist(string $email): bool
     {
-        // TODO: Implement add() method.
+        $sql = 'SELECT COUNT(id) FROM students WHERE email = :email';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([':email' => $email]);
+        return (bool)$stmt->fetchColumn();
     }
 }
