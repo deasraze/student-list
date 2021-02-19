@@ -10,6 +10,11 @@ class Request implements RequestInterface
 
     private array $requestParams;
 
+    private array $postRequest;
+
+    /**
+     * Request constructor.
+     */
     public function __construct()
     {
     }
@@ -22,12 +27,13 @@ class Request implements RequestInterface
     {
         $this->queryParams = $this->parsingQueryParams();
         $this->requestParams = $this->parsingRequestParams($splitRealPath);
+        $this->postRequest = $this->parsingPostRequest();
     }
 
     /**
      * Getting only the parameters that were specified in the routes
      * @param string|null $key
-     * @return array|false|string
+     * @return array|bool
      */
     public function getRequestParams(string $key = null)
     {
@@ -41,7 +47,7 @@ class Request implements RequestInterface
     /**
      * Getting GET parameters in a request
      * @param string|null $key
-     * @return array|string
+     * @return array|bool
      */
     public function getQueryParams(string $key = null)
     {
@@ -53,16 +59,35 @@ class Request implements RequestInterface
     }
 
     /**
+     * Getting POST parameters in a request
+     * @param string|null $key
+     * @return array|bool
+     */
+    public function getPostRequest(string $key = null)
+    {
+        if (is_null($key)) {
+            return $this->postRequest;
+        }
+
+        return $this->postRequest[$key] ?? false;
+    }
+
+    /**
      * Parsing GET parameters in a request
      * @return array
      */
     public function parsingQueryParams(): array
     {
-        if (!empty($_SERVER['QUERY_STRING'])) {
-            return $_GET;
-        }
+        return (!empty($_SERVER['QUERY_STRING'])) ? $_GET : [];
+    }
 
-        return [];
+    /**
+     * Parsing POST parameters in a request
+     * @return array
+     */
+    public function parsingPostRequest(): array
+    {
+        return (!empty($_POST)) ? $_POST : [];
     }
 
     /**

@@ -10,6 +10,10 @@ interface RequestInterface
 
     public function parsingQueryParams(): array;
 
+    public function parsingPostRequest(): array;
+
+    public function getPostRequest(string $key = null);
+
     public function getRequestParams(string $key = null);
 
     public function getQueryParams(string $key = null);
