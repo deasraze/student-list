@@ -6,11 +6,7 @@ use App\Components\Interfaces\RequestInterface;
 
 class Request implements RequestInterface
 {
-    private array $queryParams;
-
-    private array $requestParams;
-
-    private array $postRequest;
+    private array $requestBody;
 
     /**
      * Request constructor.
@@ -25,51 +21,25 @@ class Request implements RequestInterface
      */
     public function setRequestParams(array $splitRealPath): void
     {
-        $this->queryParams = $this->parsingQueryParams();
-        $this->requestParams = $this->parsingRequestParams($splitRealPath);
-        $this->postRequest = $this->parsingPostRequest();
+        $this->requestBody = array_merge(
+            $this->parsingQueryParams(),
+            $this->parsingRouteParams($splitRealPath),
+            $this->parsingPostRequest()
+        );
     }
 
     /**
-     * Getting only the parameters that were specified in the routes
+     * Get all parameters from the request body
      * @param string|null $key
      * @return array|bool
      */
-    public function getRequestParams(string $key = null)
+    public function getRequestBody(string $key = null)
     {
         if (is_null($key)) {
-            return $this->requestParams;
+            return $this->requestBody;
         }
 
-        return $this->requestParams[$key] ?? false;
-    }
-
-    /**
-     * Getting GET parameters in a request
-     * @param string|null $key
-     * @return array|bool
-     */
-    public function getQueryParams(string $key = null)
-    {
-        if (is_null($key)) {
-            return $this->queryParams;
-        }
-
-        return $this->queryParams[$key] ?? false;
-    }
-
-    /**
-     * Getting POST parameters in a request
-     * @param string|null $key
-     * @return array|bool
-     */
-    public function getPostRequest(string $key = null)
-    {
-        if (is_null($key)) {
-            return $this->postRequest;
-        }
-
-        return $this->postRequest[$key] ?? false;
+        return $this->requestBody[$key] ?? false;
     }
 
     /**
@@ -95,7 +65,7 @@ class Request implements RequestInterface
      * @param array $splitRealPath
      * @return array
      */
-    public function parsingRequestParams(array $splitRealPath): array
+    public function parsingRouteParams(array $splitRealPath): array
     {
         $params = array_splice($splitRealPath, 2);
         if (!empty($params)) {
