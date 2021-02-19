@@ -5,33 +5,29 @@ namespace App\Components\Utils;
 class CookieUtil
 {
     /**
-     * Create a cookie, if there is no cookie, and return it
+     * Create a cookie
      * @param string $key
      * @param $value
      * @param int $time
-     * @return mixed
+     * @return bool
      */
-    public static function setCookie(string $key, $value, int $time)
+    public static function setCookie(string $key, $value, int $time): bool
     {
-        if (!isset($_COOKIE[$key])) {
-            \setcookie($key, $value, [
-                'expires' => time() + $time,
-                'httponly' => true,
-                'path' => '/'
-            ]);
-        }
-
-        return $_COOKIE[$key];
+        return \setcookie($key, $value, [
+            'expires' => time() + $time,
+            'httponly' => true,
+            'path' => '/'
+        ]);
     }
 
     /**
      * Return the value of the cookie by the key, if there is such a cookie
      * @param string $key
-     * @return string
+     * @return bool|string
      */
-    public static function getCookie(string $key): string
+    public static function getCookie(string $key)
     {
-        return $_COOKIE[$key] ?? '';
+        return $_COOKIE[$key] ?? false;
     }
 
     /**
@@ -42,8 +38,7 @@ class CookieUtil
     public static function destroyCookie(string $key): bool
     {
         if (isset($_COOKIE[$key])) {
-            \setcookie($key, '', time() - 3600);
-            return true;
+            return \setcookie($key, '', time() - 3600);
         }
 
         return false;

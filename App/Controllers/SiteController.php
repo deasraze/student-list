@@ -7,6 +7,10 @@ use App\Models\StudentData;
 
 class SiteController extends Controller
 {
+    /**
+     * Main page
+     * @throws \Exception
+     */
     public function actionIndex()
     {
         $students = $this->container->get('StudentTableGateway')->getAll();
@@ -16,15 +20,21 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * Registration page
+     * @throws \Exception
+     */
     public function actionRegister()
     {
         $student = new Student();
         $studentData = new StudentData($student);
+        $csrfProtection = $this->container->get('csrf');
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $csrfProtection->validate($this->fc->request->getPostRequest('token'));
             try {
-                $studentData->fill($_POST);
+                $studentData->fill($this->fc->request->getPostRequest());
                 $errors = $this->container->get('StudentValidator')->validate($student);
 
                 if (empty($errors)) {
@@ -40,7 +50,8 @@ class SiteController extends Controller
         $this->show('register', [
             'title' => 'Add yourself',
             'student' => $student,
-            'errors' => $errors
+            'errors' => $errors,
+            'token' => $csrfProtection->setToken()
         ]);
     }
 }

@@ -118,6 +118,7 @@
                 </div>
             </div>
             <div class="col-md-12">
+                <input type="hidden" name="token" value="<?= htmlspecialchars($token, ENT_QUOTES) ?>">
                 <button type="submit" class="registration-btn btn btn-dark px-4 mt-2">Add yourself</button>
             </div>
         </form>

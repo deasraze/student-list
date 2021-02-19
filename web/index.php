@@ -2,6 +2,7 @@
 
 use App\Components\Db;
 use App\Components\DIContainer;
+use App\Components\Helpers\CSRFProtection;
 use App\Components\Request;
 use App\Components\Router;
 use App\Components\View;
@@ -42,6 +43,10 @@ $container->register('view', function (DIContainer $container) {
 
 $container->register('StudentValidator', function (DIContainer $container) {
     return new StudentValidator($container->get('StudentTableGateway'));
+});
+
+$container->register('csrf', function (DIContainer $container) {
+    return new CSRFProtection();
 });
 
 $fc = FrontController::getInstance();
