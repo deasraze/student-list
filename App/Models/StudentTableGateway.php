@@ -41,4 +41,57 @@ class StudentTableGateway
         $stmt->execute([':email' => $email]);
         return (bool)$stmt->fetchColumn();
     }
+
+    /**
+     * @param Student $student
+     */
+    public function save(Student $student): void
+    {
+        (isset($student->id)) ? $this->update($student) : $this->insert($student);
+    }
+
+    /**
+     * @param Student $student
+     */
+    private function insert(Student $student): void
+    {
+        $sql = 'INSERT INTO students (name, surname, gender, sgroup, email, score, byear, status) 
+                VALUES (:name, :surname, :gender, :sgroup, :email, :score, :byear, :status)';
+
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([
+            ':name' => $student->name,
+            ':surname' => $student->surname,
+            ':gender' => $student->gender,
+            ':sgroup' => $student->sgroup,
+            ':email' => $student->email,
+            ':score' => $student->score,
+            ':byear' => $student->byear,
+            ':status' => $student->status
+        ]);
+    }
+
+    /**
+     * @param Student $student
+     */
+    private function update(Student $student): void
+    {
+        $sql = 'UPDATE  students 
+                SET name = :name, surname = :surname, gender = :gender, sgroup = :sgroup, 
+                    email = :email, score = :score, byear = :score, status = :status
+                WHERE id = :id';
+
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([
+            ':id' => $student->id,
+            ':name' => $student->name,
+            ':surname' => $student->surname,
+            ':gender' => $student->gender,
+            ':sgroup' => $student->sgroup,
+            ':email' => $student->email,
+            ':score' => $student->score,
+            ':byear' => $student->byear,
+            ':status' => $student->status
+        ]);
+    }
 }
