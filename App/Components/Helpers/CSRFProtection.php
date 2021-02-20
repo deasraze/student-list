@@ -2,6 +2,7 @@
 
 namespace App\Components\Helpers;
 
+use App\Components\Interfaces\RequestInterface;
 use App\Components\Utils\CookieUtil;
 use App\Components\Utils\StringUtil;
 
@@ -45,14 +46,14 @@ class CSRFProtection
     }
 
     /**
-     * Check whether the token in the user's cookies and the token from the form are identical
-     * @param string token from the form
+     * Check whether the token in the user's cookies and the token from the request are identical
+     * @param RequestInterface $request
      * @return bool
      * @throws \Exception
      */
-    public function validate(string $token): bool
+    public function validate(RequestInterface $request): bool
     {
-        if (CookieUtil::getCookie('csrf') !== $token) {
+        if (CookieUtil::getCookie('csrf') !== $request->getRequestBody('csrf')) {
             throw new \Exception('Invalid token');
         }
 

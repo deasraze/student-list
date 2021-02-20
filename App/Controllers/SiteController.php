@@ -32,9 +32,9 @@ class SiteController extends Controller
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $csrfProtection->validate($this->fc->request->getPostRequest('token'));
+            $csrfProtection->validate($this->fc->request);
             try {
-                $studentData->fill($this->fc->request->getPostRequest());
+                $studentData->fill($this->fc->request->getRequestBody());
                 $errors = $this->container->get('StudentValidator')->validate($student);
 
                 if (empty($errors)) {
