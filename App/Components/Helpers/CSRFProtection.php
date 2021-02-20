@@ -3,11 +3,15 @@
 namespace App\Components\Helpers;
 
 use App\Components\Interfaces\RequestInterface;
-use App\Components\Utils\CookieUtil;
 use App\Components\Utils\StringUtil;
 
 class CSRFProtection
 {
+    /**
+     * @var CookieHelper
+     */
+    private CookieHelper $cookie;
+
     /**
      * String of cryptographically random bytes
      * @var string
@@ -16,10 +20,12 @@ class CSRFProtection
 
     /**
      * CSRFProtection constructor.
+     * @param CookieHelper $cookie
      * @throws \Exception
      */
-    public function __construct()
+    public function __construct(CookieHelper $cookie)
     {
+        $this->cookie = $cookie;
         $this->csrfToken = StringUtil::getRandomString(32);
     }
 
@@ -29,12 +35,12 @@ class CSRFProtection
      */
     public function setToken(): string
     {
-        if (CookieUtil::getCookie('csrf') === false) {
-            CookieUtil::setCookie('csrf', $this->csrfToken, 1800);
+        if ($this->cookie->getCookie('csrf') === false) {
+            $this->cookie->setCookie('csrf', $this->csrfToken, 1800);
             return $this->csrfToken;
         }
 
-        return CookieUtil::getCookie('csrf');
+        return $this->cookie->getCookie('csrf');
     }
 
     /**
@@ -53,7 +59,7 @@ class CSRFProtection
      */
     public function validate(RequestInterface $request): bool
     {
-        if (CookieUtil::getCookie('csrf') !== $request->getRequestBody('csrf')) {
+        if ($this->cookie->getCookie('csrf') !== $request->getRequestBody('csrf')) {
             throw new \Exception('Invalid token');
         }
 

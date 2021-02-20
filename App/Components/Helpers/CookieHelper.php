@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Components\Utils;
+namespace App\Components\Helpers;
 
-class CookieUtil
+class CookieHelper
 {
     /**
      * Create a cookie
@@ -11,7 +11,7 @@ class CookieUtil
      * @param int $time
      * @return bool
      */
-    public static function setCookie(string $key, $value, int $time): bool
+    public function setCookie(string $key, $value, int $time): bool
     {
         return \setcookie($key, $value, [
             'expires' => time() + $time,
@@ -25,7 +25,7 @@ class CookieUtil
      * @param string $key
      * @return bool|string
      */
-    public static function getCookie(string $key)
+    public function getCookie(string $key)
     {
         return $_COOKIE[$key] ?? false;
     }
@@ -35,7 +35,7 @@ class CookieUtil
      * @param string $key
      * @return bool
      */
-    public static function destroyCookie(string $key): bool
+    public function destroyCookie(string $key): bool
     {
         if (isset($_COOKIE[$key])) {
             return \setcookie($key, '', time() - 3600);

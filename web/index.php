@@ -2,6 +2,7 @@
 
 use App\Components\Db;
 use App\Components\DIContainer;
+use App\Components\Helpers\CookieHelper;
 use App\Components\Helpers\CSRFProtection;
 use App\Components\Request;
 use App\Components\Router;
@@ -46,7 +47,11 @@ $container->register('StudentValidator', function (DIContainer $container) {
 });
 
 $container->register('csrf', function (DIContainer $container) {
-    return new CSRFProtection();
+    return new CSRFProtection($container->get('cookieHelper'));
+});
+
+$container->register('cookieHelper', function (DIContainer $container) {
+    return new CookieHelper();
 });
 
 $fc = FrontController::getInstance();
