@@ -20,7 +20,9 @@ class StudentTableGateway
     public function getAll(): array
     {
         $sql = 'SELECT id, name, surname, sgroup, score FROM students';
-        $stmt = $this->dbh->query($sql);
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
     }
 
@@ -39,21 +41,24 @@ class StudentTableGateway
         $sql = 'SELECT COUNT(id) FROM students WHERE email = :email';
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute([':email' => $email]);
+
         return (bool)$stmt->fetchColumn();
     }
 
     /**
      * @param Student $student
+     * @return bool
      */
-    public function save(Student $student): void
+    public function save(Student $student): bool
     {
-        (isset($student->id)) ? $this->update($student) : $this->insert($student);
+        return (isset($student->id)) ? $this->update($student) : $this->insert($student);
     }
 
     /**
      * @param Student $student
+     * @return bool
      */
-    private function insert(Student $student): void
+    private function insert(Student $student): bool
     {
         $sql = 'INSERT INTO students 
                     (name, surname, gender, 
@@ -65,7 +70,7 @@ class StudentTableGateway
                      :byear, :status, :token)';
 
         $stmt = $this->dbh->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             ':name' => $student->name,
             ':surname' => $student->surname,
             ':gender' => $student->gender,
@@ -80,8 +85,9 @@ class StudentTableGateway
 
     /**
      * @param Student $student
+     * @return bool
      */
-    private function update(Student $student): void
+    private function update(Student $student): bool
     {
         $sql = 'UPDATE  students 
                 SET name = :name, surname = :surname, gender = :gender, 
@@ -90,7 +96,7 @@ class StudentTableGateway
                 WHERE id = :id';
 
         $stmt = $this->dbh->prepare($sql);
-        $stmt->execute([
+        return $stmt->execute([
             ':id' => $student->id,
             ':name' => $student->name,
             ':surname' => $student->surname,
