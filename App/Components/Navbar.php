@@ -44,11 +44,12 @@ class Navbar
     }
 
     /**
+     * Parsing the current url_path
      * @return string current url_path
      */
     private function parseUrl(): string
     {
-        return parse_url(trim($_SERVER['REQUEST_URI'], '/'), PHP_URL_PATH);
-
+        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        return explode('/', $url)[1];
     }
 }
