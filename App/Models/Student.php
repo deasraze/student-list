@@ -27,4 +27,6 @@ class Student
     public int $byear;
 
     public string $status;
+
+    public string $token;
 }
