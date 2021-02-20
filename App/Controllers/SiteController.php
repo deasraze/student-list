@@ -16,7 +16,8 @@ class SiteController extends Controller
         $students = $this->container->get('StudentTableGateway')->getAll();
         $this->show('index', [
             'title' => 'Student list',
-            'students' => $students
+            'students' => $students,
+            'notification' => $this->fc->request->getRequestBody('notification')
         ]);
     }
 
@@ -39,7 +40,7 @@ class SiteController extends Controller
 
                 if (empty($errors)) {
                     $this->container->get('StudentTableGateway')->save($student);
-                    header('Location: /');
+                    header('Location: /?notification=success');
                     return;
                 }
             } catch (\TypeError $error) {

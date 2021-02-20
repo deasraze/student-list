@@ -1,5 +1,6 @@
 <?php
 return [
     '' => 'site/actionIndex',
-    'register' => 'site/actionRegister'
+    '\\?notification=success' => 'site/actionIndex',
+    'register' => 'site/actionRegister',
 ];
