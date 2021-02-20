@@ -55,8 +55,14 @@ class StudentTableGateway
      */
     private function insert(Student $student): void
     {
-        $sql = 'INSERT INTO students (name, surname, gender, sgroup, email, score, byear, status) 
-                VALUES (:name, :surname, :gender, :sgroup, :email, :score, :byear, :status)';
+        $sql = 'INSERT INTO students 
+                    (name, surname, gender, 
+                     sgroup, email, score, 
+                     byear, status, token) 
+                VALUES 
+                    (:name, :surname, :gender, 
+                     :sgroup, :email, :score, 
+                     :byear, :status, :token)';
 
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute([
@@ -67,7 +73,8 @@ class StudentTableGateway
             ':email' => $student->email,
             ':score' => $student->score,
             ':byear' => $student->byear,
-            ':status' => $student->status
+            ':status' => $student->status,
+            ':token' => $student->token
         ]);
     }
 
@@ -77,8 +84,9 @@ class StudentTableGateway
     private function update(Student $student): void
     {
         $sql = 'UPDATE  students 
-                SET name = :name, surname = :surname, gender = :gender, sgroup = :sgroup, 
-                    email = :email, score = :score, byear = :score, status = :status
+                SET name = :name, surname = :surname, gender = :gender, 
+                    sgroup = :sgroup, email = :email, score = :score, 
+                    byear = :score, status = :status, token = :token
                 WHERE id = :id';
 
         $stmt = $this->dbh->prepare($sql);
@@ -91,7 +99,8 @@ class StudentTableGateway
             ':email' => $student->email,
             ':score' => $student->score,
             ':byear' => $student->byear,
-            ':status' => $student->status
+            ':status' => $student->status,
+            ':token' => $student->token
         ]);
     }
 }

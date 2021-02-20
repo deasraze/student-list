@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Components\Helpers\AuthorizationStudent;
 use App\Models\Student;
 use App\Models\StudentData;
 
@@ -29,6 +30,7 @@ class SiteController extends Controller
     {
         $student = new Student();
         $studentData = new StudentData($student);
+        $authorization = new AuthorizationStudent($student, $this->container->get('cookieHelper'));
         $csrfProtection = $this->container->get('csrf');
         $errors = [];
 
@@ -39,8 +41,10 @@ class SiteController extends Controller
                 $errors = $this->container->get('StudentValidator')->validate($student);
 
                 if (empty($errors)) {
+                    $authorization->setToken()->authorizeStudent();
                     $this->container->get('StudentTableGateway')->save($student);
                     header('Location: /?notification=success');
+
                     return;
                 }
             } catch (\TypeError $error) {
