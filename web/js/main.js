@@ -19,7 +19,9 @@
 (function () {
     let close = document.querySelector('#notification-close')
 
-    close.addEventListener('click', () => {
-        window.history.replaceState({}, document.title, window.location.href.split('?')[0]);
-    })
+    if (close) {
+        close.addEventListener('click', () => {
+            window.history.replaceState({}, document.title, window.location.href.split('?')[0]);
+        })
+    }
 })();

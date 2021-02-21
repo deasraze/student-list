@@ -32,7 +32,7 @@ class AuthorizationStudent
     {
         $this->student = $student;
         $this->cookie = $cookie;
-        $this->authToken = $this->generateToken(32);
+        $this->authToken = StringUtil::getRandomString(32);
     }
 
     /**
@@ -75,16 +75,5 @@ class AuthorizationStudent
     public function getAuthToken()
     {
         return ($this->cookie->getCookie('auth_token')) ?: $this->authToken;
-    }
-
-    /**
-     * Generate string of cryptographically random bytes
-     * @param int $length
-     * @return string
-     * @throws \Exception
-     */
-    private function generateToken(int $length): string
-    {
-        return StringUtil::getRandomString($length);
     }
 }
