@@ -18,7 +18,7 @@ class SiteController extends Controller
         $this->show('index', [
             'title' => 'Student list',
             'students' => $students,
-            'notification' => $this->fc->request->getRequestBody('notification')
+            'notify' => $this->fc->request->getRequestBody('notification'),
         ]);
     }
 
@@ -44,7 +44,7 @@ class SiteController extends Controller
                 if (empty($errors)) {
                     $authorization->setToken()->authorizeStudent();
                     $this->container->get('StudentTableGateway')->save($student);
-                    header('Location: /?notification=success');
+                    header('Location: /?notification=added&for=' . $authorization->getAuthToken());
 
                     return;
                 }

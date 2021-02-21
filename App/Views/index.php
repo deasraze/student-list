@@ -1,10 +1,10 @@
 <?php require_once ROOT . '/../App/Views/static/header.php' ?>
-<?php if ($notification): ?>
+<?php if ($notify): ?>
 <div class="notification">
     <div class="container">
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <h4 class="alert-heading">Well done!</h4>
-            The abiturient has been added to our website, you can <a href="/edit" class="alert-link">edit</a> your data
+            Your data has been <?= $notify ?> successfully
             <button type="button" id="notification-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
