@@ -30,25 +30,25 @@ class CSRFProtection
     }
 
     /**
-     * Write a unique token in the cookie and return it
-     * @return string
+     * Write a unique token in the cookie
+     * @return bool
      */
-    public function setToken(): string
+    public function setCsrfToken(): bool
     {
         if ($this->cookie->getCookie('csrf') === false) {
-            $this->cookie->setCookie('csrf', $this->csrfToken, 1800);
-            return $this->csrfToken;
+            return $this->cookie->setCookie('csrf', $this->csrfToken, 1800);
         }
 
-        return $this->cookie->getCookie('csrf');
+        return false;
     }
 
     /**
+     * Return csrf token
      * @return string
      */
-    public function getToken(): string
+    public function getCsrfToken(): string
     {
-        return $this->csrfToken;
+        return ($this->cookie->getCookie('csrf')) ?: $this->csrfToken;
     }
 
     /**
@@ -59,7 +59,9 @@ class CSRFProtection
      */
     public function validate(RequestInterface $request): bool
     {
-        if ($this->cookie->getCookie('csrf') !== $request->getRequestBody('csrf')) {
+        $cookieToken = $this->cookie->getCookie('csrf');
+        $postToken = ($request->getRequestBody('csrf'));
+        if (empty($cookieToken) || empty($postToken) || $cookieToken !== $postToken) {
             throw new \Exception('Invalid token');
         }
 

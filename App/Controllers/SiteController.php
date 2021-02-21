@@ -32,6 +32,7 @@ class SiteController extends Controller
         $studentData = new StudentData($student);
         $authorization = new AuthorizationStudent($student, $this->container->get('cookieHelper'));
         $csrfProtection = $this->container->get('csrf');
+        $csrfProtection->setCsrfToken();
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -56,7 +57,7 @@ class SiteController extends Controller
             'title' => 'Add yourself',
             'student' => $student,
             'errors' => $errors,
-            'token' => $csrfProtection->setToken()
+            'token' => $csrfProtection->getCsrfToken()
         ]);
     }
 }
