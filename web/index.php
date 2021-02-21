@@ -2,6 +2,7 @@
 
 use App\Components\Db;
 use App\Components\DIContainer;
+use App\Components\Helpers\AuthorizationStudent;
 use App\Components\Helpers\CookieHelper;
 use App\Components\Helpers\CSRFProtection;
 use App\Components\Request;
@@ -52,6 +53,10 @@ $container->register('csrf', function (DIContainer $container) {
 
 $container->register('cookieHelper', function (DIContainer $container) {
     return new CookieHelper();
+});
+
+$container->register('AuthorizationStudent', function (DIContainer $container) {
+    return new AuthorizationStudent($container->get('cookieHelper'));
 });
 
 $fc = FrontController::getInstance();

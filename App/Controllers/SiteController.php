@@ -30,7 +30,7 @@ class SiteController extends Controller
     {
         $student = new Student();
         $studentData = new StudentData($student);
-        $authorization = new AuthorizationStudent($student, $this->container->get('cookieHelper'));
+        $authorization =$this->container->get('AuthorizationStudent');
         $csrfProtection = $this->container->get('csrf');
         $csrfProtection->setCsrfToken();
         $errors = [];
@@ -42,7 +42,8 @@ class SiteController extends Controller
                 $errors = $this->container->get('StudentValidator')->validate($student);
 
                 if (empty($errors)) {
-                    $authorization->setToken()->authorizeStudent();
+                    $student->token = $authorization->getAuthToken();
+                    $authorization->authorizeStudent($student);
                     $this->container->get('StudentTableGateway')->save($student);
                     header('Location: /?notification=added&for=' . $authorization->getAuthToken());
 

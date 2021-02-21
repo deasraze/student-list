@@ -78,7 +78,7 @@
                        placeholder="Example: 1010Э, 132М, 00123" name="sgroup"
                        aria-describedby="inputGroupNumber" required>
                 <div id="inputGroupNumber" class="invalid-feedback">
-                    The group number must be between 2 and 5 characters, and can only contain letters and numbers
+                    The group number must be between 2 and 5 characters, and can only contain capital letters and numbers
                 </div>
             </div>
             <div class="col-md-6">
