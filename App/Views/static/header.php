@@ -26,10 +26,10 @@ use App\Components\Navbar;
             </button>
             <div class="collapse navbar-collapse" id="navContent">
                 <?php
+                $menuLabel = ($auth) ? 'Edit information' : 'Add yourself';
                 $menuItems = [
                     ['label' => 'Home', 'url' => '/'],
-                    ['label' => 'Add yourself', 'url' => '/register'],
-                    ['label' => 'Edit information', 'url' => '/edit']
+                    ['label' => $menuLabel, 'url' => '/form'],
                 ];
                 echo (new Navbar($menuItems))->getNav();
                 ?>

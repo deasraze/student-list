@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Components\Helpers\AuthorizationStudent;
 use App\Models\Student;
 use App\Models\StudentData;
 
@@ -19,6 +18,7 @@ class SiteController extends Controller
             'title' => 'Student list',
             'students' => $students,
             'notify' => $this->fc->request->getRequestBody('notification'),
+            'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
         ]);
     }
 
@@ -58,7 +58,8 @@ class SiteController extends Controller
             'title' => 'Add yourself',
             'student' => $student,
             'errors' => $errors,
-            'token' => $csrfProtection->getCsrfToken()
+            'token' => $csrfProtection->getCsrfToken(),
+            'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
         ]);
     }
 }
