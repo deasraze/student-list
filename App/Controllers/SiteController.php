@@ -23,7 +23,7 @@ class SiteController extends Controller
     }
 
     /**
-     * Registration page
+     * Form page
      * @throws \Exception
      */
     public function actionForm()
@@ -49,7 +49,9 @@ class SiteController extends Controller
                 if (empty($errors)) {
                     $studentGateway->save($student);
                     $authorization->authorizeStudent($student);
-                    header('Location: /?notification=added&for=' . $authorization->getAuthToken());
+
+                    $notify = ($authorization->isAuthorize()) ? 'edited' : 'added';
+                    header("Location: /?notification=$notify&for={$authorization->getAuthToken()}");
 
                     return;
                 }
@@ -58,8 +60,8 @@ class SiteController extends Controller
             }
         }
 
-        $this->show('register', [
-            'title' => 'Add yourself',
+        $this->show('form', [
+            'title' => ($authorization->isAuthorize()) ? 'Edit information' : 'Add yourself',
             'student' => $student,
             'errors' => $errors,
             'token' => $csrfProtection->getCsrfToken(),

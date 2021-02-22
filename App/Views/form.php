@@ -14,8 +14,8 @@
 
 <div class="registration my-5">
     <div class="container">
-        <h3 class="registration__title text-center">Add yourself to our list</h3>
-        <form action="/register" method="post" class="row needs-validation g-3 my-3 mx-lg-5 px-lg-5" novalidate>
+        <h3 class="registration__title text-center"><?= ($auth) ? 'Edit your personal information' : 'Add yourself to our list' ?></h3>
+        <form action="/form" method="post" class="row needs-validation g-3 my-3 mx-lg-5 px-lg-5" novalidate>
             <?php if (isset($errors['type_error'])): ?>
                 <div class="container text-center">
                     <div class="row mx-2 justify-content-center">
@@ -119,7 +119,9 @@
             </div>
             <div class="col-md-12">
                 <input type="hidden" name="csrf" value="<?= htmlspecialchars($token, ENT_QUOTES) ?>">
-                <button type="submit" class="registration-btn btn btn-dark px-4 mt-2">Add yourself</button>
+                <button type="submit" class="registration-btn btn btn-dark px-4 mt-2">
+                    <?= ($auth) ? 'Save' : 'Add yourself' ?>
+                </button>
             </div>
         </form>
     </div>
