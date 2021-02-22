@@ -26,7 +26,7 @@ class StudentValidator
         $errors['surname'] = $this->validateName($student->surname);
         $errors['gender'] = $this->validateGender($student->gender);
         $errors['sgroup'] = $this->validateSgroup($student->sgroup);
-        $errors['email'] = $this->validateEmail($student->email);
+        $errors['email'] = $this->validateEmail($student->email, $student->token);
         $errors['score'] = $this->validateScore($student->score);
         $errors['byear'] = $this->validateByear($student->byear);
         $errors['status'] = $this->validateStatus($student->status);
@@ -67,11 +67,12 @@ class StudentValidator
 
     /**
      * @param string $email
+     * @param string $token
      * @return bool
      */
-    private function validateEmail(string $email): bool
+    private function validateEmail(string $email, string $token): bool
     {
-        $emailExist = $this->studentGateway->checkEmailExist($email);
+        $emailExist = $this->studentGateway->checkEmailExist($email, $token);
         if ($emailExist !== false) {
             return false;
         }
@@ -114,7 +115,11 @@ class StudentValidator
         return true;
     }
 
-    private function errorsFilter(bool $error)
+    /**
+     * @param bool $error
+     * @return bool
+     */
+    private function errorsFilter(bool $error): bool
     {
         return $error !== true;
     }

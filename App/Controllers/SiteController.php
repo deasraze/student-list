@@ -26,11 +26,15 @@ class SiteController extends Controller
      * Registration page
      * @throws \Exception
      */
-    public function actionRegister()
+    public function actionForm()
     {
-        $student = new Student();
-        $studentData = new StudentData($student);
         $authorization =$this->container->get('AuthorizationStudent');
+        $studentGateway = $this->container->get('StudentTableGateway');
+
+        $student = ($authorization->isAuthorize()) ?
+            $studentGateway->getByToken($authorization->getAuthToken()) : new Student();
+        $studentData = new StudentData($student);
+
         $csrfProtection = $this->container->get('csrf');
         $csrfProtection->setCsrfToken();
         $errors = [];
@@ -39,12 +43,12 @@ class SiteController extends Controller
             $csrfProtection->validate($this->fc->request);
             try {
                 $studentData->fill($this->fc->request->getRequestBody());
-                $errors = $this->container->get('StudentValidator')->validate($student);
+                $student->token = $authorization->getAuthToken();
 
+                $errors = $this->container->get('StudentValidator')->validate($student);
                 if (empty($errors)) {
-                    $student->token = $authorization->getAuthToken();
+                    $studentGateway->save($student);
                     $authorization->authorizeStudent($student);
-                    $this->container->get('StudentTableGateway')->save($student);
                     header('Location: /?notification=added&for=' . $authorization->getAuthToken());
 
                     return;
@@ -59,7 +63,7 @@ class SiteController extends Controller
             'student' => $student,
             'errors' => $errors,
             'token' => $csrfProtection->getCsrfToken(),
-            'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
+            'auth' => $authorization->isAuthorize()
         ]);
     }
 }

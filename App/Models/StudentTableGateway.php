@@ -26,21 +26,37 @@ class StudentTableGateway
         return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
     }
 
-    public function getById(int $id): object
+    /**
+     * Getting student data by their token
+     * @param string $token
+     * @return Student
+     */
+    public function getByToken(string $token): Student
     {
-        // TODO: Implement getById() method.
+        $sql = 'SELECT id, name, surname, gender, sgroup, email, score, byear, status 
+                FROM students
+                WHERE token = :token';
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([':token' => $token]);
+        $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
+
+        return $stmt->fetch();
     }
 
     /**
      * Check if there is a user with such mail
      * @param string $email
+     * @param string $token
      * @return bool
      */
-    public function checkEmailExist(string $email): bool
+    public function checkEmailExist(string $email, string $token): bool
     {
-        $sql = 'SELECT COUNT(id) FROM students WHERE email = :email';
+        $sql = 'SELECT COUNT(id) FROM students WHERE email = :email AND token != :token';
         $stmt = $this->dbh->prepare($sql);
-        $stmt->execute([':email' => $email]);
+        $stmt->execute([
+            ':email' => $email,
+            ':token' => $token
+        ]);
 
         return (bool)$stmt->fetchColumn();
     }
@@ -92,7 +108,7 @@ class StudentTableGateway
         $sql = 'UPDATE  students 
                 SET name = :name, surname = :surname, gender = :gender, 
                     sgroup = :sgroup, email = :email, score = :score, 
-                    byear = :score, status = :status, token = :token
+                    byear = :byear, status = :status, token = :token
                 WHERE id = :id';
 
         $stmt = $this->dbh->prepare($sql);
