@@ -28,7 +28,7 @@ class SiteController extends Controller
      */
     public function actionForm()
     {
-        $authorization =$this->container->get('AuthorizationStudent');
+        $authorization = $this->container->get('AuthorizationStudent');
         $studentGateway = $this->container->get('StudentTableGateway');
 
         $student = ($authorization->isAuthorize()) ?
@@ -75,11 +75,16 @@ class SiteController extends Controller
      */
     public function actionSearch()
     {
-        $authorization =$this->container->get('AuthorizationStudent');
+        $authorization = $this->container->get('AuthorizationStudent');
+        $studentGateway = $this->container->get('StudentTableGateway');
+        $searchQuery = trim(strval($this->fc->request->getRequestBody('search')));
+        $students = $studentGateway->search($searchQuery);
 
         $this->show('search', [
             'title' => 'Search results',
+            'students' => $students,
+            'searchQuery' => $searchQuery,
             'auth' => $authorization->isAuthorize()
-            ]);
+        ]);
     }
 }

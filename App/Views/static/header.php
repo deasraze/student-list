@@ -33,8 +33,9 @@ use App\Components\Navbar;
                 ];
                 echo (new Navbar($menuItems))->getNav();
                 ?>
-                <form action="" class="d-flex needs-validation" novalidate>
-                    <input class="form-control me-3" type="search" placeholder="Search" aria-label="Search" required>
+                <form action="/search" method="get" class="d-flex needs-validation" novalidate>
+                    <input class="form-control me-3" type="search" name="search"
+                           placeholder="Search" aria-label="Search" required>
                     <button class="btn btn-outline-light px-3" type="submit">Go!</button>
                 </form>
             </div>

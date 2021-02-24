@@ -14,7 +14,7 @@
 
 <section class="students my-5">
     <div class="container">
-        <h3 class="students__title">Search results for the query: <?= htmlspecialchars($searchQuery)?></h3>
+        <h3 class="students__title">Search results for the query: <?= htmlspecialchars($searchQuery) ?></h3>
         <table class="students__table table table-bordered my-4 text-center">
             <thead class="table-dark align-middle">
             <tr>
