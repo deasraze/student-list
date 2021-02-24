@@ -68,4 +68,18 @@ class SiteController extends Controller
             'auth' => $authorization->isAuthorize()
         ]);
     }
+
+    /**
+     * Search results page
+     * @throws \Exception
+     */
+    public function actionSearch()
+    {
+        $authorization =$this->container->get('AuthorizationStudent');
+
+        $this->show('search', [
+            'title' => 'Search results',
+            'auth' => $authorization->isAuthorize()
+            ]);
+    }
 }
