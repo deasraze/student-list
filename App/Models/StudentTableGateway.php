@@ -19,7 +19,7 @@ class StudentTableGateway
      */
     public function getAll(): array
     {
-        $sql = 'SELECT id, name, surname, sgroup, score FROM students';
+        $sql = 'SELECT id, name, surname, sgroup, score FROM students ORDER BY id DESC';
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute();
 
@@ -41,6 +41,23 @@ class StudentTableGateway
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
 
         return $stmt->fetch();
+    }
+
+    /**
+     * Search for records by the passed search query
+     * @param string $searchQuery
+     * @return array
+     */
+    public function search(string $searchQuery): array
+    {
+        $sql = "SELECT id, name, surname, sgroup, score 
+                FROM students
+                WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search
+                ORDER BY id DESC";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([':search' => "%$searchQuery%"]);
+
+        return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
     }
 
     /**
