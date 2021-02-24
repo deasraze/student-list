@@ -14,7 +14,7 @@
 
 <section class="students my-5">
     <div class="container">
-        <h3 class="students__title">Search results for the query: Ivanov</h3>
+        <h3 class="students__title">Search results for the query: <?= htmlspecialchars($searchQuery)?></h3>
         <table class="students__table table table-bordered my-4 text-center">
             <thead class="table-dark align-middle">
             <tr>
@@ -26,40 +26,21 @@
             </tr>
             </thead>
             <tbody>
+            <?php foreach ($students as $student): ?>
             <tr>
-                <td>1</td>
-                <td>Ivan</td>
-                <td>Ivanov</td>
-                <td>0012</td>
-                <td>250</td>
+                <td><?= htmlspecialchars($student->id) ?></td>
+                <td><?= htmlspecialchars($student->name) ?></td>
+                <td><?= htmlspecialchars($student->surname) ?></td>
+                <td><?= htmlspecialchars($student->sgroup) ?></td>
+                <td><?= htmlspecialchars($student->score) ?></td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Sidr</td>
-                <td>Sidorov</td>
-                <td>1010Э</td>
-                <td>180</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Petr</td>
-                <td>Petrov</td>
-                <td>132М</td>
-                <td>220</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Vasya</td>
-                <td>Pupkin</td>
-                <td>150ЗМ</td>
-                <td>292</td>
-            </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </section>
 
-<div class="pagination">
+<div class="pagination mb-5">
     <div class="container">
         <nav aria-label="Pagination">
             <ul class="pagination justify-content-center">
