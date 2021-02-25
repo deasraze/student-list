@@ -1,3 +1,9 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 .notification {
     position: fixed;
     right: 0;
@@ -43,6 +49,10 @@
     color: rgba(255, 255, 255, .8);
 }
 
+.students {
+    flex-grow: 1;
+}
+
 .students__table {
     box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
 }
@@ -56,6 +66,10 @@
 
 .thead__link:hover {
     color: #fff;
+}
+
+.pagination {
+    margin-bottom: 0;
 }
 
 .page-item .page-link {
@@ -85,6 +99,7 @@
 }
 
 .footer {
+    flex-shrink: 0;
     padding: 30px 0;
     background: var(--bs-dark);
     color: rgba(255,255,255,.55);
@@ -144,5 +159,12 @@
 
     .hero__description {
         font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 320px){
+
+    .students__table {
+        font-size: .8rem;
     }
 }

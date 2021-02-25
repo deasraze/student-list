@@ -23,7 +23,7 @@
     </div>
 </section>
 
-<section class="students text-center my-5">
+<section class="students text-center mt-5 mb-4">
     <div class="container">
         <h3 class="students__title">List of abiturients</h3>
         <table class="students__table table table-bordered my-4">

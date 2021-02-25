@@ -12,7 +12,7 @@
     </div>
 </section>
 
-<section class="students my-5">
+<section class="students mt-5 mb-4">
     <div class="container">
         <h3 class="students__title">Search results for the query: <?= htmlspecialchars($searchQuery) ?></h3>
         <table class="students__table table table-bordered my-4 text-center">
