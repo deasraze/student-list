@@ -13,7 +13,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $students = $this->container->get('StudentTableGateway')->getAll();
+        $students = $this->container->get('StudentTableGateway')->getAll(
+            $this->fc->request->getRequestBody('key') ?: 'score',
+            $this->fc->request->getRequestBody('sort') ?: 'desc'
+        );
+
         $this->show('index', [
             'title' => 'Student list',
             'students' => $students,

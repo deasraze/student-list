@@ -14,12 +14,16 @@ class StudentTableGateway
     }
 
     /**
-     * Return all students in the students table
+     * Getting all students from the db
+     * @param string $order
+     * @param string $direction
      * @return Student[]
      */
-    public function getAll(): array
+    public function getAll(string $order, string $direction): array
     {
-        $sql = 'SELECT id, name, surname, sgroup, score FROM students ORDER BY id DESC';
+        $sql = "SELECT id, name, surname, sgroup, score 
+                FROM students 
+                ORDER BY $order $direction";
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute();
 
