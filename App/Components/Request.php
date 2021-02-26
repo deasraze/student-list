@@ -31,15 +31,16 @@ class Request implements RequestInterface
     /**
      * Get all parameters from the request body
      * @param string|null $key
-     * @return array|bool
+     * @param null $default
+     * @return array|string|null
      */
-    public function getRequestBody(string $key = null)
+    public function getRequestBody(string $key = null, $default = null)
     {
         if (is_null($key)) {
             return $this->requestBody;
         }
 
-        return $this->requestBody[$key] ?? false;
+        return $this->requestBody[$key] ?? $default;
     }
 
     /**
