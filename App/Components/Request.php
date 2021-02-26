@@ -19,7 +19,7 @@ class Request implements RequestInterface
      * Save all the parameters that were passed in the request
      * @param array $splitRealPath
      */
-    public function setRequestParams(array $splitRealPath): void
+    public function setRequestBody(array $splitRealPath): void
     {
         $this->requestBody = array_merge(
             $this->parsingQueryParams(),
@@ -43,10 +43,19 @@ class Request implements RequestInterface
     }
 
     /**
+     * Get current URI
+     * @return string
+     */
+    public function getRequestUri(): string
+    {
+        return $_SERVER['REQUEST_URI'];
+    }
+
+    /**
      * Parsing GET parameters in a request
      * @return array
      */
-    public function parsingQueryParams(): array
+    private function parsingQueryParams(): array
     {
         return (!empty($_SERVER['QUERY_STRING'])) ? $_GET : [];
     }
@@ -55,7 +64,7 @@ class Request implements RequestInterface
      * Parsing POST parameters in a request
      * @return array
      */
-    public function parsingPostRequest(): array
+    private function parsingPostRequest(): array
     {
         return (!empty($_POST)) ? $_POST : [];
     }
@@ -65,7 +74,7 @@ class Request implements RequestInterface
      * @param array $splitRealPath
      * @return array
      */
-    public function parsingRouteParams(array $splitRealPath): array
+    private function parsingRouteParams(array $splitRealPath): array
     {
         $params = array_splice($splitRealPath, 2);
         if (!empty($params)) {
@@ -77,15 +86,7 @@ class Request implements RequestInterface
 
             return array_combine($key, $value);
         }
-        return [];
-    }
 
-    /**
-     * Get current URI
-     * @return string
-     */
-    public function getRequestUri(): string
-    {
-        return $_SERVER['REQUEST_URI'];
+        return [];
     }
 }

@@ -53,7 +53,7 @@ class Router implements RouterInterface
         $result = [];
         $split = $this->getSplitRealPath();
 
-        $request->setRequestParams($split);
+        $request->setRequestBody($split);
 
         $result['controller'] = ucfirst(array_shift($split)) . 'Controller';
         $result['action'] = array_shift($split);
