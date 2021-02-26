@@ -1,4 +1,9 @@
-<?php require_once ROOT . '/../App/Views/static/header.php'?>
+<?php
+
+use App\Components\Utils\StringUtil;
+
+require_once ROOT . '/../App/Views/static/header.php'
+?>
 <section class="hero text-center">
     <div class="container">
         <div class="hero__inner row justify-content-center position-relative">
@@ -14,29 +19,8 @@
 
 <section class="students mt-5 mb-4">
     <div class="container">
-        <h3 class="students__title">Search results for the query: <?= htmlspecialchars($searchQuery) ?></h3>
-        <table class="students__table table table-bordered my-4 text-center">
-            <thead class="table-dark align-middle">
-            <tr>
-                <td>#</td>
-                <td><a href="" class="thead__link">First name</a></td>
-                <td><a href="" class="thead__link">Last name</a></td>
-                <td><a href="" class="thead__link">Group number</a></td>
-                <td><a href="" class="thead__link">Score</a></td>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach ($students as $student): ?>
-            <tr>
-                <td><?= htmlspecialchars($student->id) ?></td>
-                <td><?= htmlspecialchars($student->name) ?></td>
-                <td><?= htmlspecialchars($student->surname) ?></td>
-                <td><?= htmlspecialchars($student->sgroup) ?></td>
-                <td><?= htmlspecialchars($student->score) ?></td>
-            </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+        <h3 class="students__title">Search results for the query: <?= StringUtil::html($searchQuery) ?></h3>
+        <?php require_once ROOT . '/../App/Views/static/table.php' ?>
     </div>
 </section>
 
