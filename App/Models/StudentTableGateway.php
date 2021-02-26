@@ -50,14 +50,16 @@ class StudentTableGateway
     /**
      * Search for records by the passed search query
      * @param string $searchQuery
+     * @param string $order
+     * @param string $direction
      * @return array
      */
-    public function search(string $searchQuery): array
+    public function search(string $searchQuery, string $order, string $direction): array
     {
         $sql = "SELECT id, name, surname, sgroup, score 
                 FROM students
                 WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search
-                ORDER BY id DESC";
+                ORDER BY $order $direction";
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute([':search' => "%$searchQuery%"]);
 

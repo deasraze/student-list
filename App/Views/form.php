@@ -1,4 +1,9 @@
-<?php require_once ROOT . '/../App/Views/static/header.php'?>
+<?php
+
+use App\Components\Utils\StringUtil;
+
+require_once ROOT . '/../App/Views/static/header.php'
+?>
 <section class="hero text-center">
     <div class="container">
         <div class="hero__inner row justify-content-center position-relative">
@@ -29,7 +34,7 @@
                 <label for="inputFirstName" class="form-label">First name</label>
                 <input type="text" id="inputFirstName"
                        class="form-control <?= (isset($errors['name'])) ? 'is-invalid' : '' ?>" name="name"
-                       value="<?= htmlspecialchars($student->name ?? '') ?>"
+                       value="<?= StringUtil::html($student->name ?? '') ?>"
                        aria-describedby="inputFirstName" required>
                 <div id="inputFirstName" class="invalid-feedback">
                     The first name must be between 1 and 40 characters long and can contain letters, a space, an apostrophe and a hyphen
@@ -39,7 +44,7 @@
                 <label for="inputLastName" class="form-label">Last name</label>
                 <input type="text" id="inputLastName"
                        class="form-control <?= (isset($errors['surname'])) ? 'is-invalid' : '' ?>" name="surname"
-                       value="<?= htmlspecialchars($student->surname ?? '') ?>"
+                       value="<?= StringUtil::html($student->surname ?? '') ?>"
                        aria-describedby="inputLastName" required>
                 <div id="inputLastName" class="invalid-feedback">
                     The last name must be between 1 and 40 characters long and can contain letters, a space, an apostrophe and a hyphen
@@ -49,7 +54,7 @@
                 <label for="inputByear" class="form-label">Birth year</label>
                 <input type="number" min="1900" max="2004" id="inputByear"
                        class="form-control <?= (isset($errors['byear'])) ? 'is-invalid' : '' ?>"
-                       value="<?= htmlspecialchars($student->byear ?? '') ?>"
+                       value="<?= StringUtil::html($student->byear ?? '') ?>"
                        name="byear" aria-describedby="inputByear" required>
                 <div id="inputByear" class="invalid-feedback">
                     The year of birth must not be less than 1900 and more than 2004
@@ -74,7 +79,7 @@
                 <label for="inputGroupNumber" class="form-label">Group number</label>
                 <input type="text" id="inputGroupNumber"
                        class="form-control <?= (isset($errors['sgroup'])) ? 'is-invalid' : '' ?>"
-                       value="<?= htmlspecialchars($student->sgroup ?? '') ?>"
+                       value="<?= StringUtil::html($student->sgroup ?? '') ?>"
                        placeholder="Example: 1010Э, 132М, 00123" name="sgroup"
                        aria-describedby="inputGroupNumber" required>
                 <div id="inputGroupNumber" class="invalid-feedback">
@@ -85,7 +90,7 @@
                 <label for="inputScore" class="form-label">Score</label>
                 <input type="number" min="0" max="1100" id="inputScore"
                        class="form-control <?= (isset($errors['score'])) ? 'is-invalid' : '' ?>"
-                       value="<?= htmlspecialchars($student->score ?? '') ?>"
+                       value="<?= StringUtil::html($student->score ?? '') ?>"
                        placeholder="Total points for the Unified State Exam" name="score"
                        aria-describedby="inputScore" required>
                 <div id="inputScore" class="invalid-feedback">
@@ -111,14 +116,14 @@
                 <label for="inputEmail" class="form-label">Email</label>
                 <input type="email" id="inputEmail"
                        class="form-control <?= (isset($errors['email'])) ? 'is-invalid' : '' ?>" placeholder="example@gmail.com"
-                       value="<?= htmlspecialchars($student->email ?? '') ?>"
+                       value="<?= StringUtil::html($student->email ?? '') ?>"
                        name="email" aria-describedby="inputEmail" required>
                 <div id="inputEmail" class="invalid-feedback">
                     Invalid email or it is already occupied
                 </div>
             </div>
             <div class="col-md-12">
-                <input type="hidden" name="csrf" value="<?= htmlspecialchars($token, ENT_QUOTES) ?>">
+                <input type="hidden" name="csrf" value="<?= StringUtil::html($token) ?>">
                 <button type="submit" class="registration-btn btn btn-dark px-4 mt-2">
                     <?= ($auth) ? 'Save' : 'Add yourself' ?>
                 </button>

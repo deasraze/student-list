@@ -52,12 +52,15 @@ class SiteController extends Controller
                 $student->token = $authorization->getAuthToken();
 
                 $errors = $this->container->get('StudentValidator')->validate($student);
-                if (empty($errors)) {
+                if (count($errors) === 0) {
                     $studentGateway->save($student);
                     $authorization->authorizeStudent($student);
 
-                    $notify = ($authorization->isAuthorize()) ? 'edited' : 'added';
-                    header("Location: /?notification=$notify&for={$authorization->getAuthToken()}");
+                    $notify = http_build_query([
+                        'notification' => ($authorization->isAuthorize()) ? 'edited' : 'added',
+                        'for' => $authorization->getAuthToken()
+                    ]);
+                    header('Location: /?' . $notify);
 
                     return;
                 }
@@ -81,16 +84,20 @@ class SiteController extends Controller
      */
     public function actionSearch()
     {
-        $authorization = $this->container->get('AuthorizationStudent');
-        $studentGateway = $this->container->get('StudentTableGateway');
         $searchQuery = trim(strval($this->fc->request->getRequestBody('search')));
-        $students = $studentGateway->search($searchQuery);
+
+        $students = $this->container->get('StudentTableGateway')->search(
+            $searchQuery,
+            $this->fc->request->getRequestBody('key', 'score'),
+            $this->fc->request->getRequestBody('sort', 'desc')
+        );
 
         $this->show('search', [
             'title' => 'Search results',
             'students' => $students,
             'searchQuery' => $searchQuery,
-            'auth' => $authorization->isAuthorize()
+            'link' => new LinkHelper($this->fc->request),
+            'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
         ]);
     }
 }
