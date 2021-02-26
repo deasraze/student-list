@@ -13,4 +13,6 @@ interface RequestInterface
     public function parsingPostRequest(): array;
 
     public function getRequestBody(string $key = null);
+
+    public function getRequestUri(): string;
 }

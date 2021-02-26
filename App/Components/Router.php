@@ -7,6 +7,8 @@ use App\Components\Interfaces\RouterInterface;
 
 class Router implements RouterInterface
 {
+    private string $uri;
+
     private array $routes;
 
     private string $controller;
@@ -15,6 +17,7 @@ class Router implements RouterInterface
 
     public function __construct(RequestInterface $request)
     {
+        $this->uri = trim($request->getRequestUri(), '/');
         $this->routes = $this->getRoutes();
 
         list('controller' => $controller, 'action' => $action) = $this->uriParsing($request);
@@ -45,7 +48,7 @@ class Router implements RouterInterface
      * @return array
      * @throws \Exception
      */
-    public function uriParsing(RequestInterface $request): array
+    private function uriParsing(RequestInterface $request): array
     {
         $result = [];
         $split = $this->getSplitRealPath();
@@ -66,7 +69,7 @@ class Router implements RouterInterface
     private function checkRequestUri(): array
     {
         foreach ($this->routes as $uriPattern => $path) {
-            if (preg_match("~^$uriPattern$~", $this->getRequestUri())) {
+            if (preg_match("~^$uriPattern$~", $this->uri)) {
                 return [$uriPattern, $path];
             }
         }
@@ -82,17 +85,8 @@ class Router implements RouterInterface
     public function getSplitRealPath(): array
     {
         [$uriPattern, $path] = $this->checkRequestUri();
-        $realPath = preg_replace("~^$uriPattern$~", $path, $this->getRequestUri());
+        $realPath = preg_replace("~^$uriPattern$~", $path, $this->uri);
         return explode('/', $realPath);
-    }
-
-    /**
-     * Get current URI
-     * @return string
-     */
-    private function getRequestUri(): string
-    {
-        return trim($_SERVER['REQUEST_URI'], '/');
     }
 
     /**

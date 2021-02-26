@@ -79,4 +79,13 @@ class Request implements RequestInterface
         }
         return [];
     }
+
+    /**
+     * Get current URI
+     * @return string
+     */
+    public function getRequestUri(): string
+    {
+        return $_SERVER['REQUEST_URI'];
+    }
 }
