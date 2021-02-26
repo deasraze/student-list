@@ -1,10 +1,15 @@
-<?php require_once ROOT . '/../App/Views/static/header.php' ?>
+<?php
+
+use App\Components\Utils\StringUtil;
+
+require_once ROOT . '/../App/Views/static/header.php'
+?>
 <?php if ($notify): ?>
 <div class="notification">
     <div class="container">
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <h4 class="alert-heading">Well done!</h4>
-            Your data has been <?= $notify ?> successfully
+            Your data has been <?= StringUtil::html($notify) ?> successfully
             <button type="button" id="notification-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
@@ -29,21 +34,36 @@
         <table class="students__table table table-bordered my-4">
             <thead class="table-dark align-middle">
             <tr>
-                <td>#</td>
-                <td><a href="" class="thead__link">First name</a></td>
-                <td><a href="" class="thead__link">Last name</a></td>
-                <td><a href="" class="thead__link">Group number</a></td>
-                <td><a href="" class="thead__link">Score</a></td>
+                <td>
+                    <a href="<?= StringUtil::html($link->getSortLink('id')) ?>"
+                       class="thead__link">#</a>
+                </td>
+                <td>
+                    <a href="<?= StringUtil::html($link->getSortLink('name')) ?>"
+                       class="thead__link">First name</a>
+                </td>
+                <td>
+                    <a href="<?= StringUtil::html($link->getSortLink('surname')) ?>"
+                       class="thead__link">Last name</a>
+                </td>
+                <td>
+                    <a href="<?= StringUtil::html($link->getSortLink('sgroup')) ?>"
+                       class="thead__link">Group number</a>
+                </td>
+                <td>
+                    <a href="<?= StringUtil::html($link->getSortLink('score')) ?>"
+                       class="thead__link">Score</a>
+                </td>
             </tr>
             </thead>
             <tbody>
             <?php foreach ($students as $student): ?>
             <tr>
-                <td><?= $student->id ?></td>
-                <td><?= $student->name ?></td>
-                <td><?= $student->surname ?></td>
-                <td><?= $student->sgroup ?></td>
-                <td><?= $student->score ?></td>
+                <td><?= StringUtil::html($student->id) ?></td>
+                <td><?= StringUtil::html($student->name) ?></td>
+                <td><?= StringUtil::html($student->surname) ?></td>
+                <td><?= StringUtil::html($student->sgroup) ?></td>
+                <td><?= StringUtil::html($student->score) ?></td>
             </tr>
             <?php endforeach; ?>
             </tbody>

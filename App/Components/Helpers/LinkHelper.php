@@ -51,7 +51,8 @@ class LinkHelper
     {
         $query = $this->getQueryArray();
         $query['key'] = $key;
-        $query['sort'] = ($this->sortType === 'asc') ? 'desc' : 'asc';
+        $query['sort'] = ($this->sortType === 'asc' && $this->sortKey === $key) ? 'desc' : 'asc';
+
         return $this->generateLink(http_build_query($query));
     }
 

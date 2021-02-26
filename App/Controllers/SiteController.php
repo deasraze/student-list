@@ -22,6 +22,7 @@ class SiteController extends Controller
         $this->show('index', [
             'title' => 'Student list',
             'students' => $students,
+            'link' => new LinkHelper($this->fc->request),
             'notify' => $this->fc->request->getRequestBody('notification'),
             'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
         ]);
