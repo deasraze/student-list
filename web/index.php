@@ -42,7 +42,7 @@ $container->register('StudentTableGateway', function (DIContainer $container) {
 });
 
 $container->register('view', function (DIContainer $container) {
-    return new View();
+    return new View(ROOT . '/../App/Views/', 'php');
 });
 
 $container->register('StudentValidator', function (DIContainer $container) {

@@ -6,20 +6,43 @@ use App\Components\Interfaces\RendererInterface;
 
 class View implements RendererInterface
 {
-    private string $defaultPath = ROOT . '/../App/Views/';
+    /**
+     * Default path for the view
+     * @var string
+     */
+    private string $defaultPath;
 
-    private string $defaultExtension = 'php';
+    /**
+     * Default extension for the view
+     * @var string
+     */
+    private string $defaultExtension;
 
-    public function __construct()
+    /**
+     * View constructor.
+     * @param string $defaultPath
+     * @param string $defaultExtension
+     */
+    public function __construct(string $defaultPath, string $defaultExtension)
     {
+        $this->defaultPath = $defaultPath;
+        $this->defaultExtension = $defaultExtension;
     }
 
+    /**
+     * Render the view and returning the result as a string
+     * @param string $template
+     * @param array $args
+     * @return string
+     * @throws \Exception
+     */
     public function render(string $template, array $args): string
     {
         $file = $this->getFile($template);
         extract($args);
         ob_start();
         require_once "$file";
+
         return ob_get_clean();
     }
 
@@ -40,29 +63,29 @@ class View implements RendererInterface
     }
 
     /**
-     * Upload the required file
+     * Getting full path to file
      * @param string $fileName
      * @return string
      * @throws \Exception
      */
     private function getFile(string $fileName): string
     {
-        return $this->checkFileExist($fileName);
+        $file = $this->defaultPath . "$fileName." . $this->defaultExtension;
+        if ($this->checkFileExist($file)) {
+            return $file;
+        }
+
+        throw new \Exception("Template file $file not exist");
     }
 
     /**
      * Checking the requested file for the presence in the directory
-     * @param string $fileName
-     * @return string
+     * @param string $file
+     * @return bool
      * @throws \Exception
      */
-    private function checkFileExist(string $fileName): string
+    private function checkFileExist(string $file): bool
     {
-        $file = $this->defaultPath . "$fileName." . $this->defaultExtension;
-        if (!is_file($file)) {
-            throw new \Exception("Template file $file not exist");
-        }
-
-        return $file;
+        return is_file($file);
     }
 }
