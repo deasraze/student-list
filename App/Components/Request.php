@@ -53,6 +53,15 @@ class Request implements RequestInterface
     }
 
     /**
+     * Getting current URL PATH
+     * @return string
+     */
+    public function getUrlPath(): string
+    {
+        return (parse_url($this->getRequestUri(), PHP_URL_PATH) ?: '');
+    }
+
+    /**
      * Parsing GET parameters in a request
      * @return array
      */

@@ -9,4 +9,6 @@ interface RequestInterface
     public function getRequestBody(string $key = null, $default = null);
 
     public function getRequestUri(): string;
+
+    public function getUrlPath(): string;
 }
