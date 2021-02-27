@@ -13,16 +13,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $students = $this->container->get('StudentTableGateway')->getAll(
-            $this->fc->request->getRequestBody('key', 'score'),
-            $this->fc->request->getRequestBody('sort', 'desc')
-        );
+        $sorting = [
+            'key'  => $this->fc->request->getRequestBody('key', 'score'),
+            'sort' => $this->fc->request->getRequestBody('sort', 'desc'),
+        ];
+        $students = $this->container->get('StudentTableGateway')->getAll($sorting['key'], $sorting['sort']);
 
         $this->show('index', [
             'title' => 'Student list',
             'navbar' => $this->container->get('navbar'),
             'students' => $students,
             'link' => $this->container->get('LinkHelper'),
+            'sorting' => $sorting,
             'notify' => $this->fc->request->getRequestBody('notification'),
             'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
         ]);
@@ -86,11 +88,15 @@ class SiteController extends Controller
     public function actionSearch()
     {
         $searchQuery = trim(strval($this->fc->request->getRequestBody('search')));
+        $sorting = [
+            'key'  => $this->fc->request->getRequestBody('key', 'score'),
+            'sort' => $this->fc->request->getRequestBody('sort', 'desc'),
+        ];
 
         $students = $this->container->get('StudentTableGateway')->search(
             $searchQuery,
-            $this->fc->request->getRequestBody('key', 'score'),
-            $this->fc->request->getRequestBody('sort', 'desc')
+            $sorting['key'],
+            $sorting['sort']
         );
 
         $this->show('search', [
@@ -98,6 +104,7 @@ class SiteController extends Controller
             'navbar' => $this->container->get('navbar'),
             'students' => $students,
             'searchQuery' => $searchQuery,
+            'sorting' => $sorting,
             'link' => $this->container->get('LinkHelper'),
             'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
         ]);

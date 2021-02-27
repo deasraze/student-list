@@ -4,6 +4,12 @@ namespace App\Components\Utils;
 
 class SortIconUtil
 {
+    /**
+     * Getting sort icon
+     * @param array example: ['key' => 'id', 'sort' => 'asc']
+     * @param string $key
+     * @return string
+     */
     public static function getSortIcon(array $sorting, string $key): string
     {
         if (array_key_exists('sort', $sorting) && array_key_exists('key', $sorting)) {

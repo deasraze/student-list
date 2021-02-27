@@ -1,5 +1,6 @@
 <?php
 
+use App\Components\Utils\SortIconUtil;
 use App\Components\Utils\StringUtil;
 
 ?>
@@ -8,23 +9,33 @@ use App\Components\Utils\StringUtil;
     <tr>
         <td>
             <a href="<?= StringUtil::html($link->getSortLink('id')) ?>"
-               class="thead__link">#</a>
+               class="thead__link">#
+                <?= SortIconUtil::getSortIcon($sorting, 'id')?>
+            </a>
         </td>
         <td>
             <a href="<?= StringUtil::html($link->getSortLink('name')) ?>"
-               class="thead__link">First name</a>
+               class="thead__link">First name
+                <?= SortIconUtil::getSortIcon($sorting, 'name')?>
+            </a>
         </td>
         <td>
             <a href="<?= StringUtil::html($link->getSortLink('surname')) ?>"
-               class="thead__link">Last name</a>
+               class="thead__link">Last name
+                <?= SortIconUtil::getSortIcon($sorting, 'surname')?>
+            </a>
         </td>
         <td>
             <a href="<?= StringUtil::html($link->getSortLink('sgroup')) ?>"
-               class="thead__link">Group number</a>
+               class="thead__link">Group number
+                <?= SortIconUtil::getSortIcon($sorting, 'sgroup')?>
+            </a>
         </td>
         <td>
             <a href="<?= StringUtil::html($link->getSortLink('score')) ?>"
-               class="thead__link">Score</a>
+               class="thead__link">Score
+                <?= SortIconUtil::getSortIcon($sorting, 'score')?>
+            </a>
         </td>
     </tr>
     </thead>

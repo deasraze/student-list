@@ -1,8 +1,3 @@
-<?php
-
-use App\Components\Navbar;
-
-?>
 <!doctype html>
 <html lang="en">
 <head>
