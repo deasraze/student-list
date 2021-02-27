@@ -36,7 +36,7 @@ class LinkHelper
      */
     public function __construct(RequestInterface $request)
     {
-        $this->urlPath = $this->parseUrlPath($request->getRequestUri());
+        $this->urlPath = $request->getUrlPath();
         $this->sortKey = $request->getRequestBody('key');
         $this->sortType = $request->getRequestBody('sort');
         $this->searchQuery = $request->getRequestBody('search');
@@ -77,15 +77,5 @@ class LinkHelper
             'key'    => $this->sortKey,
             'sort'   => $this->sortType,
         ];
-    }
-
-    /**
-     * Parsing the current url path
-     * @param string $uri
-     * @return string
-     */
-    private function parseUrlPath(string $uri): string
-    {
-        return (parse_url($uri, PHP_URL_PATH) ?: '');
     }
 }
