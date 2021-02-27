@@ -31,7 +31,7 @@ use App\Components\Navbar;
                     ['label' => 'Home', 'url' => '/'],
                     ['label' => $menuLabel, 'url' => '/form'],
                 ];
-                echo (new Navbar($menuItems))->getNav();
+                echo $navbar->getNav($menuItems);
                 ?>
                 <form action="/search" method="get" class="d-flex needs-validation" novalidate>
                     <input class="form-control me-3" type="search" name="search"

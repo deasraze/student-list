@@ -5,6 +5,8 @@ use App\Components\DIContainer;
 use App\Components\Helpers\AuthorizationStudent;
 use App\Components\Helpers\CookieHelper;
 use App\Components\Helpers\CSRFProtection;
+use App\Components\Helpers\LinkHelper;
+use App\Components\Navbar;
 use App\Components\Request;
 use App\Components\Router;
 use App\Components\View;
@@ -57,6 +59,14 @@ $container->register('cookieHelper', function (DIContainer $container) {
 
 $container->register('AuthorizationStudent', function (DIContainer $container) {
     return new AuthorizationStudent($container->get('cookieHelper'));
+});
+
+$container->register('LinkHelper', function (DIContainer $container) {
+    return new LinkHelper($container->get('request'));
+});
+
+$container->register('navbar', function (DIContainer $container) {
+    return new Navbar($container->get('request'));
 });
 
 $fc = FrontController::getInstance();

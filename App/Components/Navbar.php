@@ -2,32 +2,31 @@
 
 namespace App\Components;
 
+use App\Components\Interfaces\RequestInterface;
+
 class Navbar
 {
     private string $url;
 
-    private array $menuItems;
-    
     /**
      * Navbar constructor.
-     * Set a list of items that should be in the menu
-     * @param array example: ['label' => 'Home', 'url' => '/'], ...
+     * @param RequestInterface $request
      */
-    public function __construct(array $menuItems)
+    public function __construct(RequestInterface $request)
     {
-        $this->menuItems = $menuItems;
-        $this->url = $this->parseUrl();
+        $this->url = explode('/', $request->getUrlPath())[1];
     }
-    
+
     /**
      * Get the menu for the site
+     * @param array example: ['label' => 'Home', 'url' => '/'], ...
      * @return string html navbar menu
      */
-    public function getNav(): string
+    public function getNav(array $menuItems): string
     {
         $menu= '';
-        foreach ($this->menuItems as $item) {
-            $active = self::checkActiveItem($item['url']);
+        foreach ($menuItems as $item) {
+            $active = $this->checkActiveItem($item['url']);
             $menu .= "<li class='nav-item'><a href='{$item['url']}' class='nav-link $active'>{$item['label']}</a></li>";
         }
         return "<ul class='navbar-nav me-auto mb-2 mb-lg-0'>$menu</ul>";
@@ -41,15 +40,5 @@ class Navbar
     private function checkActiveItem(string $url): string
     {
         return ($this->url === trim($url, '/')) ? 'active' : '';
-    }
-
-    /**
-     * Parsing the current url_path
-     * @return string current url_path
-     */
-    private function parseUrl(): string
-    {
-        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        return explode('/', $url)[1];
     }
 }

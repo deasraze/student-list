@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Components\Helpers\LinkHelper;
 use App\Models\Student;
 use App\Models\StudentData;
 
@@ -21,8 +20,9 @@ class SiteController extends Controller
 
         $this->show('index', [
             'title' => 'Student list',
+            'navbar' => $this->container->get('navbar'),
             'students' => $students,
-            'link' => new LinkHelper($this->fc->request),
+            'link' => $this->container->get('LinkHelper'),
             'notify' => $this->fc->request->getRequestBody('notification'),
             'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
         ]);
@@ -71,6 +71,7 @@ class SiteController extends Controller
 
         $this->show('form', [
             'title' => ($authorization->isAuthorize()) ? 'Edit information' : 'Add yourself',
+            'navbar' => $this->container->get('navbar'),
             'student' => $student,
             'errors' => $errors,
             'token' => $csrfProtection->getCsrfToken(),
@@ -94,9 +95,10 @@ class SiteController extends Controller
 
         $this->show('search', [
             'title' => 'Search results',
+            'navbar' => $this->container->get('navbar'),
             'students' => $students,
             'searchQuery' => $searchQuery,
-            'link' => new LinkHelper($this->fc->request),
+            'link' => $this->container->get('LinkHelper'),
             'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
         ]);
     }
