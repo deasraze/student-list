@@ -31,6 +31,20 @@ class StudentTableGateway
     }
 
     /**
+     * Getting total students
+     * @param string $searchQuery
+     * @return int count students
+     */
+    public function getTotalStudents(string $searchQuery = ''): int
+    {
+        $sql = "SELECT COUNT(id) FROM students WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search";
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute(['search' => "%$searchQuery%"]);
+
+        return (int)$stmt->fetchColumn();
+    }
+
+    /**
      * Getting student data by their token
      * @param string $token
      * @return Student
