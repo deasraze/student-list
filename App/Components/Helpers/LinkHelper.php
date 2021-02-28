@@ -31,6 +31,12 @@ class LinkHelper
     private ?string $searchQuery;
 
     /**
+     * Current page
+     * @var int|null
+     */
+    private ?int $page;
+
+    /**
      * LinkHelper constructor.
      * @param RequestInterface $request
      */
@@ -40,6 +46,7 @@ class LinkHelper
         $this->sortKey = $request->getRequestBody('key');
         $this->sortType = $request->getRequestBody('sort');
         $this->searchQuery = $request->getRequestBody('search');
+        $this->page = $request->getRequestBody('page');
     }
 
     /**
@@ -52,6 +59,19 @@ class LinkHelper
         $query = $this->getQueryArray();
         $query['key'] = $key;
         $query['sort'] = ($this->sortType === 'asc' && $this->sortKey === $key) ? 'desc' : 'asc';
+
+        return $this->generateLink(http_build_query($query));
+    }
+
+    /**
+     * Getting a page link
+     * @param int $page
+     * @return string
+     */
+    public function getPageLink(int $page): string
+    {
+        $query = $this->getQueryArray();
+        $query['page'] = $page;
 
         return $this->generateLink(http_build_query($query));
     }
@@ -90,6 +110,7 @@ class LinkHelper
             'search' => $this->searchQuery,
             'key'    => $this->sortKey,
             'sort'   => $this->sortType,
+            'page'   => $this->page
         ];
     }
 }
