@@ -57,6 +57,20 @@ class LinkHelper
     }
 
     /**
+     * Getting a notify link
+     * @param bool $isAuthorize
+     * @param string $token
+     * @return string
+     */
+    public function getNotifyLink(bool $isAuthorize, string $token): string
+    {
+        return '/?' . http_build_query([
+            'notification' => ($isAuthorize) ? 'edited' : 'added',
+            'for' => $token
+        ]);
+    }
+
+    /**
      * Generating a link with the passed query string
      * @param string $query
      * @return string
