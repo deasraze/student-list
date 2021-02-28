@@ -58,11 +58,10 @@ class SiteController extends Controller
                     $studentGateway->save($student);
                     $authorization->authorizeStudent($student);
 
-                    $notify = http_build_query([
-                        'notification' => ($authorization->isAuthorize()) ? 'edited' : 'added',
-                        'for' => $authorization->getAuthToken()
-                    ]);
-                    header('Location: /?' . $notify);
+                    header('Location:' . $this->container->get('LinkHelper')->getNotifyLink(
+                        $authorization->isAuthorize(),
+                        $authorization->getAuthToken()
+                    ));
 
                     return;
                 }

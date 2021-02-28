@@ -49,12 +49,12 @@ $container->register('StudentValidator', function (DIContainer $container) {
     return new StudentValidator($container->get('StudentTableGateway'));
 });
 
-$container->register('csrf', function (DIContainer $container) {
-    return new CSRFProtection($container->get('cookieHelper'));
-});
-
 $container->register('cookieHelper', function (DIContainer $container) {
     return new CookieHelper();
+});
+
+$container->register('csrf', function (DIContainer $container) {
+    return new CSRFProtection($container->get('cookieHelper'));
 });
 
 $container->register('AuthorizationStudent', function (DIContainer $container) {
