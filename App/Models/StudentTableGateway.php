@@ -17,14 +17,19 @@ class StudentTableGateway
      * Getting all students from the db
      * @param string $order
      * @param string $direction
+     * @param int $limit
+     * @param int $offset
      * @return Student[]
      */
-    public function getAll(string $order, string $direction): array
+    public function getAll(string $order, string $direction, int $limit, int $offset): array
     {
         $sql = "SELECT id, name, surname, sgroup, score 
                 FROM students 
-                ORDER BY $order $direction";
+                ORDER BY $order $direction 
+                LIMIT :offset, :limit";
         $stmt = $this->dbh->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
