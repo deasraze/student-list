@@ -98,16 +98,24 @@ class StudentTableGateway
      * @param string $searchQuery
      * @param string $order
      * @param string $direction
+     * @param int $offset
      * @return array
      */
-    public function search(string $searchQuery, string $order, string $direction): array
+    public function search(string $searchQuery, string $order, string $direction, int $offset): array
     {
-        $sql = "SELECT id, name, surname, sgroup, score 
-                FROM students
-                WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search
+        $sql = "SELECT s.id, name, surname, sgroup, score
+                FROM students AS s
+                    JOIN (SELECT id
+                            FROM students
+                            WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search
+                            ORDER BY score DESC
+                            LIMIT :offset, :limit) AS lim ON lim.id = s.id
                 ORDER BY $order $direction";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->execute([':search' => "%$searchQuery%"]);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $this->outputRows, PDO::PARAM_INT);
+        $stmt->bindValue(':search', "%$searchQuery%");
+        $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
     }
