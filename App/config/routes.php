@@ -7,5 +7,5 @@ return [
 
     'form' => 'site/actionForm',
 
-    'search\\?search=[\\w+%]+(&key=(id|name|surname|sgroup|score)&sort=(asc|desc))?' => 'site/actionSearch',
+    'search\\?search=[\\w+%]+(&key=(id|name|surname|sgroup|score)&sort=(asc|desc))?(&page=[0-9]+)?' => 'site/actionSearch',
 ];
