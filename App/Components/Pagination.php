@@ -96,6 +96,10 @@ class Pagination
      */
     public function run(): string
     {
+        if ($this->totalLinks === 1) {
+            return '';
+        }
+
         [$start, $end] = $this->calculatePagination();
         $items = '';
 
@@ -140,10 +144,13 @@ class Pagination
      */
     private function getHtml(string $items): string
     {
-        $pagination = '<ul class="pagination justify-content-center">';
+        $pagination = '<div class="pagination mb-5">
+                       <div class="container">
+                       <nav aria-label="Pagination">
+                       <ul class="pagination justify-content-center">';
         $pagination .= $this->getArrowItem(1, $this->getAccessForArrowItem(1));
         $pagination .= $items . $this->getArrowItem($this->totalLinks, $this->getAccessForArrowItem($this->totalLinks));
-        $pagination .= '</ul>';
+        $pagination .= '</div></div></nav></ul>';
 
         return $pagination;
     }
