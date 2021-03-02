@@ -35,27 +35,5 @@ require_once ROOT . '/../App/Views/static/header.php'
     </div>
 </section>
 
-<div class="pagination mb-5">
-    <div class="container">
-        <nav aria-label="Pagination">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a href="" class="page-link" aria-label="First" aria-disabled="true">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item active"><a href="" class="page-link">1</a></li>
-                <li class="page-item"><a href="" class="page-link">2</a></li>
-                <li class="page-item"><a href="" class="page-link">3</a></li>
-                <li class="page-item"><a href="" class="page-link">4</a></li>
-                <li class="page-item"><a href="" class="page-link">5</a></li>
-                <li class="page-item">
-                    <a href="" class="page-link" aria-label="Last">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</div>
+<?= $pagination->run() ?>
 <?php require_once ROOT . '/../App/Views/static/footer.php' ?>

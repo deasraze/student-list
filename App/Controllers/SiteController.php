@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Components\Pagination;
 use App\Models\Student;
 use App\Models\StudentData;
 
@@ -13,11 +14,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $studentGateway = $this->container->get('StudentTableGateway');
         $sorting = [
             'key'  => $this->fc->request->getRequestBody('key', 'score'),
             'sort' => $this->fc->request->getRequestBody('sort', 'desc'),
         ];
-        $students = $this->container->get('StudentTableGateway')->getAll($sorting['key'], $sorting['sort']);
+        $pagination = new Pagination(
+            $this->fc->request->getRequestBody('page', 1),
+            $studentGateway->getTotalStudents(),
+            $studentGateway->getOutputRows(),
+            $this->container->get('LinkHelper')
+        );
+        $students = $studentGateway->getAll($sorting['key'], $sorting['sort'], $pagination->getOffset());
 
         $this->show('index', [
             'title' => 'Student list',
@@ -26,7 +34,8 @@ class SiteController extends Controller
             'link' => $this->container->get('LinkHelper'),
             'sorting' => $sorting,
             'notify' => $this->fc->request->getRequestBody('notification'),
-            'auth' => $this->container->get('AuthorizationStudent')->isAuthorize()
+            'auth' => $this->container->get('AuthorizationStudent')->isAuthorize(),
+            'pagination' => $pagination
         ]);
     }
 
