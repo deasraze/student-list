@@ -177,10 +177,12 @@ class Pagination
     private function getArrowItem(int $arrowToPage, array $accessForArrow): string
     {
         [$access, $aria] = $accessForArrow;
-        $symbol = ($arrowToPage === 1) ? '&laquo;' : '&raquo;';
+        $isFirstPage = $arrowToPage === 1;
+        $symbol = ($isFirstPage) ? '&laquo;' : '&raquo;';
+        $ariaLabel = ($isFirstPage) ? 'First page' : 'Last page';
 
         return "<li class='page-item $access'>
-                    <a href='{$this->getPageLink($arrowToPage)}' class='page-link' aria-label='First' $aria>
+                    <a href='{$this->getPageLink($arrowToPage)}' class='page-link' aria-label='$ariaLabel' $aria>
                         <span aria-hidden='true'>$symbol</span>
                     </a>
                 </li>";
@@ -193,8 +195,8 @@ class Pagination
      */
     private function getAccessForArrowItem(int $page): array
     {
-        $access = ($this->currentPage === $page) ? 'disabled' : '';
-        $aria = ($access === 'disabled') ? 'aria-disabled="true"' : '';
+        $access = ($this->checkActive($page)) ? 'disabled' : '';
+        $aria = ($this->checkActive($page)) ? 'aria-disabled="true"' : '';
 
         return [$access, $aria];
     }
