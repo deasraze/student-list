@@ -116,7 +116,6 @@ class Pagination
      */
     private function calculatePagination(): array
     {
-
         /** Calculate the shift on the left so that the current page is in the middle */
         $startOffset = (int)ceil($this->currentPage - ($this->linksPerPage / 2));
         $start = ($startOffset > 1) ? $startOffset : 1;
@@ -229,7 +228,7 @@ class Pagination
     private function setCurrentPage(int $currentPage): void
     {
         if ($currentPage < 1) {
-            throw new \Exception('The page cannot be less than or equal to zero');
+            throw new \ValueError('The page cannot be less than or equal to zero');
         }
         if ($currentPage > $this->totalLinks) {
             throw new \Exception('Page not found');

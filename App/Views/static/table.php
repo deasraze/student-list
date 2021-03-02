@@ -4,7 +4,7 @@ use App\Components\Utils\SortIconUtil;
 use App\Components\Utils\StringUtil;
 
 ?>
-<table class="students__table table table-bordered my-4 text-center">
+<table class="students__table table table-bordered mt-4 text-center">
     <thead class="table-dark align-middle">
     <tr>
         <td>

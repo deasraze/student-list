@@ -17,7 +17,7 @@ require_once ROOT . '/../App/Views/static/header.php'
     </div>
 </section>
 
-<section class="students mt-5 mb-4">
+<section class="students my-5">
     <div class="container">
         <h3 class="students__title">Search results for the query: <?= StringUtil::html($searchQuery) ?></h3>
         <?php require_once ROOT . '/../App/Views/static/table.php' ?>

@@ -28,7 +28,7 @@ require_once ROOT . '/../App/Views/static/header.php'
     </div>
 </section>
 
-<section class="students text-center mt-5 mb-4">
+<section class="students text-center my-5">
     <div class="container">
         <h3 class="students__title">List of abiturients</h3>
         <?php require_once ROOT . '/../App/Views/static/table.php' ?>
