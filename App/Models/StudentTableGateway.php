@@ -6,29 +6,56 @@ use PDO;
 
 class StudentTableGateway
 {
+    /**
+     * @var PDO
+     */
     private PDO $dbh;
 
-    public function __construct(PDO $dbh)
+    /**
+     * Number of output rows
+     * @var int
+     */
+    private int $outputRows;
+
+    /**
+     * StudentTableGateway constructor.
+     * @param PDO $dbh
+     * @param int $outputRows
+     */
+    public function __construct(PDO $dbh, int $outputRows)
     {
+        if ($outputRows < 1) {
+            throw new \ValueError('The number of output records cannot be less than one');
+        }
+
         $this->dbh = $dbh;
+        $this->outputRows = $outputRows;
+    }
+
+    /**
+     * Getting the number of output rows
+     * @return int
+     */
+    public function getOutputRows(): int
+    {
+        return $this->outputRows;
     }
 
     /**
      * Getting all students from the db
      * @param string $order
      * @param string $direction
-     * @param int $limit
      * @param int $offset
      * @return Student[]
      */
-    public function getAll(string $order, string $direction, int $limit, int $offset): array
+    public function getAll(string $order, string $direction, int $offset): array
     {
-        $sql = "SELECT id, name, surname, sgroup, score 
-                FROM students 
-                ORDER BY $order $direction 
-                LIMIT :offset, :limit";
+        $sql = "SELECT s.id, name, surname, sgroup, score FROM students AS s
+                    JOIN (SELECT id FROM students ORDER BY score DESC LIMIT :offset, :limit) AS lim
+                ON lim.id = s.id
+                ORDER BY $order $direction";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $this->outputRows, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
 

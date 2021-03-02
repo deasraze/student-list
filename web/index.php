@@ -38,7 +38,7 @@ $container->register('router', function (DIContainer $container) {
 });
 
 $container->register('StudentTableGateway', function (DIContainer $container) {
-    return new StudentTableGateway($container->get('dbh'));
+    return new StudentTableGateway($container->get('dbh'), 10);
 });
 
 $container->register('view', function (DIContainer $container) {
