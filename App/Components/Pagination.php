@@ -34,7 +34,7 @@ class Pagination
      * Number of links per page
      * @var int
      */
-    private int $linksPerPage = 5;
+    private int $linksPerPage = 9;
 
     /**
      * Total number of links
@@ -60,6 +60,7 @@ class Pagination
     }
 
     /**
+     * Setting a value for the number of output links for pagination
      * @param int $linksPerPage
      */
     public function setLinksPerPage(int $linksPerPage): void
@@ -72,6 +73,16 @@ class Pagination
     }
 
     /**
+     * Getting a value for the number of output links for pagination
+     * @return int
+     */
+    public function getLinksPerPage(): int
+    {
+        return $this->linksPerPage;
+    }
+
+    /**
+     * Getting the offset for the output records
      * @return int
      */
     public function getOffset(): int
@@ -80,6 +91,7 @@ class Pagination
     }
 
     /**
+     * Run pagination
      * @return string
      */
     public function run(): string
@@ -95,36 +107,49 @@ class Pagination
     }
 
     /**
+     * Calculating the first and last reference for pagination
      * @return int[]
      */
     private function calculatePagination(): array
     {
+
+        /** Calculate the shift on the left so that the current page is in the middle */
         $startOffset = (int)ceil($this->currentPage - ($this->linksPerPage / 2));
         $start = ($startOffset > 1) ? $startOffset : 1;
         $end = $this->totalLinks;
 
+        /** Check that the first link + the number of links to the page is less
+         *  than the total number of links to calculate the last link
+         */
         if ($start + $this->linksPerPage <= $this->totalLinks) {
             $end = ($start > 1) ? $start + $this->linksPerPage - 1 : $this->linksPerPage;
         } else {
-            $start = ($this->totalLinks - $this->linksPerPage > 0) ? $this->totalLinks - $this->linksPerPage + 1 : 1;
+            /** If the first link + the number of links to the page is greater
+             * than the total number of links, then we calculate which link to start with
+             */
+            $start = ($this->totalLinks > $this->linksPerPage) ? $this->totalLinks - $this->linksPerPage + 1 : 1;
         }
 
         return [$start, $end];
     }
 
     /**
+     * Getting a html for pagination
      * @param string $items
      * @return string
      */
     private function getHtml(string $items): string
     {
         $pagination = '<ul class="pagination justify-content-center">';
-        $pagination .= $this->getArrowItem(1) . $items . $this->getArrowItem($this->totalLinks) . '</ul>';
+        $pagination .= $this->getArrowItem(1, $this->getAccessForArrowItem(1));
+        $pagination .= $items . $this->getArrowItem($this->totalLinks, $this->getAccessForArrowItem($this->totalLinks));
+        $pagination .= '</ul>';
 
-        return $pagination ;
+        return $pagination;
     }
 
     /**
+     * Getting a pagination item
      * @param int $page
      * @return string
      */
@@ -137,16 +162,14 @@ class Pagination
     }
 
     /**
+     * Getting a arrow item for pagination
      * @param int $arrowToPage
+     * @param array $accessForArrow
      * @return string
      */
-    private function getArrowItem(int $arrowToPage): string
+    private function getArrowItem(int $arrowToPage, array $accessForArrow): string
     {
-        if ($arrowToPage < 1) {
-            throw new \ValueError('The page cannot be less than or equal to zero');
-        }
-
-        [$access, $aria] = $this->getAccessForItem();
+        [$access, $aria] = $accessForArrow;
         $symbol = ($arrowToPage === 1) ? '&laquo;' : '&raquo;';
 
         return "<li class='page-item $access'>
@@ -157,17 +180,20 @@ class Pagination
     }
 
     /**
+     * Getting access to the arrow item
+     * @param int $page
      * @return array
      */
-    public function getAccessForItem(): array
+    private function getAccessForArrowItem(int $page): array
     {
-        $access = ($this->currentPage === 1) ? 'disabled' : '';
+        $access = ($this->currentPage === $page) ? 'disabled' : '';
         $aria = ($access === 'disabled') ? 'aria-disabled="true"' : '';
 
         return [$access, $aria];
     }
 
     /**
+     * Getting link for page
      * @param int $page
      * @return string
      */
@@ -177,6 +203,7 @@ class Pagination
     }
 
     /**
+     * Checking page activity
      * @param int $page
      * @return bool
      */
@@ -186,6 +213,7 @@ class Pagination
     }
 
     /**
+     * Setting the current page
      * @param int $currentPage
      * @throws \Exception
      */
@@ -202,6 +230,7 @@ class Pagination
     }
 
     /**
+     * Count total links
      * @return int
      */
     private function countTotalLinks(): int
