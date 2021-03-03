@@ -19,8 +19,12 @@ require_once ROOT . '/../App/Views/static/header.php'
 
 <section class="students my-5">
     <div class="container">
+        <?php if (count($students) !== 0): ?>
         <h3 class="students__title">Search results for the query: <?= StringUtil::html($searchQuery) ?></h3>
         <?php require_once ROOT . '/../App/Views/static/table.php' ?>
+        <?php else: ?>
+        <h3 class="students__title text-center">Unfortunately, nothing was found for your search</h3>
+        <?php endif; ?>
     </div>
 </section>
 <?= $pagination->run() ?>
