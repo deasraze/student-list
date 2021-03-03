@@ -53,7 +53,7 @@ class StudentTableGateway
         $sql = "SELECT s.id, name, surname, sgroup, score FROM students AS s
                     JOIN (SELECT id FROM students ORDER BY score DESC LIMIT :offset, :limit) AS lim
                 ON lim.id = s.id
-                ORDER BY $order $direction";
+                ORDER BY $order $direction, name";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':limit', $this->outputRows, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
@@ -110,7 +110,7 @@ class StudentTableGateway
                             WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search
                             ORDER BY score DESC
                             LIMIT :offset, :limit) AS lim ON lim.id = s.id
-                ORDER BY $order $direction";
+                ORDER BY $order $direction, name";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->bindValue(':limit', $this->outputRows, PDO::PARAM_INT);
