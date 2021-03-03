@@ -1,17 +1,17 @@
 <?php
 
-use App\Components\Utils\StringUtil;
+use App\Components\Utils\NotificationUtil;
 
 require_once ROOT . '/../App/Views/static/header.php'
 ?>
 <?php if ($notify): ?>
 <div class="notification">
     <div class="container">
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <h4 class="alert-heading">Well done!</h4>
-            Your data has been <?= StringUtil::html($notify) ?> successfully
-            <button type="button" id="notification-close" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <?= NotificationUtil::getNotification(
+                'success',
+                'Well done!',
+                "Your data has been $notify successfully"
+        ); ?>
     </div>
 </div>
 <?php endif; ?>
