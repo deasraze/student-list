@@ -16,11 +16,11 @@ class SiteController extends Controller
     {
         $studentGateway = $this->container->get('StudentTableGateway');
         $sorting = [
-            'key'  => $this->fc->request->getRequestBody('key', 'score'),
-            'sort' => $this->fc->request->getRequestBody('sort', 'desc'),
+            'key'  => $this->container->get('request')->getRequestBody('key', 'score'),
+            'sort' => $this->container->get('request')->getRequestBody('sort', 'desc'),
         ];
         $pagination = new Pagination(
-            $this->fc->request->getRequestBody('page', 1),
+            $this->container->get('request')->getRequestBody('page', 1),
             $studentGateway->getTotalStudents(),
             $studentGateway->getOutputRows(),
             $this->container->get('LinkHelper')
@@ -33,7 +33,7 @@ class SiteController extends Controller
             'students' => $students,
             'link' => $this->container->get('LinkHelper'),
             'sorting' => $sorting,
-            'notify' => $this->fc->request->getRequestBody('notification'),
+            'notify' => $this->container->get('request')->getRequestBody('notification'),
             'auth' => $this->container->get('AuthorizationStudent')->isAuthorize(),
             'pagination' => $pagination
         ]);
@@ -57,9 +57,9 @@ class SiteController extends Controller
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $csrfProtection->validate($this->fc->request);
+            $csrfProtection->validate($this->container->get('request'));
             try {
-                $studentData->fill($this->fc->request->getRequestBody());
+                $studentData->fill($this->container->get('request')->getRequestBody());
                 $student->token = $authorization->getAuthToken();
 
                 $errors = $this->container->get('StudentValidator')->validate($student);
@@ -96,13 +96,13 @@ class SiteController extends Controller
     public function actionSearch()
     {
         $studentGateway = $this->container->get('StudentTableGateway');
-        $searchQuery = trim(strval($this->fc->request->getRequestBody('search')));
+        $searchQuery = trim(strval($this->container->get('request')->getRequestBody('search')));
         $sorting = [
-            'key'  => $this->fc->request->getRequestBody('key', 'score'),
-            'sort' => $this->fc->request->getRequestBody('sort', 'desc'),
+            'key'  => $this->container->get('request')->getRequestBody('key', 'score'),
+            'sort' => $this->container->get('request')->getRequestBody('sort', 'desc'),
         ];
         $pagination = new Pagination(
-            $this->fc->request->getRequestBody('page', 1),
+            $this->container->get('request')->getRequestBody('page', 1),
             $studentGateway->getTotalStudents($searchQuery),
             $studentGateway->getOutputRows(),
             $this->container->get('LinkHelper')

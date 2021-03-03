@@ -3,12 +3,9 @@
 namespace App\Controllers;
 
 use App\Components\DIContainer;
-use App\Components\Interfaces\RequestInterface;
 
 class FrontController
 {
-    public RequestInterface $request;
-
     private static FrontController $instance;
 
     private string $body;
@@ -32,7 +29,6 @@ class FrontController
      */
     public function route(DIContainer $container): void
     {
-        $this->request = $container->get('request');
         $router = $container->get('router');
 
         $controller = $this->getCurrentNamespace($router->getController());
