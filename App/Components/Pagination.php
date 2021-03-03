@@ -96,7 +96,7 @@ class Pagination
      */
     public function run(): string
     {
-        if ($this->totalLinks === 1) {
+        if ($this->totalLinks <= 1) {
             return '';
         }
 
@@ -230,7 +230,7 @@ class Pagination
         if ($currentPage < 1) {
             throw new \ValueError('The page cannot be less than or equal to zero');
         }
-        if ($currentPage > $this->totalLinks) {
+        if ($currentPage > $this->totalLinks && $this->totalLinks !== 0) {
             throw new \Exception('Page not found');
         }
 

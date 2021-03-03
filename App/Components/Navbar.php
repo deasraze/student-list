@@ -6,6 +6,10 @@ use App\Components\Interfaces\RequestInterface;
 
 class Navbar
 {
+    /**
+     * The first part of the url path
+     * @var string
+     */
     private string $url;
 
     /**
@@ -19,17 +23,42 @@ class Navbar
 
     /**
      * Get the menu for the site
-     * @param array example: ['label' => 'Home', 'url' => '/'], ...
+     * @param array example: [['label' => 'Home', 'url' => '/']], ...
      * @return string html navbar menu
      */
     public function getNav(array $menuItems): string
     {
-        $menu= '';
+        $items = '';
         foreach ($menuItems as $item) {
-            $active = $this->checkActiveItem($item['url']);
-            $menu .= "<li class='nav-item'><a href='{$item['url']}' class='nav-link $active'>{$item['label']}</a></li>";
+            if (!array_key_exists('label', $item) || !array_key_exists('url', $item)) {
+                throw new \ValueError('The passed array does not contain the label or url key');
+            }
+
+            $items .= $this->getItem($item);
         }
-        return "<ul class='navbar-nav me-auto mb-2 mb-lg-0'>$menu</ul>";
+
+        return $this->getHtml($items);
+    }
+
+    /**
+     * Getting html for menu item
+     * @param array $item
+     * @return string
+     */
+    private function getItem(array $item): string
+    {
+        $active = $this->checkActiveItem($item['url']);
+        return "<li class='nav-item'><a href='{$item['url']}' class='nav-link $active'>{$item['label']}</a></li>";
+    }
+
+    /**
+     * Getting html for menu
+     * @param string $items
+     * @return string
+     */
+    private function getHtml(string $items): string
+    {
+        return sprintf('<ul class="navbar-nav me-auto mb-2 mb-lg-0">%s</ul>', $items);
     }
 
     /**
