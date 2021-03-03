@@ -96,22 +96,20 @@ class SiteController extends Controller
      */
     public function actionSearch()
     {
+        $request = $this->container->get('request');
         $studentGateway = $this->container->get('StudentTableGateway');
-        $searchQuery = trim(strval($this->container->get('request')->getRequestBody('search')));
-        $sorting = [
-            'key'  => $this->container->get('request')->getRequestBody('key', 'score'),
-            'sort' => $this->container->get('request')->getRequestBody('sort', 'desc'),
-        ];
+        $searchQuery = trim(strval($request->getRequestBody('search')));
+        $sorting = $this->container->get('sorting');
         $pagination = new Pagination(
-            $this->container->get('request')->getRequestBody('page', 1),
+            $request->getRequestBody('page', 1),
             $studentGateway->getTotalStudents($searchQuery),
             $studentGateway->getOutputRows(),
             $this->container->get('LinkHelper')
         );
         $students = $studentGateway->search(
             $searchQuery,
-            $sorting['key'],
-            $sorting['sort'],
+            $sorting->getSortKey(),
+            $sorting->getSortType(),
             $pagination->getOffset()
         );
 
@@ -121,7 +119,6 @@ class SiteController extends Controller
             'students' => $students,
             'searchQuery' => $searchQuery,
             'sorting' => $sorting,
-            'link' => $this->container->get('LinkHelper'),
             'auth' => $this->container->get('AuthorizationStudent')->isAuthorize(),
             'pagination' => $pagination
         ]);
