@@ -6,6 +6,7 @@ use App\Components\Helpers\AuthorizationStudent;
 use App\Components\Helpers\CookieHelper;
 use App\Components\Helpers\CSRFProtection;
 use App\Components\Helpers\LinkHelper;
+use App\Components\Helpers\SortingHelper;
 use App\Components\Navbar;
 use App\Components\Request;
 use App\Components\Router;
@@ -67,6 +68,15 @@ $container->register('LinkHelper', function (DIContainer $container) {
 
 $container->register('navbar', function (DIContainer $container) {
     return new Navbar($container->get('request'));
+});
+
+$container->register('sorting', function (DIContainer $container) {
+    return new SortingHelper(
+        $container->get('request'),
+        $container->get('LinkHelper'),
+        'score',
+        'desc'
+    );
 });
 
 $fc = FrontController::getInstance();
