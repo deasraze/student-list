@@ -97,8 +97,14 @@ class SiteController extends Controller
     public function actionSearch()
     {
         $request = $this->container->get('request');
-        $studentGateway = $this->container->get('StudentTableGateway');
         $searchQuery = trim(strval($request->getRequestBody('search')));
+        if (strlen($searchQuery) === 0) {
+            header('Location:' . $this->container->get('LinkHelper')->getNotifyLink('danger'));
+
+            return;
+        }
+
+        $studentGateway = $this->container->get('StudentTableGateway');
         $sorting = $this->container->get('sorting');
         $pagination = new Pagination(
             $request->getRequestBody('page', 1),

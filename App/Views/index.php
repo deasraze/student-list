@@ -7,11 +7,18 @@ require_once ROOT . '/../App/Views/static/header.php'
 <?php if ($notify): ?>
 <div class="notification">
     <div class="container">
-        <?= NotificationUtil::getNotification(
+        <?= ($notify === 'danger')
+            ? NotificationUtil::getNotification(
+                'danger',
+                'Oops..',
+                "Your search query does not contain a search phrase"
+            )
+            : NotificationUtil::getNotification(
                 'success',
                 'Well done!',
                 "Your data has been $notify successfully"
-        ); ?>
+            );
+        ?>
     </div>
 </div>
 <?php endif; ?>
