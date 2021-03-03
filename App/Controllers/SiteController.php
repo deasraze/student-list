@@ -14,26 +14,27 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $request = $this->container->get('request');
         $studentGateway = $this->container->get('StudentTableGateway');
-        $sorting = [
-            'key'  => $this->container->get('request')->getRequestBody('key', 'score'),
-            'sort' => $this->container->get('request')->getRequestBody('sort', 'desc'),
-        ];
+        $sorting = $this->container->get('sorting');
         $pagination = new Pagination(
-            $this->container->get('request')->getRequestBody('page', 1),
+            $request->getRequestBody('page', 1),
             $studentGateway->getTotalStudents(),
             $studentGateway->getOutputRows(),
             $this->container->get('LinkHelper')
         );
-        $students = $studentGateway->getAll($sorting['key'], $sorting['sort'], $pagination->getOffset());
+        $students = $studentGateway->getAll(
+            $sorting->getSortKey(),
+            $sorting->getSortType(),
+            $pagination->getOffset()
+        );
 
         $this->show('index', [
             'title' => 'Student list',
             'navbar' => $this->container->get('navbar'),
             'students' => $students,
-            'link' => $this->container->get('LinkHelper'),
             'sorting' => $sorting,
-            'notify' => $this->container->get('request')->getRequestBody('notification'),
+            'notify' => $request->getRequestBody('notification'),
             'auth' => $this->container->get('AuthorizationStudent')->isAuthorize(),
             'pagination' => $pagination
         ]);

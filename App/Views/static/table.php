@@ -1,6 +1,5 @@
 <?php
 
-use App\Components\Utils\SortIconUtil;
 use App\Components\Utils\StringUtil;
 
 ?>
@@ -8,33 +7,28 @@ use App\Components\Utils\StringUtil;
     <thead class="table-dark align-middle">
     <tr>
         <td>
-            <a href="<?= StringUtil::html($link->getSortLink('id')) ?>"
-               class="thead__link">#
-                <?= SortIconUtil::getSortIcon($sorting, 'id')?>
+            <a href="<?= StringUtil::html($sorting->getSortLink('id')) ?>"
+               class="thead__link"># <?= $sorting->getSortIcon('id')?>
             </a>
         </td>
         <td>
-            <a href="<?= StringUtil::html($link->getSortLink('name')) ?>"
-               class="thead__link">First name
-                <?= SortIconUtil::getSortIcon($sorting, 'name')?>
+            <a href="<?= StringUtil::html($sorting->getSortLink('name')) ?>"
+               class="thead__link">First name <?= $sorting->getSortIcon('name')?>
             </a>
         </td>
         <td>
-            <a href="<?= StringUtil::html($link->getSortLink('surname')) ?>"
-               class="thead__link">Last name
-                <?= SortIconUtil::getSortIcon($sorting, 'surname')?>
+            <a href="<?= StringUtil::html($sorting->getSortLink('surname')) ?>"
+               class="thead__link">Last name <?= $sorting->getSortIcon('surname')?>
             </a>
         </td>
         <td>
-            <a href="<?= StringUtil::html($link->getSortLink('sgroup')) ?>"
-               class="thead__link">Group number
-                <?= SortIconUtil::getSortIcon($sorting, 'sgroup')?>
+            <a href="<?= StringUtil::html($sorting->getSortLink('sgroup')) ?>"
+               class="thead__link">Group number <?= $sorting->getSortIcon('sgroup')?>
             </a>
         </td>
         <td>
-            <a href="<?= StringUtil::html($link->getSortLink('score')) ?>"
-               class="thead__link">Score
-                <?= SortIconUtil::getSortIcon($sorting, 'score')?>
+            <a href="<?= StringUtil::html($sorting->getSortLink('score')) ?>"
+               class="thead__link">Score <?= $sorting->getSortIcon('score')?>
             </a>
         </td>
     </tr>
