@@ -78,14 +78,14 @@ class LinkHelper
 
     /**
      * Getting a notify link
-     * @param bool $isAuthorize
-     * @param string $token
+     * @param string $notify
+     * @param string|null $token
      * @return string
      */
-    public function getNotifyLink(bool $isAuthorize, string $token): string
+    public function getNotifyLink(string $notify, string $token = null): string
     {
         return '/?' . http_build_query([
-            'notification' => ($isAuthorize) ? 'edited' : 'added',
+            'notification' => $notify,
             'for' => $token
         ]);
     }

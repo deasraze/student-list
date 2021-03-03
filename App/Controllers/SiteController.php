@@ -69,7 +69,7 @@ class SiteController extends Controller
                     $authorization->authorizeStudent($student);
 
                     header('Location:' . $this->container->get('LinkHelper')->getNotifyLink(
-                        $authorization->isAuthorize(),
+                        ($authorization->isAuthorize()) ? 'edited' : 'added',
                         $authorization->getAuthToken()
                     ));
 
