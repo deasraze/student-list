@@ -3,6 +3,7 @@
 namespace App\Components;
 
 use PDO;
+use App\Components\Exceptions\DbException;
 
 class Db
 {
@@ -22,9 +23,14 @@ class Db
 
     /**
      * @return PDO
+     * @throws DbException
      */
     public function getConnection(): PDO
     {
+        if (!property_exists($this->config, 'db')) {
+            throw new DbException();
+        }
+
         $json = $this->config;
         $dsn = "mysql:host={$json->db->host};dbname={$json->db->dbname};charset={$json->db->charset}";
         $options = [
