@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Components\Exceptions\ApplicationException;
 use App\Components\Pagination;
 use App\Models\Student;
 use App\Models\StudentData;
@@ -10,7 +11,7 @@ class SiteController extends Controller
 {
     /**
      * Main page
-     * @throws \Exception
+     * @throws ApplicationException
      */
     public function actionIndex()
     {
@@ -42,10 +43,11 @@ class SiteController extends Controller
 
     /**
      * Form page
-     * @throws \Exception
+     * @throws ApplicationException
      */
     public function actionForm()
     {
+        $request = $this->container->get('request');
         $authorization = $this->container->get('AuthorizationStudent');
         $studentGateway = $this->container->get('StudentTableGateway');
 
@@ -58,9 +60,9 @@ class SiteController extends Controller
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $csrfProtection->validate($this->container->get('request'));
+            $csrfProtection->validate($request);
             try {
-                $studentData->fill($this->container->get('request')->getRequestBody());
+                $studentData->fill($request->getRequestBody());
                 $student->token = $authorization->getAuthToken();
 
                 $errors = $this->container->get('StudentValidator')->validate($student);
@@ -92,7 +94,7 @@ class SiteController extends Controller
 
     /**
      * Search results page
-     * @throws \Exception
+     * @throws ApplicationException
      */
     public function actionSearch()
     {

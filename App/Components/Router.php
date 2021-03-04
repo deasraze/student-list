@@ -2,19 +2,41 @@
 
 namespace App\Components;
 
+use App\Components\Exceptions\NotFoundException;
 use App\Components\Interfaces\RequestInterface;
 use App\Components\Interfaces\RouterInterface;
 
 class Router implements RouterInterface
 {
+    /**
+     * Request URI
+     * @var string
+     */
     private string $uri;
 
+    /**
+     * Routes
+     * @var array
+     */
     private array $routes;
 
+    /**
+     * Controller name
+     * @var string
+     */
     private string $controller;
 
+    /**
+     * Action name
+     * @var string
+     */
     private string $action;
 
+    /**
+     * Router constructor.
+     * @param RequestInterface $request
+     * @throws NotFoundException
+     */
     public function __construct(RequestInterface $request)
     {
         $this->uri = trim($request->getRequestUri(), '/');
@@ -27,7 +49,7 @@ class Router implements RouterInterface
     }
 
     /**
-     * @return mixed|string
+     * @return string
      */
     public function getController(): string
     {
@@ -35,7 +57,7 @@ class Router implements RouterInterface
     }
 
     /**
-     * @return mixed|string
+     * @return string
      */
     public function getAction(): string
     {
@@ -46,7 +68,7 @@ class Router implements RouterInterface
      * Parse the URI and get the controller, action and URI params
      * @param RequestInterface $request
      * @return array
-     * @throws \Exception
+     * @throws NotFoundException
      */
     private function uriParsing(RequestInterface $request): array
     {
@@ -64,23 +86,25 @@ class Router implements RouterInterface
     /**
      * Checking the URI matches the routes
      * @return array ('uriPattern', 'path')
-     * @throws \Exception
+     * @throws NotFoundException
      */
     private function checkRequestUri(): array
     {
         foreach ($this->routes as $uriPattern => $path) {
             if (preg_match("~^$uriPattern$~", $this->uri)) {
+
                 return [$uriPattern, $path];
             }
         }
-        throw new \Exception('Invalid URL');
+
+        throw new NotFoundException("This {$this->uri} does not exist in routes");
     }
 
     /**
      * Changing the URI according to the route
      * and we break this string into parts by "/"
      * @return array
-     * @throws \Exception
+     * @throws NotFoundException
      */
     public function getSplitRealPath(): array
     {

@@ -3,6 +3,9 @@
 namespace App\Controllers;
 
 use App\Components\DIContainer;
+use App\Components\Exceptions\ApplicationException;
+use App\Components\Exceptions\ControllerNotExistException;
+use App\Components\Exceptions\MethodNotExistException;
 
 class FrontController
 {
@@ -25,7 +28,7 @@ class FrontController
     /**
      * The initialization of the controller and call the desired action
      * @param DIContainer $container
-     * @throws \ReflectionException
+     * @throws \ReflectionException|ApplicationException
      */
     public function route(DIContainer $container): void
     {
@@ -56,7 +59,7 @@ class FrontController
     /**
      * @param string $controllerName
      * @return \ReflectionClass
-     * @throws \Exception
+     * @throws ControllerNotExistException|\ReflectionException
      */
     private function getReflectionClass(string $controllerName): \ReflectionClass
     {
@@ -64,14 +67,15 @@ class FrontController
             return new \ReflectionClass($controllerName);
         }
 
-        throw new \Exception("Undefined class: $controllerName");
+        throw new ControllerNotExistException($controllerName);
     }
 
     /**
+     * Checks whether the requested method exists
      * @param \ReflectionClass $rc
      * @param string $action
      * @return bool
-     * @throws \Exception
+     * @throws MethodNotExistException
      */
     private function checkActionExist(\ReflectionClass $rc, string $action): bool
     {
@@ -79,7 +83,7 @@ class FrontController
             return true;
         }
 
-        throw new \Exception("The {$rc->getName()} class does not have this $action method");
+        throw new MethodNotExistException($action);
     }
 
     /**
@@ -87,7 +91,7 @@ class FrontController
      * @param DIContainer $container
      * @param string $controllerName
      * @param string $action
-     * @throws \ReflectionException
+     * @throws ControllerNotExistException|\ReflectionException
      */
     private function invoke(DIContainer $container, string $controllerName, string $action): void
     {
@@ -99,6 +103,9 @@ class FrontController
         }
     }
 
+    /**
+     * FrontController constructor.
+     */
     private function __construct()
     {
     }
@@ -108,6 +115,7 @@ class FrontController
     }
 
     /**
+     * Getting current namespace
      * @param string|null $string
      * @return string
      */

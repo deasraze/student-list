@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
+use App\Components\Exceptions\FileNotExistException;
 use App\Components\Interfaces\RendererInterface;
 
 class View implements RendererInterface
@@ -34,7 +35,7 @@ class View implements RendererInterface
      * @param string $template
      * @param array $args
      * @return string
-     * @throws \Exception
+     * @throws FileNotExistException
      */
     public function render(string $template, array $args): string
     {
@@ -66,7 +67,7 @@ class View implements RendererInterface
      * Getting full path to file
      * @param string $fileName
      * @return string
-     * @throws \Exception
+     * @throws FileNotExistException
      */
     private function getFile(string $fileName): string
     {
@@ -75,14 +76,13 @@ class View implements RendererInterface
             return $file;
         }
 
-        throw new \Exception("Template file $file not exist");
+        throw new FileNotExistException($fileName);
     }
 
     /**
      * Checking the requested file for the presence in the directory
      * @param string $file
      * @return bool
-     * @throws \Exception
      */
     private function checkFileExist(string $file): bool
     {

@@ -3,13 +3,24 @@
 namespace App\Controllers;
 
 use App\Components\DIContainer;
+use App\Components\Exceptions\ApplicationException;
 
 abstract class Controller
 {
+    /**
+     * @var FrontController
+     */
     public FrontController $fc;
 
+    /**
+     * @var DIContainer
+     */
     public DIContainer $container;
 
+    /**
+     * Controller constructor.
+     * @param DIContainer $container
+     */
     public function __construct(DIContainer $container)
     {
         $this->fc = FrontController::getInstance();
@@ -20,7 +31,7 @@ abstract class Controller
      * Filling in the view and returning the result to the FrontController
      * @param string $template
      * @param array $args
-     * @throws \Exception
+     * @throws ApplicationException
      */
     public function show(string $template, array $args): void
     {

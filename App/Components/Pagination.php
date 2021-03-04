@@ -2,6 +2,7 @@
 
 namespace App\Components;
 
+use App\Components\Exceptions\NotFoundException;
 use App\Components\Helpers\LinkHelper;
 
 class Pagination
@@ -48,7 +49,7 @@ class Pagination
      * @param int $totalRecords
      * @param int $recordsPerPage
      * @param LinkHelper $linkHelper
-     * @throws \Exception
+     * @throws NotFoundException|\ValueError
      */
     public function __construct(int $currentPage, int $totalRecords, int $recordsPerPage, LinkHelper $linkHelper)
     {
@@ -223,7 +224,7 @@ class Pagination
     /**
      * Setting the current page
      * @param int $currentPage
-     * @throws \Exception
+     * @throws NotFoundException|\ValueError
      */
     private function setCurrentPage(int $currentPage): void
     {
@@ -231,7 +232,7 @@ class Pagination
             throw new \ValueError('The page cannot be less than or equal to zero');
         }
         if ($currentPage > $this->totalLinks && $this->totalLinks !== 0) {
-            throw new \Exception('Page not found');
+            throw new NotFoundException("Page $currentPage for pagination not found");
         }
 
         $this->currentPage = $currentPage;

@@ -6,6 +6,10 @@ use App\Components\Interfaces\RequestInterface;
 
 class Request implements RequestInterface
 {
+    /**
+     * Request body
+     * @var array
+     */
     private array $requestBody;
 
     /**

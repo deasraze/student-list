@@ -2,6 +2,7 @@
 
 namespace App\Components\Helpers;
 
+use App\Components\Exceptions\BadRequestException;
 use App\Components\Interfaces\RequestInterface;
 use App\Components\Utils\StringUtil;
 
@@ -55,14 +56,15 @@ class CSRFProtection
      * Check whether the token in the user's cookies and the token from the request are identical
      * @param RequestInterface $request
      * @return bool
-     * @throws \Exception
+     * @throws BadRequestException
      */
     public function validate(RequestInterface $request): bool
     {
         $cookieToken = $this->cookie->getCookie('csrf');
         $postToken = ($request->getRequestBody('csrf'));
         if (empty($cookieToken) || empty($postToken) || $cookieToken !== $postToken) {
-            throw new \Exception('Invalid token');
+            throw new BadRequestException('The registration/editing form cannot be processed. '
+            . 'The tokens don\'t match');
         }
 
         return true;

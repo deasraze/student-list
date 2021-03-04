@@ -25,6 +25,7 @@ class Navbar
      * Get the menu for the site
      * @param array example: [['label' => 'Home', 'url' => '/']], ...
      * @return string html navbar menu
+     * @throws \ValueError
      */
     public function getNav(array $menuItems): string
     {

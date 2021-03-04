@@ -2,6 +2,8 @@
 
 namespace App\Components;
 
+use App\Components\Exceptions\ApplicationException;
+
 class DIContainer
 {
     /*
@@ -27,12 +29,14 @@ class DIContainer
      * Register a services
      * @param string $name
      * @param \Closure $container
-     * @throws \Exception
+     * @throws ApplicationException
      */
     public function register(string $name, \Closure $container): void
     {
         if (array_key_exists($name, $this->registered)) {
-            throw new \Exception("It is not possible to register a service with this name $name, it is already registered");
+            throw new ApplicationException(
+                "It is not possible to register a service with this name $name, it is already registered"
+            );
         }
 
         $this->registered[$name] = $container;
@@ -42,7 +46,7 @@ class DIContainer
      * Return of the requested service
      * @param string $name
      * @return mixed
-     * @throws \Exception
+     * @throws ApplicationException
      */
     public function get(string $name)
     {
@@ -50,7 +54,9 @@ class DIContainer
             return $this->created[$name];
         }
         if (!array_key_exists($name, $this->registered)) {
-            throw new \Exception("The service with this name $name is not in the list of registered services");
+            throw new ApplicationException(
+                "The service with this name $name is not in the list of registered services"
+            );
         }
 
         $closure = $this->registered[$name];
