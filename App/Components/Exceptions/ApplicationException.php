@@ -8,13 +8,13 @@ class ApplicationException extends \Exception
      * Status code for response
      * @var int
      */
-    private int $statusCode;
+    protected int $statusCode;
 
     /**
      * Error description
      * @var string
      */
-    private string $description;
+    protected string $description;
 
     /**
      * ApplicationException constructor.
@@ -25,7 +25,8 @@ class ApplicationException extends \Exception
     public function __construct(
         string $message,
         int $statusCode = 503,
-        string $description = 'The server with the site is currently unavailable, please try again later or contact server administrator'
+        string $description = 'The server with the site is currently unavailable, '
+        .'please try again later or contact server administrator.'
     ) {
         parent::__construct($message);
 
