@@ -3,7 +3,8 @@
 namespace App\Controllers;
 
 use App\Components\DIContainer;
-use App\Components\Exceptions\ApplicationException;
+use App\Components\Exceptions\ContainerException;
+use App\Components\Exceptions\FileNotExistException;
 
 abstract class Controller
 {
@@ -31,7 +32,8 @@ abstract class Controller
      * Filling in the view and returning the result to the FrontController
      * @param string $template
      * @param array $args
-     * @throws ApplicationException
+     * @throws ContainerException
+     * @throws FileNotExistException in render()
      */
     public function show(string $template, array $args): void
     {

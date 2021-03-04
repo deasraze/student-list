@@ -2,7 +2,7 @@
 
 namespace App\Components\Helpers;
 
-use App\Components\Exceptions\ApplicationException;
+use App\Components\Exceptions\AuthorizationStudentException;
 use App\Components\Utils\StringUtil;
 use App\Models\Student;
 
@@ -34,13 +34,12 @@ class AuthorizationStudent
      * Remember a student in the user's cookies
      * @param Student $student
      * @return bool
-     * @throws ApplicationException
+     * @throws AuthorizationStudentException
      */
     public function authorizeStudent(Student $student): bool
     {
         if (!isset($student->token)) {
-            throw new ApplicationException('It is not possible to authorize the student, '
-            . 'he does not have a token');
+            throw new AuthorizationStudentException();
         }
 
         return $this->cookie->setCookie('auth_token', $student->token, (60 * 60 * 24 * 365 * 10));

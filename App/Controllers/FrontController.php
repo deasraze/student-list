@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Components\DIContainer;
-use App\Components\Exceptions\ApplicationException;
+use App\Components\Exceptions\ContainerException;
 use App\Components\Exceptions\ControllerNotExistException;
 use App\Components\Exceptions\MethodNotExistException;
 
@@ -28,7 +28,8 @@ class FrontController
     /**
      * The initialization of the controller and call the desired action
      * @param DIContainer $container
-     * @throws \ReflectionException|ApplicationException
+     * @throws ContainerException
+     * @throws \ReflectionException|ControllerNotExistException
      */
     public function route(DIContainer $container): void
     {

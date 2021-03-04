@@ -2,7 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Components\Exceptions\ApplicationException;
+use App\Components\Exceptions\AuthorizationStudentException;
+use App\Components\Exceptions\ContainerException;
+use App\Components\Exceptions\FileNotExistException;
+use App\Components\Exceptions\NotFoundException;
 use App\Components\Pagination;
 use App\Models\Student;
 use App\Models\StudentData;
@@ -11,7 +14,9 @@ class SiteController extends Controller
 {
     /**
      * Main page
-     * @throws ApplicationException
+     * @throws ContainerException
+     * @throws NotFoundException|\ValueError in Pagination
+     * @throws FileNotExistException in show()
      */
     public function actionIndex()
     {
@@ -43,7 +48,9 @@ class SiteController extends Controller
 
     /**
      * Form page
-     * @throws ApplicationException
+     * @throws ContainerException
+     * @throws FileNotExistException in show
+     * @throws AuthorizationStudentException in authorizeStudent()
      */
     public function actionForm()
     {
@@ -94,7 +101,9 @@ class SiteController extends Controller
 
     /**
      * Search results page
-     * @throws ApplicationException
+     * @throws ContainerException
+     * @throws NotFoundException|\ValueError in Pagination
+     * @throws FileNotExistException in show()
      */
     public function actionSearch()
     {
