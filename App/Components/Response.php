@@ -17,10 +17,17 @@ class Response
     private string $statusPhrase;
 
     /**
+     * Body response
+     * @var string
+     */
+    private string $body;
+
+    /**
      * Default status codes and phrases for the response
      * @var array
      */
     private array $default = [
+        200 => 'OK',
         400 => 'Bad Request',
         404 => 'Not Found',
         503 => 'Service Unavailable',
@@ -29,10 +36,12 @@ class Response
     /**
      * Response constructor.
      * @param int $statusCode
+     * @param string $body
      * @param string $statusPhrase
      */
-    public function __construct(int $statusCode, string $statusPhrase = '')
+    public function __construct(string $body, int $statusCode, string $statusPhrase = '')
     {
+        $this->body = $body;
         $this->statusCode = $this->filterStatusCode($statusCode);
         $this->statusPhrase = $this->filterStatusPhrase($statusCode, $statusPhrase);
     }
@@ -53,6 +62,15 @@ class Response
     public function getStatusPhrase(): string
     {
         return $this->statusPhrase;
+    }
+
+    /**
+     * Getting response body
+     * @return string
+     */
+    public function getBody(): string
+    {
+        return $this->body;
     }
 
     /**
