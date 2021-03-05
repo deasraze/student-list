@@ -1,11 +1,9 @@
 <?php
-use App\Controllers\FrontController;
+use App\App;
 
 const ROOT = __DIR__;
 
 require_once ROOT . '/../App/config/bootstrap.php';
 
-$fc = FrontController::getInstance();
-$fc->route($container);
-
-echo $fc->getBody();
+$app = new App($container);
+$app->run();
