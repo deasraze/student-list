@@ -7,6 +7,7 @@ use App\Components\Exceptions\ContainerException;
 use App\Components\Exceptions\FileNotExistException;
 use App\Components\Exceptions\NotFoundException;
 use App\Components\Pagination;
+use App\Components\Response;
 use App\Models\Student;
 use App\Models\StudentData;
 
@@ -14,11 +15,12 @@ class SiteController extends Controller
 {
     /**
      * Main page
+     * @return Response
      * @throws ContainerException
      * @throws NotFoundException|\ValueError in Pagination
      * @throws FileNotExistException in show()
      */
-    public function actionIndex()
+    public function actionIndex(): Response
     {
         $request = $this->container->get('request');
         $studentGateway = $this->container->get('StudentTableGateway');
@@ -35,7 +37,7 @@ class SiteController extends Controller
             $pagination->getOffset()
         );
 
-        $this->show('index', [
+        return $this->show('index', [
             'title' => 'Student list',
             'navbar' => $this->container->get('navbar'),
             'students' => $students,
@@ -48,11 +50,12 @@ class SiteController extends Controller
 
     /**
      * Form page
+     * @return Response|bool
      * @throws ContainerException
      * @throws FileNotExistException in show
      * @throws AuthorizationStudentException in authorizeStudent()
      */
-    public function actionForm()
+    public function actionForm(): Response
     {
         $request = $this->container->get('request');
         $authorization = $this->container->get('AuthorizationStudent');
@@ -82,14 +85,14 @@ class SiteController extends Controller
                         $authorization->getAuthToken()
                     ));
 
-                    return;
+                    return true;
                 }
             } catch (\TypeError $error) {
                 $errors['type_error'] = true;
             }
         }
 
-        $this->show('form', [
+        return $this->show('form', [
             'title' => ($authorization->isAuthorize()) ? 'Edit information' : 'Add yourself',
             'navbar' => $this->container->get('navbar'),
             'student' => $student,
@@ -101,18 +104,19 @@ class SiteController extends Controller
 
     /**
      * Search results page
+     * @return Response|bool
      * @throws ContainerException
      * @throws NotFoundException|\ValueError in Pagination
      * @throws FileNotExistException in show()
      */
-    public function actionSearch()
+    public function actionSearch(): Response
     {
         $request = $this->container->get('request');
         $searchQuery = trim(strval($request->getRequestBody('search')));
         if (strlen($searchQuery) === 0) {
             header('Location:' . $this->container->get('LinkHelper')->getNotifyLink('danger'));
 
-            return;
+            return false;
         }
 
         $studentGateway = $this->container->get('StudentTableGateway');
@@ -130,7 +134,7 @@ class SiteController extends Controller
             $pagination->getOffset()
         );
 
-        $this->show('search', [
+        return $this->show('search', [
             'title' => 'Search results',
             'navbar' => $this->container->get('navbar'),
             'students' => $students,

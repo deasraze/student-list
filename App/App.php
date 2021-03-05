@@ -42,9 +42,10 @@ class App
             $response->getStatusPhrase()
         ));
 
-        header('Content-Length:' . strlen($response->getBody()));
+        $body = $response->getBody();
+        header('Content-Length:' . strlen($body));
 
-        echo $response->getBody();
+        echo $body;
     }
 
     /**
