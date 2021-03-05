@@ -11,6 +11,6 @@ class FileNotExistException extends ApplicationException
     public function __construct(string $fileName)
     {
         parent::__construct("File $fileName no exist. "
-        . "Check whether the file name is correct or create it");
+            . "Check whether the file name is correct or create it");
     }
 }

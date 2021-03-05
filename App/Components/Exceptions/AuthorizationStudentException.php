@@ -10,6 +10,6 @@ class AuthorizationStudentException extends ApplicationException
     public function __construct()
     {
         parent::__construct('It is not possible to authorize the student. '
-        . 'The transferred student entity does not have a token.');
+            . 'The transferred student entity does not have a token.');
     }
 }

@@ -11,6 +11,6 @@ class ControllerNotExistException extends ApplicationException
     public function __construct(string $controllerName)
     {
         parent::__construct("The controller $controllerName does not exist. "
-        . "Check the correctness of the routes or describe this class.");
+            . "Check the correctness of the routes or describe this class.");
     }
 }

@@ -14,7 +14,7 @@ class BadRequestException extends ApplicationException
             $message,
             400,
             'It looks like your request has invalid syntax. '
-        . 'Please try again or contact your server administrator for more information.'
+            . 'Please try again or contact your server administrator for more information.'
         );
     }
 }
