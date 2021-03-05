@@ -50,7 +50,7 @@ class SiteController extends Controller
 
     /**
      * Form page
-     * @return Response|bool
+     * @return Response
      * @throws ContainerException
      * @throws FileNotExistException in show
      * @throws AuthorizationStudentException in authorizeStudent()
@@ -80,12 +80,13 @@ class SiteController extends Controller
                     $studentGateway->save($student);
                     $authorization->authorizeStudent($student);
 
-                    header('Location:' . $this->container->get('LinkHelper')->getNotifyLink(
-                        ($authorization->isAuthorize()) ? 'edited' : 'added',
-                        $authorization->getAuthToken()
-                    ));
-
-                    return true;
+                    return $this->response->withHeader(
+                        'Location',
+                        $this->container->get('LinkHelper')->getNotifyLink(
+                            ($authorization->isAuthorize()) ? 'edited' : 'added',
+                            $authorization->getAuthToken()
+                        )
+                    );
                 }
             } catch (\TypeError $error) {
                 $errors['type_error'] = true;
@@ -104,7 +105,7 @@ class SiteController extends Controller
 
     /**
      * Search results page
-     * @return Response|bool
+     * @return Response
      * @throws ContainerException
      * @throws NotFoundException|\ValueError in Pagination
      * @throws FileNotExistException in show()
@@ -114,9 +115,10 @@ class SiteController extends Controller
         $request = $this->container->get('request');
         $searchQuery = trim(strval($request->getRequestBody('search')));
         if (strlen($searchQuery) === 0) {
-            header('Location:' . $this->container->get('LinkHelper')->getNotifyLink('danger'));
-
-            return false;
+            return $this->response->withHeader(
+                'Location',
+                $this->container->get('LinkHelper')->getNotifyLink('danger')
+            );
         }
 
         $studentGateway = $this->container->get('StudentTableGateway');

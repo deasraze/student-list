@@ -42,8 +42,12 @@ class App
             $response->getStatusPhrase()
         ));
 
+        foreach ($response->getHeaders() as $name => $value) {
+            header(sprintf('%s: %s', $name, $value), false);
+        }
+
         $body = $response->getBody();
-        header('Content-Length:' . strlen($body));
+        header('Content-Length: ' . strlen($body));
 
         echo $body;
     }
@@ -54,7 +58,6 @@ class App
      */
     private function createResponse(): Response
     {
-        return new Response('', 200);
+        return new Response([], '', 200);
     }
-
 }

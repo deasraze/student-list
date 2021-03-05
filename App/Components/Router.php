@@ -51,7 +51,7 @@ class Router implements RouterInterface
      * The initialization of the controller and call the desired action
      * @param DIContainer $container
      * @param Response $response
-     * @return Response|bool
+     * @return Response
      * @throws ControllerNotExistException
      * @throws \ReflectionException
      */

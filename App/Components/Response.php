@@ -100,7 +100,6 @@ class Response
     {
         $clone = clone $this;
         $clone->setHeaders([$name => $value]);
-        var_dump($clone);
         return $clone;
     }
 
