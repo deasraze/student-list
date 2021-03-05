@@ -65,6 +65,19 @@ class Response
     }
 
     /**
+     * Returns a clone of the Response object with the required response body
+     * @param string $body
+     * @return Response
+     */
+    public function withBody(string $body): Response
+    {
+        $clone = clone $this;
+        $clone->body = $body;
+
+        return $clone;
+    }
+
+    /**
      * Getting response body
      * @return string
      */
