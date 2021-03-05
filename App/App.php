@@ -8,6 +8,9 @@ use App\Components\Response;
 
 class App
 {
+    /**
+     * @var DIContainer
+     */
     private DIContainer $container;
 
     /**
@@ -25,6 +28,7 @@ class App
      */
     public function run(): void
     {
+        set_error_handler([$this, 'errorHandler']);
         $router = $this->container->get('router');
         $response = $router->route($this->container, $this->createResponse());
         $this->respond($response);
@@ -36,18 +40,20 @@ class App
      */
     private function respond(Response $response): void
     {
-        header(sprintf(
-            'HTTP/1.1 %s %s',
-            $response->getStatusCode(),
-            $response->getStatusPhrase()
-        ));
-
-        foreach ($response->getHeaders() as $name => $value) {
-            header(sprintf('%s: %s', $name, $value), false);
-        }
-
         $body = $response->getBody();
-        header('Content-Length: ' . strlen($body));
+
+        if (!headers_sent()) {
+            header(sprintf(
+                'HTTP/1.0 %s %s',
+                $response->getStatusCode(),
+                $response->getStatusPhrase()
+            ));
+            foreach ($response->getHeaders() as $name => $value) {
+                header(sprintf('%s: %s', $name, $value), false);
+            }
+
+            header('Content-Length: ' . strlen($body));
+        }
 
         echo $body;
     }
@@ -59,5 +65,24 @@ class App
     private function createResponse(): Response
     {
         return new Response([], '', 200);
+    }
+
+    /**
+     * Error handler
+     * If error output is enabled, then we turn all errors into exceptions
+     * @param int $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param int $errline
+     * @return bool
+     * @throws \ErrorException
+     */
+    public function errorHandler(int $errno, string $errstr, string $errfile, int $errline): bool
+    {
+        if (!error_reporting()) {
+            return false;
+        }
+
+        throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
     }
 }
