@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Components\DIContainer;
+use App\Components\Exceptions\ApplicationException;
 use App\Components\Exceptions\ContainerException;
 use App\Components\Response;
 
@@ -29,9 +30,50 @@ class App
     public function run(): void
     {
         set_error_handler([$this, 'errorHandler']);
+        set_exception_handler([$this, 'exceptionHandler']);
         $router = $this->container->get('router');
         $response = $router->route($this->container, $this->createResponse());
+
         $this->respond($response);
+    }
+
+    /**
+     * Error handler
+     * If error output is enabled, then we turn all errors into exceptions
+     * @param int $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param int $errline
+     * @return bool
+     * @throws \ErrorException
+     */
+    public function errorHandler(int $errno, string $errstr, string $errfile, int $errline): bool
+    {
+        if (!error_reporting()) {
+            return false;
+        }
+
+        throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
+    }
+
+    /**
+     * Exception handler
+     * We catch all uncaught exceptions, output the template with an error,
+     * and write the errors to the log file
+     * @param \Throwable $exception
+     * @throws ContainerException
+     */
+    public function exceptionHandler(\Throwable $exception)
+    {
+        $statusCode = ($exception instanceof ApplicationException) ? $exception->getStatusCode() : 503;
+        $response = $this->createResponse($statusCode);
+        $body = $this->container->get('view')->render('error', [
+            'response' => $response,
+            'exception' => $exception
+        ]);
+        error_log($exception->__toString());
+
+        $this->respond($response->withBody($body));
     }
 
     /**
@@ -60,29 +102,11 @@ class App
 
     /**
      * Create new response
+     * @param int $statusCode
      * @return Response
      */
-    private function createResponse(): Response
+    private function createResponse(int $statusCode = 200): Response
     {
-        return new Response([], '', 200);
-    }
-
-    /**
-     * Error handler
-     * If error output is enabled, then we turn all errors into exceptions
-     * @param int $errno
-     * @param string $errstr
-     * @param string $errfile
-     * @param int $errline
-     * @return bool
-     * @throws \ErrorException
-     */
-    public function errorHandler(int $errno, string $errstr, string $errfile, int $errline): bool
-    {
-        if (!error_reporting()) {
-            return false;
-        }
-
-        throw new \ErrorException($errstr, $errno, 0, $errfile, $errline);
+        return new Response([], '', $statusCode);
     }
 }
