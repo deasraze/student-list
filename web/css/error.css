@@ -11,6 +11,7 @@
 body {
     font-family: Arial, Tahoma, sans-serif;
     margin: 0;
+    background: #303239;
 }
 
 .error {
@@ -47,11 +48,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: baseline;
+    position: relative;
 }
 
 .error-title {
     font-size: 12rem;
-    position: relative;
     margin: 0 30px 0 0;
 }
 
@@ -67,6 +68,7 @@ body {
 }
 
 .error-subtitle {
+    max-width: 370px;
     font-size: 3.75rem;
     margin: 0;
 }
@@ -164,6 +166,7 @@ body {
     }
 
     .error-subtitle {
+        max-width: 270px;
         font-size: 3rem;
     }
 
@@ -190,6 +193,7 @@ body {
     }
 
     .error-subtitle {
+        max-width: unset;
         font-size: 2.5rem;
     }
 
