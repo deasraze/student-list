@@ -35,7 +35,7 @@ class Pagination
      * Number of links per page
      * @var int
      */
-    private int $linksPerPage = 9;
+    private int $linksPerPage = 7;
 
     /**
      * Total number of links

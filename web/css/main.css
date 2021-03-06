@@ -144,9 +144,6 @@ body {
         padding: 80px 0;
     }
 
-    .thead__link {
-        font-size: unset;
-    }
 }
 
 @media screen and (max-width: 991px) {
@@ -157,6 +154,10 @@ body {
 
     .hero__title {
         font-size: 3.5rem;
+    }
+
+    .thead__link {
+        font-size: unset;
     }
 
 }
@@ -170,11 +171,25 @@ body {
     .hero__description {
         font-size: 1rem;
     }
-}
-
-@media screen and (max-width: 320px){
 
     .students__table {
         font-size: .8rem;
     }
+
+    .thead__link {
+        font-size: .9rem;
+    }
+
+}
+
+@media screen and (max-width: 361px){
+
+    .students__table {
+        font-size: .75rem;
+    }
+
+    .thead__link {
+        font-size: .85rem;
+    }
+
 }
