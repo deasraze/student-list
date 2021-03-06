@@ -58,17 +58,17 @@ class SortingHelper
     public function getSortIcon(string $currentKey): string
     {
         $asc = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" 
-                        class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                        class="thead-sort-icon bi bi-caret-up-fill" viewBox="0 0 16 16">
                 <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 
                         0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
                 </svg>';
         $desc = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" 
-                        class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        class="thead-sort-icon bi bi-caret-down-fill" viewBox="0 0 16 16">
                  <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 
                         1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                  </svg>';
         $default = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" 
-                           viewBox="0 0 401.998 401.998" fill="currentColor">
+                           class="thead-sort-icon" viewBox="0 0 401.998 401.998" fill="currentColor">
                     <path d="M73.092,164.452h255.813c4.949,0,9.233-1.807,12.848-5.424c3.613-3.616,5.427-7.898,5.427-12.847
                            c0-4.949-1.813-9.229-5.427-12.85L213.846,5.424C210.232,
                            1.812,205.951,0,200.999,0s-9.233,1.812-12.85,5.424L60.242,133.331
