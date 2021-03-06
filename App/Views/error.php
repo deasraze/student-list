@@ -46,7 +46,10 @@
                 by <span class="contacts__author">theifel</span>
             </p>
             <div class="contacts__github">
-                <p>Licensed under <a class="license-link" href="">MIT license</a></p>
+                <p>Licensed under
+                    <a class="license-link" target="_blank"
+                       href="https://github.com/theifel/student-list/blob/main/LICENSE.md">MIT license</a>
+                </p>
                 <p>Source code on GitHub:
                     <a class="github-link"
                        href="https://github.com/theifel/student-list" target="_blank">

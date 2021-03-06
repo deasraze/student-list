@@ -1,6 +1,15 @@
 {
     "name": "theifel/student-list",
+    "description": "Simple application",
     "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "theifel",
+            "homepage": "https://github.com/theifel",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "php": ">=7.4",
         "ext-json": "*",
