@@ -1,0 +1,199 @@
+@keyframes blink {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+body {
+    font-family: Arial, Tahoma, sans-serif;
+    margin: 0;
+}
+
+.error {
+    background: #303239 url("../img/error.jpeg") fixed center;
+    background-size: cover;
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    color: #fff;
+}
+
+.error::before {
+    content: '';
+    background: rgba(0, 0, 0, .6);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.error__inner {
+    position: relative;
+    max-width: 980px;
+    width: 100%;
+    margin: auto;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.basic__error {
+    opacity: .9;
+}
+
+.error__info {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.error-title {
+    font-size: 12rem;
+    position: relative;
+    margin: 0 30px 0 0;
+}
+
+.error-title::after {
+    position: absolute;
+    content: '';
+    background: #fff;
+    display: inline-block;
+    height: 100%;
+    width: 4px;
+    margin-left: 15px;
+    animation: blink 1s ease-in-out infinite alternate;
+}
+
+.error-subtitle {
+    font-size: 3.75rem;
+    margin: 0;
+}
+
+.error__description {
+    font-size: 1.87rem;
+    line-height: 1.4;
+}
+
+.btn-home {
+    background: rgba(255, 255, 255, .3);
+    display: inline-block;
+    padding: 15px 45px;
+    border: 1px solid rgba(255, 255, 255, .3);
+    border-radius: 3px;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: .15s linear;
+    font: inherit;
+}
+
+.btn-home:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, .2);
+}
+
+.developer__error {
+    margin-top: 50px;
+    text-align: left;
+    font-size: 1.25rem;
+    line-height: 1.3;
+}
+
+.developer__info {
+    margin: 20px 0;
+}
+
+.developer__info p {
+    margin: 0;
+}
+
+.stack-trace {
+    font: 1rem Monaco, monospace;
+}
+
+.contacts {
+    font-size: 1.2rem;
+    opacity: .95;
+    margin-top: 50px;
+}
+
+.contacts p {
+    margin: 10px 0 0 0;
+}
+
+.contacts__heart {
+    color: #bb2d3b;
+}
+
+.contacts__author {
+    font-weight: 700;
+}
+
+.contacts__github {
+    font-size: 1.1rem;
+    margin-top: 15px;
+}
+
+.github-link, .license-link {
+    vertical-align: middle;
+    color: rgba(255, 255, 255, .5);
+    margin-left: 5px;
+    transition: color .15s linear;
+}
+
+.github-link:hover,
+.license-link:hover {
+    color: rgba(255, 255, 255, .9);
+}
+
+@media screen and (max-width: 991px) {
+
+    .error__inner {
+        padding: 50px 15px;
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .error-title {
+        font-size: 10rem;
+    }
+
+    .error-subtitle {
+        font-size: 3rem;
+    }
+
+    .error__description {
+        font-size: 1.7rem;
+    }
+}
+
+@media screen and (max-width: 624px) {
+
+    .error__info {
+        align-items: unset;
+        flex-direction: column;
+    }
+
+    .error-title {
+        margin: 0;
+        font-size: 9rem;
+    }
+
+    .error-title:after {
+        animation: unset;
+        display: none;
+    }
+
+    .error-subtitle {
+        font-size: 2.5rem;
+    }
+
+    .error__description {
+        font-size: 1.3rem;
+    }
+}
