@@ -42,7 +42,11 @@ class AuthorizationStudent
             throw new AuthorizationStudentException();
         }
 
-        return $this->cookie->setCookie('auth_token', $student->token, (60 * 60 * 24 * 365 * 10));
+        return ($this->isAuthorize()) ?: $this->cookie->setCookie(
+            'auth_token',
+            $student->token,
+            (60 * 60 * 24 * 365 * 10)
+        );
     }
 
     /**
@@ -51,7 +55,7 @@ class AuthorizationStudent
      */
     public function isAuthorize(): bool
     {
-        return $this->cookie->getCookie('auth_token') ? true : false;
+        return $this->cookie->getCookie('auth_token') !== false;
     }
 
     /**
