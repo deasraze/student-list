@@ -80,6 +80,7 @@ class StudentTableGateway
      * Getting student data by their token
      * @param string $token
      * @return Student
+     * @throws \ValueError
      */
     public function getByToken(string $token): Student
     {
@@ -90,7 +91,12 @@ class StudentTableGateway
         $stmt->execute([':token' => $token]);
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Student::class);
 
-        return $stmt->fetch();
+        $student = $stmt->fetch();
+        if ($student === false) {
+            throw new \ValueError('A student with such a token does not exist');
+        }
+
+        return $student;
     }
 
     /**
