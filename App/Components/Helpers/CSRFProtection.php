@@ -36,11 +36,9 @@ class CSRFProtection
      */
     public function setCsrfToken(): bool
     {
-        if ($this->cookie->getCookie('csrf') === false) {
-            return $this->cookie->setCookie('csrf', $this->csrfToken, 1800);
-        }
-
-        return false;
+        return ($this->cookie->getCookie('csrf') === false)
+            ? $this->cookie->setCookie('csrf', $this->csrfToken, 1800)
+            : true;
     }
 
     /**

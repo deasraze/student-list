@@ -4,6 +4,9 @@ namespace App\Models;
 
 class StudentData
 {
+    /**
+     * @var Student
+     */
     public Student $student;
 
     /**
@@ -28,7 +31,9 @@ class StudentData
 
         foreach ($allowedProps as $prop) {
             $dataValue = trim($data[$prop] ?? '');
-            (property_exists($this->student, $prop)) ? $this->student->{$prop} = $dataValue : $this->{$prop} = $dataValue;
+            (property_exists($this->student, $prop))
+                ? $this->student->{$prop} = $dataValue
+                : $this->{$prop} = $dataValue;
         }
     }
 }
