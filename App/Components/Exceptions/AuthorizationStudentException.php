@@ -9,14 +9,14 @@
 
 namespace App\Components\Exceptions;
 
-class AuthorizationStudentException extends ApplicationException
+class AuthorizationStudentException extends \Exception
 {
     /**
      * AuthorizationStudentException constructor.
+     * @param string $message
      */
-    public function __construct()
+    public function __construct(string $message)
     {
-        parent::__construct('It is not possible to authorize the student. '
-            . 'The transferred student entity does not have a token.');
+        parent::__construct($message);
     }
 }

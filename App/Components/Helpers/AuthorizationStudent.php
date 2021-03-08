@@ -46,7 +46,10 @@ class AuthorizationStudent
     public function authorizeStudent(Student $student): bool
     {
         if (!isset($student->token)) {
-            throw new AuthorizationStudentException();
+            throw new AuthorizationStudentException(
+                'It is not possible to authorize the student. '
+                . 'The transferred student entity does not have a token.'
+            );
         }
 
         return ($this->isAuthorize()) ?: $this->cookie->setCookie(

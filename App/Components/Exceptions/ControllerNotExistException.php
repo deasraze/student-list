@@ -9,7 +9,7 @@
 
 namespace App\Components\Exceptions;
 
-class ControllerNotExistException extends ApplicationException
+class ControllerNotExistException extends \Exception
 {
     /**
      * ControllerNotExistException constructor.

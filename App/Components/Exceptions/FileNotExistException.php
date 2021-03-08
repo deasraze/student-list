@@ -9,7 +9,7 @@
 
 namespace App\Components\Exceptions;
 
-class FileNotExistException extends ApplicationException
+class FileNotExistException extends \Exception
 {
     /**
      * FileNotExistException constructor.

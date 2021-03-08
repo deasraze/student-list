@@ -9,7 +9,7 @@
 
 namespace App\Components\Exceptions;
 
-class ContainerException extends ApplicationException
+class ContainerException extends \Exception
 {
     /**
      * ContainerException constructor.
