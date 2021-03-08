@@ -45,12 +45,13 @@ class Router implements RouterInterface
     /**
      * Router constructor.
      * @param RequestInterface $request
-     * @throws NotFoundException|FileNotExistException
+     * @param array $routes
+     * @throws NotFoundException
      */
-    public function __construct(RequestInterface $request)
+    public function __construct(RequestInterface $request, array $routes)
     {
         $this->uri = trim($request->getRequestUri(), '/');
-        $this->routes = $this->getRoutes();
+        $this->routes = $routes;
         ['controller' => $this->controller, 'action' => $this->action] = $this->uriParsing($request);
     }
 
@@ -100,6 +101,15 @@ class Router implements RouterInterface
     public function getAction(): string
     {
         return $this->action;
+    }
+
+    /**
+     * Get routes
+     * @return array
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
     }
 
     /**
@@ -167,20 +177,5 @@ class Router implements RouterInterface
         }
 
         throw new NotFoundException("This {$this->uri} does not exist in routes");
-    }
-
-    /**
-     * Get routes
-     * @return mixed
-     * @throws FileNotExistException
-     */
-    private function getRoutes()
-    {
-        $file = ROOT . '/../App/config/routes.php';
-        if (!is_file($file)) {
-            throw new FileNotExistException($file);
-        }
-
-        return require_once ROOT . '/../App/config/routes.php';
     }
 }

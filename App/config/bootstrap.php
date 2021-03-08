@@ -55,7 +55,9 @@ $container->register('request', function (DIContainer $container) {
 });
 
 $container->register('router', function (DIContainer $container) {
-    return new Router($container->get('request'));
+    $routes = require_once ROOT . '/../App/config/routes.php';
+
+    return new Router($container->get('request'), $routes);
 });
 
 $container->register('StudentTableGateway', function (DIContainer $container) {
