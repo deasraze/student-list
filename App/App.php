@@ -39,7 +39,7 @@ class App
 
     /**
      * Error handler
-     * If error output is enabled, then we turn all errors into exceptions
+     * If the error report is enabled, then we turn all errors into exceptions
      * @param int $errno
      * @param string $errstr
      * @param string $errfile
@@ -86,7 +86,7 @@ class App
 
         if (!headers_sent()) {
             header(sprintf(
-                'HTTP/1.0 %s %s',
+                'HTTP/1.1 %s %s',
                 $response->getStatusCode(),
                 $response->getStatusPhrase()
             ));
