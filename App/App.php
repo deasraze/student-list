@@ -78,7 +78,10 @@ class App
             'response' => $response,
             'exception' => $exception
         ]);
-        error_log($exception->__toString());
+
+        if ($statusCode !== 404) {
+            error_log($exception->__toString());
+        }
 
         $this->respond($response->withBody($body));
     }
