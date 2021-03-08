@@ -21,6 +21,12 @@ use App\Models\StudentData;
 class SiteController extends Controller
 {
     /**
+     * Limit on the number of students to output
+     * @var int
+     */
+    private int $limitStudents = 10;
+
+    /**
      * Main page
      * @return Response
      * @throws ContainerException
@@ -35,12 +41,13 @@ class SiteController extends Controller
         $pagination = new Pagination(
             $request->getRequestBody('page', 1),
             $studentGateway->getTotalStudents(),
-            $studentGateway->getOutputRows(),
+            $this->limitStudents,
             $this->container->get('LinkHelper')
         );
         $students = $studentGateway->getAll(
             $sorting->getSortKey(),
             $sorting->getSortType(),
+            $this->limitStudents,
             $pagination->getOffset()
         );
 
@@ -133,13 +140,14 @@ class SiteController extends Controller
         $pagination = new Pagination(
             $request->getRequestBody('page', 1),
             $studentGateway->getTotalStudents($searchQuery),
-            $studentGateway->getOutputRows(),
+            $this->limitStudents,
             $this->container->get('LinkHelper')
         );
         $students = $studentGateway->search(
             $searchQuery,
             $sorting->getSortKey(),
             $sorting->getSortType(),
+            $this->limitStudents,
             $pagination->getOffset()
         );
 

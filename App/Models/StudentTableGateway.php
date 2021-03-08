@@ -19,50 +19,32 @@ class StudentTableGateway
     private PDO $dbh;
 
     /**
-     * Number of output rows
-     * @var int
-     */
-    private int $outputRows;
-
-    /**
      * StudentTableGateway constructor.
      * @param PDO $dbh
-     * @param int $outputRows
      */
-    public function __construct(PDO $dbh, int $outputRows)
+    public function __construct(PDO $dbh)
     {
-        if ($outputRows < 1) {
-            throw new \ValueError('The number of output records cannot be less than one');
-        }
-
         $this->dbh = $dbh;
-        $this->outputRows = $outputRows;
-    }
-
-    /**
-     * Getting the number of output rows
-     * @return int
-     */
-    public function getOutputRows(): int
-    {
-        return $this->outputRows;
     }
 
     /**
      * Getting all students from the db
      * @param string $order
      * @param string $direction
+     * @param int $limit
      * @param int $offset
      * @return Student[]
      */
-    public function getAll(string $order, string $direction, int $offset): array
+    public function getAll(string $order, string $direction, int $limit, int $offset): array
     {
-        $sql = "SELECT s.id, name, surname, sgroup, score FROM students AS s
-                    JOIN (SELECT id FROM students ORDER BY score DESC LIMIT :offset, :limit) AS lim
-                ON lim.id = s.id
-                ORDER BY $order $direction, name";
+        $sql = "SELECT s.id, name, surname, gender, sgroup, email, score, byear, status 
+                FROM students AS s
+                    JOIN (SELECT id 
+                        FROM students 
+                        ORDER BY $order $direction, name 
+                        LIMIT :offset, :limit) AS lim ON lim.id = s.id";
         $stmt = $this->dbh->prepare($sql);
-        $stmt->bindValue(':limit', $this->outputRows, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -111,22 +93,27 @@ class StudentTableGateway
      * @param string $searchQuery
      * @param string $order
      * @param string $direction
+     * @param int $limit
      * @param int $offset
      * @return array
      */
-    public function search(string $searchQuery, string $order, string $direction, int $offset): array
-    {
-        $sql = "SELECT s.id, name, surname, sgroup, score
-                FROM students AS s
-                    JOIN (SELECT id
-                            FROM students
-                            WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search
-                            ORDER BY score DESC
-                            LIMIT :offset, :limit) AS lim ON lim.id = s.id
-                ORDER BY $order $direction, name";
+    public function search(
+        string $searchQuery,
+        string $order,
+        string $direction,
+        int $limit,
+        int $offset
+    ): array {
+        $sql = "SELECT s.id, name, surname, gender, sgroup, email, score, byear, status 
+                FROM students AS s 
+                    JOIN (SELECT id 
+                            FROM students 
+                            WHERE CONCAT(name, ' ', surname, ' ', sgroup) LIKE :search 
+                            ORDER BY $order $direction, name 
+                            LIMIT :offset, :limit) AS lim ON lim.id = s.id";
         $stmt = $this->dbh->prepare($sql);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-        $stmt->bindValue(':limit', $this->outputRows, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':search', "%$searchQuery%");
         $stmt->execute();
 
@@ -139,7 +126,7 @@ class StudentTableGateway
      * @param string $token
      * @return bool
      */
-    public function checkEmailExist(string $email, string $token): bool
+    public function isEmailExist(string $email, string $token): bool
     {
         $sql = 'SELECT COUNT(id) FROM students WHERE email = :email AND token != :token';
         $stmt = $this->dbh->prepare($sql);

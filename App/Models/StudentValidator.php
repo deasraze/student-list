@@ -79,7 +79,7 @@ class StudentValidator
      */
     private function validateEmail(string $email, string $token): bool
     {
-        $emailExist = $this->studentGateway->checkEmailExist($email, $token);
+        $emailExist = $this->studentGateway->isEmailExist($email, $token);
         if ($emailExist !== false) {
             return false;
         }
