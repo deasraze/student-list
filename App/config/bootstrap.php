@@ -1,4 +1,12 @@
 <?php
+/*
+ * Student List application
+ * @author theifel
+ * @link https://github.com/theifel/student-list/
+ * @copyright Copyright (c) 2021
+ * @license https://github.com/theifel/student-list/blob/main/LICENSE.md
+ */
+
 use App\Components\Db;
 use App\Components\DIContainer;
 use App\Components\Exceptions\FileNotExistException;
