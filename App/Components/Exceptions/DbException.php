@@ -9,13 +9,14 @@
 
 namespace App\Components\Exceptions;
 
-class DbException extends ApplicationException
+class DbException extends \Exception
 {
     /**
      * DbException constructor.
+     * @param string $message
      */
-    public function __construct()
+    public function __construct(string $message)
     {
-        parent::__construct('Invalid configuration of the db_params.json file.');
+        parent::__construct($message);
     }
 }

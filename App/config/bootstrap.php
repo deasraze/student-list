@@ -7,8 +7,8 @@
  * @license https://github.com/theifel/student-list/blob/main/LICENSE.md
  */
 
-use App\Components\Db;
 use App\Components\DIContainer;
+use App\Components\Exceptions\DbException;
 use App\Components\Exceptions\FileNotExistException;
 use App\Components\Helpers\AuthorizationStudent;
 use App\Components\Helpers\CookieHelper;
@@ -32,12 +32,22 @@ $container->register('config_db', function (DIContainer $container) {
         throw new FileNotExistException($file);
     }
 
-    return json_decode(file_get_contents($file));
+    return json_decode(file_get_contents($file), true, JSON_THROW_ON_ERROR);
 });
 
 $container->register('dbh', function (DIContainer $container) {
-    $db = new Db($container->get('config_db'));
-    return $db->getConnection();
+    $config = $container->get('config_db');
+    if (!array_key_exists('db', $config)) {
+        throw new DbException('Invalid configuration of the db_params.json file.');
+    }
+
+    $config = $config['db'];
+    $dsn = "mysql:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}";
+    $options = [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ];
+
+    return new PDO($dsn, $config['user'], $config['password'], $options);
 });
 
 $container->register('request', function (DIContainer $container) {
