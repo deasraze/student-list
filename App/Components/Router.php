@@ -44,7 +44,7 @@ class Router implements RouterInterface
     {
         $this->uri = trim($request->getRequestUri(), '/');
         $this->routes = $this->getRoutes();
-        list('controller' => $this->controller, 'action' => $this->action) = $this->uriParsing($request);
+        ['controller' => $this->controller, 'action' => $this->action] = $this->uriParsing($request);
     }
 
     /**
@@ -60,9 +60,23 @@ class Router implements RouterInterface
         $action = $this->action;
         $rc = $this->getReflectionClass($this->controller);
         $rm = $this->getReflectionMethod($rc, $action);
-
         $instance = $rc->newInstance($container, $response);
+
         return $rm->invoke($instance, $action);
+    }
+
+    /**
+     * Changing the URI according to the route
+     * and we break this string into parts by "/"
+     * @return array
+     * @throws NotFoundException
+     */
+    public function getSplitRealPath(): array
+    {
+        [$uriPattern, $path] = $this->getCurrentRoute();
+        $realPath = preg_replace("~^$uriPattern$~", $path, $this->uri);
+
+        return explode('/', $realPath);
     }
 
     /**
@@ -132,33 +146,20 @@ class Router implements RouterInterface
     }
 
     /**
-     * Checking the URI matches the routes
+     * Getting the required route from the requested uri,
+     * if there is a match in the routes
      * @return array ('uriPattern', 'path')
      * @throws NotFoundException
      */
-    private function checkRequestUri(): array
+    private function getCurrentRoute(): array
     {
         foreach ($this->routes as $uriPattern => $path) {
             if (preg_match("~^$uriPattern$~", $this->uri)) {
-
                 return [$uriPattern, $path];
             }
         }
 
         throw new NotFoundException("This {$this->uri} does not exist in routes");
-    }
-
-    /**
-     * Changing the URI according to the route
-     * and we break this string into parts by "/"
-     * @return array
-     * @throws NotFoundException
-     */
-    public function getSplitRealPath(): array
-    {
-        [$uriPattern, $path] = $this->checkRequestUri();
-        $realPath = preg_replace("~^$uriPattern$~", $path, $this->uri);
-        return explode('/', $realPath);
     }
 
     /**
