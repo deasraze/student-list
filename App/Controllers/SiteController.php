@@ -134,15 +134,15 @@ class SiteController extends Controller
     public function actionSearch(Request $request): Response
     {
         $searchQuery = trim(strval($request->getRequestBody('search')));
+        $link = new LinkHelper($request);
         if (strlen($searchQuery) === 0) {
             return $this->response->withHeader(
                 'Location',
-                $this->container->get('LinkHelper')->getNotifyLink('danger')
+                $link->getNotifyLink('danger')
             );
         }
 
         $studentGateway = $this->container->get('StudentTableGateway');
-        $link = new LinkHelper($request);
         $sorting = new SortingHelper($request, $link, 'score', 'desc');
         $pagination = new Pagination(
             $request->getRequestBody('page', 1),
