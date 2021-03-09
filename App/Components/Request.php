@@ -14,6 +14,24 @@ use App\Components\Interfaces\RequestInterface;
 class Request implements RequestInterface
 {
     /**
+     * Request uri
+     * @var string
+     */
+    private string $uri;
+
+    /**
+     * Request url path
+     * @var string
+     */
+    private string $urlPath;
+
+    /**
+     * Request method
+     * @var string
+     */
+    private string $method;
+
+    /**
      * Request body
      * @var array
      */
@@ -28,6 +46,9 @@ class Request implements RequestInterface
             $this->parsingQueryParams(),
             $this->parsingPostRequest()
         );
+        $this->uri = $this->getCurrentUri();
+        $this->urlPath = $this->getCurrentUrlPath();
+        $this->method = $this->getCurrentMethod();
     }
 
     /**
@@ -51,25 +72,24 @@ class Request implements RequestInterface
      */
     public function isPost(): bool
     {
-        return ($_SERVER['REQUEST_METHOD'] === 'POST');
+        return ($this->method === 'POST');
     }
 
     /**
      * Get current URI
      * @return string
      */
-    public function getRequestUri(): string
+    public function getUri(): string
     {
-        return $_SERVER['REQUEST_URI'];
+        return $this->uri;
     }
 
     /**
      * Getting current URL PATH
-     * @return string
      */
     public function getUrlPath(): string
     {
-        return (parse_url($this->getRequestUri(), PHP_URL_PATH)) ?: '';
+        return $this->urlPath;
     }
 
     /**
@@ -88,5 +108,32 @@ class Request implements RequestInterface
     private function parsingPostRequest(): array
     {
         return (!empty($_POST)) ? $_POST : [];
+    }
+
+    /**
+     * Getting the current request uri
+     * @return string
+     */
+    private function getCurrentUri(): string
+    {
+        return $_SERVER['REQUEST_URI'];
+    }
+
+    /**
+     * Getting the current request url path
+     * @return string
+     */
+    private function getCurrentUrlPath(): string
+    {
+        return (parse_url($this->uri, PHP_URL_PATH)) ?: '';
+    }
+
+    /**
+     * Getting the current request method
+     * @return string
+     */
+    private function getCurrentMethod(): string
+    {
+        return $_SERVER['REQUEST_METHOD'];
     }
 }
