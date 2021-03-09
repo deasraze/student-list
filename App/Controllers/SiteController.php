@@ -13,7 +13,11 @@ use App\Components\Exceptions\AuthorizationStudentException;
 use App\Components\Exceptions\ContainerException;
 use App\Components\Exceptions\FileNotExistException;
 use App\Components\Exceptions\NotFoundException;
+use App\Components\Helpers\LinkHelper;
+use App\Components\Helpers\SortingHelper;
+use App\Components\Navbar;
 use App\Components\Pagination;
+use App\Components\Request;
 use App\Components\Response;
 use App\Models\Student;
 use App\Models\StudentData;
@@ -28,21 +32,22 @@ class SiteController extends Controller
 
     /**
      * Main page
+     * @param Request $request
      * @return Response
      * @throws ContainerException
-     * @throws NotFoundException|\ValueError in Pagination
      * @throws FileNotExistException in show()
+     * @throws NotFoundException|\ValueError in Pagination
      */
-    public function actionIndex(): Response
+    public function actionIndex(Request $request): Response
     {
-        $request = $this->container->get('request');
         $studentGateway = $this->container->get('StudentTableGateway');
-        $sorting = $this->container->get('sorting');
+        $link = new LinkHelper($request);
+        $sorting = new SortingHelper($request, $link, 'score', 'desc');
         $pagination = new Pagination(
             $request->getRequestBody('page', 1),
             $studentGateway->getTotalStudents(),
             $this->limitStudents,
-            $this->container->get('LinkHelper')
+            $link
         );
         $students = $studentGateway->getAll(
             $sorting->getSortKey(),
@@ -53,7 +58,7 @@ class SiteController extends Controller
 
         return $this->show('index', [
             'title' => 'Student list',
-            'navbar' => $this->container->get('navbar'),
+            'navbar' => new Navbar($request),
             'students' => $students,
             'sorting' => $sorting,
             'notify' => $request->getRequestBody('notification'),
@@ -64,14 +69,14 @@ class SiteController extends Controller
 
     /**
      * Form page
+     * @param Request $request
      * @return Response
      * @throws ContainerException
      * @throws FileNotExistException in show
      * @throws AuthorizationStudentException in authorizeStudent()
      */
-    public function actionForm(): Response
+    public function actionForm(Request $request): Response
     {
-        $request = $this->container->get('request');
         $authorization = $this->container->get('AuthorizationStudent');
         $studentGateway = $this->container->get('StudentTableGateway');
 
@@ -83,7 +88,7 @@ class SiteController extends Controller
         $csrfProtection->setCsrfToken();
         $errors = [];
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($request->isPost()) {
             $csrfProtection->validate($request);
             try {
                 $studentData->fill($request->getRequestBody());
@@ -93,10 +98,11 @@ class SiteController extends Controller
                 if (count($errors) === 0) {
                     $studentGateway->save($student);
                     $authorization->authorizeStudent($student);
+                    $link = new LinkHelper($request);
 
                     return $this->response->withHeader(
                         'Location',
-                        $this->container->get('LinkHelper')->getNotifyLink(
+                        $link->getNotifyLink(
                             ($authorization->isAuthorize()) ? 'edited' : 'added',
                             $authorization->getAuthToken()
                         )
@@ -109,7 +115,7 @@ class SiteController extends Controller
 
         return $this->show('form', [
             'title' => ($authorization->isAuthorize()) ? 'Edit information' : 'Add yourself',
-            'navbar' => $this->container->get('navbar'),
+            'navbar' => new Navbar($request),
             'student' => $student,
             'errors' => $errors,
             'token' => $csrfProtection->getCsrfToken(),
@@ -119,14 +125,14 @@ class SiteController extends Controller
 
     /**
      * Search results page
+     * @param Request $request
      * @return Response
      * @throws ContainerException
      * @throws NotFoundException|\ValueError in Pagination
      * @throws FileNotExistException in show()
      */
-    public function actionSearch(): Response
+    public function actionSearch(Request $request): Response
     {
-        $request = $this->container->get('request');
         $searchQuery = trim(strval($request->getRequestBody('search')));
         if (strlen($searchQuery) === 0) {
             return $this->response->withHeader(
@@ -136,12 +142,13 @@ class SiteController extends Controller
         }
 
         $studentGateway = $this->container->get('StudentTableGateway');
-        $sorting = $this->container->get('sorting');
+        $link = new LinkHelper($request);
+        $sorting = new SortingHelper($request, $link, 'score', 'desc');
         $pagination = new Pagination(
             $request->getRequestBody('page', 1),
             $studentGateway->getTotalStudents($searchQuery),
             $this->limitStudents,
-            $this->container->get('LinkHelper')
+            $link
         );
         $students = $studentGateway->search(
             $searchQuery,
@@ -153,7 +160,7 @@ class SiteController extends Controller
 
         return $this->show('search', [
             'title' => 'Search results',
-            'navbar' => $this->container->get('navbar'),
+            'navbar' => new Navbar($request),
             'students' => $students,
             'searchQuery' => $searchQuery,
             'sorting' => $sorting,
