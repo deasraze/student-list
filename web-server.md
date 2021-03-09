@@ -36,7 +36,7 @@ Add the following lines:
             # Order allow,deny
             # Allow from all
         </Directory>
-    </VirtualHost>
+ </VirtualHost>
 ```
 You can also create a file `.htaccess` in the `/path/to/student-list/web` folder to redirect all HTTP requests to the FrontController:
 ```apache
