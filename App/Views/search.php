@@ -27,5 +27,5 @@ require_once ROOT . '/../App/Views/static/header.php'
         <?php endif; ?>
     </div>
 </section>
-<?= $pagination->run() ?>
+<?php require_once ROOT . '/../App/Views/static/pagination.php'?>
 <?php require_once ROOT . '/../App/Views/static/footer.php' ?>
