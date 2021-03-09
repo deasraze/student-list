@@ -10,10 +10,8 @@
 namespace App\Components;
 
 use App\Components\Exceptions\ControllerNotExistException;
-use App\Components\Exceptions\FileNotExistException;
 use App\Components\Exceptions\MethodNotExistException;
 use App\Components\Exceptions\NotFoundException;
-use App\Components\Interfaces\RequestInterface;
 use App\Components\Interfaces\RouterInterface;
 
 class Router implements RouterInterface
@@ -31,6 +29,12 @@ class Router implements RouterInterface
     private array $routes;
 
     /**
+     * The path according to the route
+     * @var array
+     */
+    private array $splitRealPath;
+
+    /**
      * Controller name
      * @var string
      */
@@ -44,47 +48,39 @@ class Router implements RouterInterface
 
     /**
      * Router constructor.
-     * @param RequestInterface $request
      * @param array $routes
-     * @throws NotFoundException
      */
-    public function __construct(RequestInterface $request, array $routes)
+    public function __construct(array $routes)
     {
-        $this->uri = trim($request->getRequestUri(), '/');
         $this->routes = $routes;
-        ['controller' => $this->controller, 'action' => $this->action] = $this->uriParsing($request);
     }
 
     /**
-     * The initialization of the controller and call the desired action
+     * Defining the required parameters and calling invoke
      * @param DIContainer $container
+     * @param Request $request
      * @param Response $response
      * @return Response
      * @throws ControllerNotExistException
+     * @throws NotFoundException
      * @throws \ReflectionException
      */
-    public function route(DIContainer $container, Response $response): Response
+    public function route(DIContainer $container, Request $request, Response $response): Response
     {
-        $action = $this->action;
-        $rc = $this->getReflectionClass($this->controller);
-        $rm = $this->getReflectionMethod($rc, $action);
-        $instance = $rc->newInstance($container, $response);
+        $this->uri = trim($request->getRequestUri(), '/');
+        $this->splitRealPath = $this->setSplitRealPath();
+        ['controller' => $this->controller, 'action' => $this->action] = $this->uriParsing();
 
-        return $rm->invoke($instance, $action);
+        return $this->invoke($container, $request, $response);
     }
 
     /**
-     * Changing the URI according to the route
-     * and we break this string into parts by "/"
+     * Get routes
      * @return array
-     * @throws NotFoundException
      */
-    public function getSplitRealPath(): array
+    public function getRoutes(): array
     {
-        [$uriPattern, $path] = $this->getCurrentRoute();
-        $realPath = preg_replace("~^$uriPattern$~", $path, $this->uri);
-
-        return explode('/', $realPath);
+        return $this->routes;
     }
 
     /**
@@ -104,12 +100,21 @@ class Router implements RouterInterface
     }
 
     /**
-     * Get routes
-     * @return array
+     * The initialization of the controller and call the desired action
+     * @param DIContainer $container
+     * @param Request $request
+     * @param Response $response
+     * @return Response
+     * @throws ControllerNotExistException
+     * @throws \ReflectionException
      */
-    public function getRoutes(): array
+    private function invoke(DIContainer $container, Request $request, Response $response): Response
     {
-        return $this->routes;
+        $rc = $this->getReflectionClass($this->controller);
+        $rm = $this->getReflectionMethod($rc, $this->action);
+        $instance = $rc->newInstance($container, $response);
+
+        return $rm->invoke($instance, $request, $this->parsingAttributes());
     }
 
     /**
@@ -144,22 +149,51 @@ class Router implements RouterInterface
     }
 
     /**
-     * Parse the URI and get the controller, action and URI params
-     * @param RequestInterface $request
+     * Parse the URI and get the controller and action
      * @return array
-     * @throws NotFoundException
      */
-    private function uriParsing(RequestInterface $request): array
+    private function uriParsing(): array
     {
-        $result = [];
-        $split = $this->getSplitRealPath();
-
-        $request->setRequestBody($split);
-
+        $split = $this->splitRealPath;
         $result['controller'] = '\App\Controllers\\' . ucfirst(array_shift($split)) . 'Controller';
         $result['action'] = array_shift($split);
 
         return $result;
+    }
+
+    /**
+     * Changing the URI according to the route
+     * and we break this string into parts by "/"
+     * @return array
+     * @throws NotFoundException
+     */
+    private function setSplitRealPath(): array
+    {
+        [$uriPattern, $path] = $this->getCurrentRoute();
+        $realPath = preg_replace("~^$uriPattern$~", $path, $this->uri);
+
+        return explode('/', $realPath);
+    }
+
+    /**
+     * The parsing of the parameters specified in the routes
+     * @return array
+     */
+    private function parsingAttributes(): array
+    {
+        $split = $this->splitRealPath;
+        $attributes = array_splice($split, 2);
+        if (count($attributes) !== 0) {
+            $key = $value = [];
+            foreach (array_chunk($attributes, 2) as $chunk) {
+                $key[] = $chunk[0];
+                $value[] = $chunk[1];
+            }
+
+            return array_combine($key, $value);
+        }
+
+        return [];
     }
 
     /**
