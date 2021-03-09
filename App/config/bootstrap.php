@@ -13,10 +13,6 @@ use App\Components\Exceptions\FileNotExistException;
 use App\Components\Helpers\AuthorizationStudent;
 use App\Components\Helpers\CookieHelper;
 use App\Components\Helpers\CSRFProtection;
-use App\Components\Helpers\LinkHelper;
-use App\Components\Helpers\SortingHelper;
-use App\Components\Navbar;
-use App\Components\Request;
 use App\Components\Router;
 use App\Components\View;
 use App\Models\StudentTableGateway;
@@ -50,14 +46,10 @@ $container->register('dbh', function (DIContainer $container) {
     return new PDO($dsn, $config['user'], $config['password'], $options);
 });
 
-$container->register('request', function (DIContainer $container) {
-    return new Request();
-});
-
 $container->register('router', function (DIContainer $container) {
     $routes = require_once ROOT . '/../App/config/routes.php';
 
-    return new Router($container->get('request'), $routes);
+    return new Router($routes);
 });
 
 $container->register('StudentTableGateway', function (DIContainer $container) {
@@ -82,21 +74,4 @@ $container->register('csrf', function (DIContainer $container) {
 
 $container->register('AuthorizationStudent', function (DIContainer $container) {
     return new AuthorizationStudent($container->get('cookieHelper'));
-});
-
-$container->register('LinkHelper', function (DIContainer $container) {
-    return new LinkHelper($container->get('request'));
-});
-
-$container->register('navbar', function (DIContainer $container) {
-    return new Navbar($container->get('request'));
-});
-
-$container->register('sorting', function (DIContainer $container) {
-    return new SortingHelper(
-        $container->get('request'),
-        $container->get('LinkHelper'),
-        'score',
-        'desc'
-    );
 });
