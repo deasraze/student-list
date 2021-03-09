@@ -9,11 +9,17 @@
 
 namespace App\Components\Interfaces;
 
+use App\Components\DIContainer;
+use App\Components\Request;
+use App\Components\Response;
+
 interface RouterInterface
 {
-    public function getSplitRealPath(): array;
+    public function route(DIContainer $container, Request $request, Response $response): Response;
 
     public function getController(): string;
 
     public function getAction(): string;
+
+    public function getRoutes(): array;
 }
