@@ -12,6 +12,7 @@ namespace App;
 use App\Components\DIContainer;
 use App\Components\Exceptions\ApplicationException;
 use App\Components\Exceptions\ContainerException;
+use App\Components\Request;
 use App\Components\Response;
 
 class App
@@ -39,7 +40,8 @@ class App
         set_error_handler([$this, 'errorHandler']);
         set_exception_handler([$this, 'exceptionHandler']);
         $router = $this->container->get('router');
-        $response = $router->route($this->container, $this->createResponse());
+        $request = new Request();
+        $response = $router->route($this->container, $request, $this->createResponse());
 
         $this->respond($response);
     }
