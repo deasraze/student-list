@@ -24,17 +24,8 @@ class Request implements RequestInterface
      */
     public function __construct()
     {
-    }
-
-    /**
-     * Save all the parameters that were passed in the request
-     * @param array $splitRealPath
-     */
-    public function setRequestBody(array $splitRealPath): void
-    {
         $this->requestBody = array_merge(
             $this->parsingQueryParams(),
-            $this->parsingRouteParams($splitRealPath),
             $this->parsingPostRequest()
         );
     }
@@ -52,6 +43,15 @@ class Request implements RequestInterface
         }
 
         return $this->requestBody[$key] ?? $default;
+    }
+
+    /**
+     * Checks whether the request method is a post
+     * @return bool
+     */
+    public function isPost(): bool
+    {
+        return ($_SERVER['REQUEST_METHOD'] === 'POST');
     }
 
     /**
@@ -88,26 +88,5 @@ class Request implements RequestInterface
     private function parsingPostRequest(): array
     {
         return (!empty($_POST)) ? $_POST : [];
-    }
-
-    /**
-     * The parsing of the parameters specified in the routes
-     * @param array $splitRealPath
-     * @return array
-     */
-    private function parsingRouteParams(array $splitRealPath): array
-    {
-        $params = array_splice($splitRealPath, 2);
-        if (!empty($params)) {
-            $key = $value = [];
-            foreach (array_chunk($params, 2) as $chunk) {
-                $key[] = $chunk[0];
-                $value[] = $chunk[1];
-            }
-
-            return array_combine($key, $value);
-        }
-
-        return [];
     }
 }
