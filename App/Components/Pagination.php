@@ -51,6 +51,18 @@ class Pagination
     private int $totalLinks;
 
     /**
+     * Pagination start
+     * @var int
+     */
+    private int $start;
+
+    /**
+     * Pagination end
+     * @var int
+     */
+    private int $end;
+
+    /**
      * Pagination constructor.
      * @param int $currentPage
      * @param int $totalRecords
@@ -100,22 +112,74 @@ class Pagination
 
     /**
      * Run pagination
-     * @return string
+     * @return bool
      */
-    public function run(): string
+    public function run(): bool
     {
         if ($this->totalLinks <= 1) {
-            return '';
+            return false;
         }
 
-        [$start, $end] = $this->calculatePagination();
-        $items = '';
+        [$this->start, $this->end] = $this->calculatePagination();
 
-        for ($page = $start; $page <= $end; $page++) {
-            $items .= $this->getPageItem($page);
-        }
+        return true;
+    }
 
-        return $this->getHtml($items);
+    /**
+     * @return int
+     */
+    public function getStart(): int
+    {
+        return $this->start;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEnd(): int
+    {
+        return $this->end;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalLinks(): int
+    {
+        return $this->totalLinks;
+    }
+
+    /**
+     * Getting access to the arrow item
+     * @param int $page
+     * @return array
+     */
+    public function getAccessForArrowItem(int $page): array
+    {
+        $access = ($this->checkActive($page)) ? 'disabled' : '';
+        $aria = ($this->checkActive($page)) ? 'aria-disabled="true"' : '';
+
+        return ['access' => $access, 'aria' => $aria];
+    }
+
+    /**
+     * Getting link for page
+     * @param int $page
+     * @return string
+     */
+    public function getPageLink(int $page): string
+    {
+        return ($this->currentPage === $page) ? '#' : $this->linkHelper->getPageLink($page);
+    }
+
+    /**
+     * Checking page activity
+     * @param int $page
+     * @return bool
+     */
+    public function checkActive(int $page): bool
+    {
+        return ($this->currentPage === $page);
     }
 
     /**
@@ -142,90 +206,6 @@ class Pagination
         }
 
         return [$start, $end];
-    }
-
-    /**
-     * Getting a html for pagination
-     * @param string $items
-     * @return string
-     */
-    private function getHtml(string $items): string
-    {
-        $pagination = '<div class="pagination mb-5">
-                       <div class="container">
-                       <nav aria-label="Pagination">
-                       <ul class="pagination justify-content-center">';
-        $pagination .= $this->getArrowItem(1, $this->getAccessForArrowItem(1));
-        $pagination .= $items . $this->getArrowItem($this->totalLinks, $this->getAccessForArrowItem($this->totalLinks));
-        $pagination .= '</div></div></nav></ul>';
-
-        return $pagination;
-    }
-
-    /**
-     * Getting a pagination item
-     * @param int $page
-     * @return string
-     */
-    private function getPageItem(int $page): string
-    {
-        $link = $this->getPageLink($page);
-        $active = ($this->checkActive($page)) ? 'active' : '';
-
-        return "<li class='page-item $active'><a href='$link' class='page-link'>$page</a></li>";
-    }
-
-    /**
-     * Getting a arrow item for pagination
-     * @param int $arrowToPage
-     * @param array $accessForArrow
-     * @return string
-     */
-    private function getArrowItem(int $arrowToPage, array $accessForArrow): string
-    {
-        [$access, $aria] = $accessForArrow;
-        $isFirstPage = $arrowToPage === 1;
-        $symbol = ($isFirstPage) ? '&laquo;' : '&raquo;';
-        $ariaLabel = ($isFirstPage) ? 'First page' : 'Last page';
-
-        return "<li class='page-item $access'>
-                    <a href='{$this->getPageLink($arrowToPage)}' class='page-link' aria-label='$ariaLabel' $aria>
-                        <span aria-hidden='true'>$symbol</span>
-                    </a>
-                </li>";
-    }
-
-    /**
-     * Getting access to the arrow item
-     * @param int $page
-     * @return array
-     */
-    private function getAccessForArrowItem(int $page): array
-    {
-        $access = ($this->checkActive($page)) ? 'disabled' : '';
-        $aria = ($this->checkActive($page)) ? 'aria-disabled="true"' : '';
-
-        return [$access, $aria];
-    }
-
-    /**
-     * Getting link for page
-     * @param int $page
-     * @return string
-     */
-    private function getPageLink(int $page): string
-    {
-        return ($this->currentPage === $page) ? '#' : $this->linkHelper->getPageLink($page);
-    }
-
-    /**
-     * Checking page activity
-     * @param int $page
-     * @return bool
-     */
-    private function checkActive(int $page): bool
-    {
-        return ($this->currentPage === $page);
     }
 
     /**
