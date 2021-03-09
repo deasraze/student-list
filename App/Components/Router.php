@@ -67,7 +67,7 @@ class Router implements RouterInterface
      */
     public function route(DIContainer $container, Request $request, Response $response): Response
     {
-        $this->uri = trim($request->getRequestUri(), '/');
+        $this->uri = trim($request->getUri(), '/');
         $this->splitRealPath = $this->setSplitRealPath();
         ['controller' => $this->controller, 'action' => $this->action] = $this->uriParsing();
 
