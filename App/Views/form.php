@@ -1,6 +1,7 @@
 <?php
 
 use App\Components\Utils\StringUtil;
+use App\Models\Student;
 
 require_once ROOT . '/../App/Views/static/header.php'
 ?>
@@ -66,9 +67,9 @@ require_once ROOT . '/../App/Views/static/header.php'
                         class="form-select <?= (isset($errors['gender'])) ? 'is-invalid' : '' ?>" name="gender"
                         aria-describedby="selectGender" required>
                     <option selected disabled value="">Choose...</option>
-                    <option <?= (isset($student->gender) && $student->gender == 'male') ? 'selected' : '' ?>
+                    <option <?= (isset($student->gender) && $student->gender === Student::GENDER_MALE) ? 'selected' : '' ?>
                             value="male">Male</option>
-                    <option <?= (isset($student->gender) && $student->gender == 'female') ? 'selected' : '' ?>
+                    <option <?= (isset($student->gender) && $student->gender === Student::GENDER_FEMALE) ? 'selected' : '' ?>
                             value="female">Female</option>
                 </select>
                 <div id="selectGender" class="invalid-feedback">
@@ -103,9 +104,9 @@ require_once ROOT . '/../App/Views/static/header.php'
                         class="form-select <?= (isset($errors['status'])) ? 'is-invalid' : '' ?>" name="status"
                         aria-describedby="selectStatus" required>
                     <option selected disabled value="">Choose...</option>
-                    <option <?= (isset($student->status) && $student->status == 'resident') ? 'selected' : '' ?>
+                    <option <?= (isset($student->status) && $student->status === Student::STATUS_RESIDENT) ? 'selected' : '' ?>
                             value="resident">Resident</option>
-                    <option <?= (isset($student->status) && $student->status == 'nonresident') ? 'selected' : '' ?>
+                    <option <?= (isset($student->status) && $student->status === Student::STATUS_NONRESIDENT) ? 'selected' : '' ?>
                             value="nonresident">Nonresident</option>
                 </select>
                 <div id="selectStatus" class="invalid-feedback">
