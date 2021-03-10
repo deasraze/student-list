@@ -68,7 +68,7 @@ class Router implements RouterInterface
     public function route(DIContainer $container, Request $request, Response $response): Response
     {
         $this->uri = trim($request->getUri(), '/');
-        $this->splitRealPath = $this->setSplitRealPath();
+        $this->splitRealPath = $this->getSplitRealPath();
         ['controller' => $this->controller, 'action' => $this->action] = $this->uriParsing();
 
         return $this->invoke($container, $request, $response);
@@ -167,7 +167,7 @@ class Router implements RouterInterface
      * @return array
      * @throws NotFoundException
      */
-    private function setSplitRealPath(): array
+    private function getSplitRealPath(): array
     {
         [$uriPattern, $path] = $this->getCurrentRoute();
         $realPath = preg_replace("~^$uriPattern$~", $path, $this->uri);
