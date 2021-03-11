@@ -92,7 +92,7 @@ class SortingHelper
             return $default;
         }
 
-        return ($this->sortType === 'asc' && $this->sortKey === $currentKey) ? $asc : $desc;
+        return ($this->sortType === 'asc') ? $asc : $desc;
     }
 
     /**
