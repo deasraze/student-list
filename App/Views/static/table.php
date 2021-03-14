@@ -8,27 +8,32 @@ use App\Components\Utils\StringUtil;
     <tr>
         <td>
             <a href="<?= StringUtil::html($sorting->getSortLink('id')) ?>"
-               class="thead__link"># <?= $sorting->getSortIcon('id')?>
+               class="thead__link">#
+                <?= $sorting->getSortIcon('id')?>
             </a>
         </td>
         <td>
             <a href="<?= StringUtil::html($sorting->getSortLink('name')) ?>"
-               class="thead__link">First name <?= $sorting->getSortIcon('name')?>
+               class="thead__link">First name
+                <?= $sorting->getSortIcon('name')?>
             </a>
         </td>
         <td>
             <a href="<?= StringUtil::html($sorting->getSortLink('surname')) ?>"
-               class="thead__link">Last name <?= $sorting->getSortIcon('surname')?>
+               class="thead__link">Last name
+                <?= $sorting->getSortIcon('surname')?>
             </a>
         </td>
         <td>
             <a href="<?= StringUtil::html($sorting->getSortLink('sgroup')) ?>"
-               class="thead__link">Group number <?= $sorting->getSortIcon('sgroup')?>
+               class="thead__link">Group number
+                <?= $sorting->getSortIcon('sgroup')?>
             </a>
         </td>
         <td>
             <a href="<?= StringUtil::html($sorting->getSortLink('score')) ?>"
-               class="thead__link">Score <?= $sorting->getSortIcon('score')?>
+               class="thead__link">Score
+                <?= $sorting->getSortIcon('score')?>
             </a>
         </td>
     </tr>
