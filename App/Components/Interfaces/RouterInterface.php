@@ -17,9 +17,7 @@ interface RouterInterface
 {
     public function route(DIContainer $container, Request $request, Response $response): Response;
 
-    public function getController(): string;
-
-    public function getAction(): string;
+    public function getContext(Request $request, string $key = null);
 
     public function getRoutes(): array;
 }
