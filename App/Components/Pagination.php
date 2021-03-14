@@ -77,6 +77,7 @@ class Pagination
         $this->linkHelper = $linkHelper;
         $this->totalLinks = $this->countTotalLinks();
         $this->setCurrentPage($currentPage);
+        [$this->start, $this->end] = $this->calculatePagination();
     }
 
     /**
@@ -108,21 +109,6 @@ class Pagination
     public function getOffset(): int
     {
         return $this->recordsPerPage * ($this->currentPage - 1);
-    }
-
-    /**
-     * Run pagination
-     * @return bool
-     */
-    public function run(): bool
-    {
-        if ($this->totalLinks <= 1) {
-            return false;
-        }
-
-        [$this->start, $this->end] = $this->calculatePagination();
-
-        return true;
     }
 
     /**
@@ -202,7 +188,9 @@ class Pagination
             /** If the first link + the number of links to the page is greater
              * than the total number of links, then we calculate which link to start with
              */
-            $start = ($this->totalLinks > $this->linksPerPage) ? $this->totalLinks - $this->linksPerPage + 1 : 1;
+            $start = ($this->totalLinks > $this->linksPerPage)
+                ? $this->totalLinks - $this->linksPerPage + 1
+                : 1;
         }
 
         return [$start, $end];
