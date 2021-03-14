@@ -67,7 +67,7 @@ class Router implements RouterInterface
      */
     public function route(DIContainer $container, Request $request, Response $response): Response
     {
-        $this->uri = trim($request->getUri(), '/');
+        $this->uri = $this->sanitizeUri($request->getUri());
         $this->splitRealPath = $this->getSplitRealPath();
         ['controller' => $this->controller, 'action' => $this->action] = $this->uriParsing();
 
@@ -211,5 +211,15 @@ class Router implements RouterInterface
         }
 
         throw new NotFoundException("This {$this->uri} does not exist in routes");
+    }
+
+    /**
+     * Converting the request uri to the required format
+     * @param string $uri
+     * @return string
+     */
+    private function sanitizeUri(string $uri): string
+    {
+        return trim($uri, '/');
     }
 }
