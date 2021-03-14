@@ -2,7 +2,7 @@
 
 use App\Components\Utils\StringUtil;
 
-if ($pagination->run()):
+if ($pagination->getTotalLinks() > 1):
     $firstPageAccess = $pagination->getAccessForArrowItem(1);
     $lastPageAccess = $pagination->getAccessForArrowItem($pagination->getTotalLinks());
 ?>
