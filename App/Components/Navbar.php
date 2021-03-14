@@ -9,6 +9,7 @@
 
 namespace App\Components;
 
+use App\Components\Exceptions\FileNotExistException;
 use App\Components\Interfaces\RequestInterface;
 
 class Navbar
@@ -30,43 +31,21 @@ class Navbar
 
     /**
      * Get the menu for the site
+     * @param string $brandLabel
      * @param array example: [['label' => 'Home', 'url' => '/']], ...
      * @return string html navbar menu
-     * @throws \ValueError
+     * @throws FileNotExistException
      */
-    public function getNav(array $menuItems): string
+    public function getNav(string $brandLabel, array $menuItems): string
     {
-        $items = '';
-        foreach ($menuItems as $item) {
-            if (!array_key_exists('label', $item) || !array_key_exists('url', $item)) {
-                throw new \ValueError('The passed array does not contain the label or url key');
-            }
+        $menuItems = $this->filterItems($menuItems);
+        $view = new View(ROOT . '/../App/Views/static/', 'php');
 
-            $items .= $this->getItem($item);
-        }
-
-        return $this->getHtml($items);
-    }
-
-    /**
-     * Getting html for menu item
-     * @param array $item
-     * @return string
-     */
-    private function getItem(array $item): string
-    {
-        $active = $this->checkActiveItem($item['url']);
-        return "<li class='nav-item'><a href='{$item['url']}' class='nav-link $active'>{$item['label']}</a></li>";
-    }
-
-    /**
-     * Getting html for menu
-     * @param string $items
-     * @return string
-     */
-    private function getHtml(string $items): string
-    {
-        return sprintf('<ul class="navbar-nav me-auto mb-2 mb-lg-0">%s</ul>', $items);
+        return $view->render('navbar', [
+            'brandLabel' => $brandLabel,
+            'menuItems' => $menuItems,
+            'navbar' => $this
+        ]);
     }
 
     /**
@@ -74,8 +53,24 @@ class Navbar
      * @param string $url
      * @return string class
      */
-    private function checkActiveItem(string $url): string
+    public function checkActiveItem(string $url): string
     {
         return ($this->url === trim($url, '/')) ? 'active' : '';
+    }
+
+    /**
+     * Filters the menu for the necessary keys in the array and returns it if they are present
+     * @param array $menuItems
+     * @return array
+     */
+    private function filterItems(array $menuItems): array
+    {
+        foreach ($menuItems as $item) {
+            if (!array_key_exists('label', $item) || !array_key_exists('url', $item)) {
+                throw new \ValueError('The passed array does not contain the label or url key');
+            }
+        }
+
+        return $menuItems;
     }
 }
