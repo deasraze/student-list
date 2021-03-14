@@ -75,28 +75,34 @@ class Router implements RouterInterface
     }
 
     /**
+     * Get the context (controller, action, and attributes) for the current request
+     * @param Request $request
+     * @param string|null controller/action/attributes
+     * @return array|string|null
+     * @throws NotFoundException
+     */
+    public function getContext(Request $request, string $key = null)
+    {
+        $this->uri = $this->sanitizeUri($request->getUri());
+        $this->splitRealPath = $this->getSplitRealPath();
+        $context = [];
+        ['controller' => $context['controller'], 'action' => $context['action']] = $this->uriParsing();
+        $context['attributes'] = $this->parsingAttributes();
+
+        if (!is_null($key)) {
+            return $context[$key] ?? null;
+        }
+
+        return $context;
+    }
+
+    /**
      * Get routes
      * @return array
      */
     public function getRoutes(): array
     {
         return $this->routes;
-    }
-
-    /**
-     * @return string
-     */
-    public function getController(): string
-    {
-        return $this->controller;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAction(): string
-    {
-        return $this->action;
     }
 
     /**
