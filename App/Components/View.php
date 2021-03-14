@@ -55,19 +55,19 @@ class View implements RendererInterface
     }
 
     /**
-     * @param string $defaultPath
+     * @return string
      */
-    public function setDefaultPath(string $defaultPath): void
+    public function getDefaultPath(): string
     {
-        $this->defaultPath = $defaultPath;
+        return $this->defaultPath;
     }
 
     /**
-     * @param string $defaultExtension
+     * @return string
      */
-    public function setDefaultExtension(string $defaultExtension): void
+    public function getDefaultExtension(): string
     {
-        $this->defaultExtension = $defaultExtension;
+        return $this->defaultExtension;
     }
 
     /**
