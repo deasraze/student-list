@@ -12,7 +12,7 @@ namespace App\Components\Utils;
 class NotificationUtil
 {
     /**
-     * Getting notification html
+     * Getting notification
      * @param string $alertType
      * @param string $alertHeading
      * @param string $alertDesc
@@ -20,14 +20,10 @@ class NotificationUtil
      */
     public static function getNotification(string $alertType, string $alertHeading, string $alertDesc): string
     {
-        return sprintf(
-            '<div class="alert alert-%s alert-dismissible fade show" role="alert">
-            <h4 class="alert-heading">%s</h4>%s
-            <button type="button" id="notification-close" class="btn-close" 
-            data-bs-dismiss="alert" aria-label="Close"></button></div>',
-            StringUtil::html($alertType),
-            StringUtil::html($alertHeading),
-            StringUtil::html($alertDesc)
-        );
+        $notify = file_get_contents(ROOT . '/../App/Views/static/notify.php');
+        $search = ['{alert-type}', '{alert-heading}', '{alert-description}'];
+        $replace = [$alertType, $alertHeading, $alertDesc];
+
+        return str_replace($search, $replace, $notify);
     }
 }
